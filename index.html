@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fredys Matos Borges | Custom PCB Design & Review</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tsparticles for dynamic background -->
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #888888;
+            --accent-orange: #EB4F1E; /* Exact orange color specified */
+            --border-color: #2a2a2a;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Fixed navigation bar at top */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 0.5rem 0;
+        }
+        
+        /* Section styling - hidden by default, only active section shows */
+        .section {
+            display: none;
+            animation: fadeIn 0.6s ease-out;
+            padding: 100px 20px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        /* Card component for content boxes */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .card:hover {
+            border-color: var(--accent-orange);
+            box-shadow: 0 8px 32px rgba(235, 79, 30, 0.15);
+        }
+        
+        /* Navigation button styling */
+        .nav-button {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px 28px;
+            margin: 0 6px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .nav-button:hover {
+            background-color: var(--card-bg);
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+        
+        .nav-button.active {
+            background-color: var(--accent-orange);
+            border-color: var(--accent-orange);
+            color: var(--bg-dark);
+        }
+        
+        /* Hero section specific styles */
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .hero-name {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, var(--text-primary), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+        
+        .hero-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--accent-orange);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            line-height: 1.7;
+            max-width: 700px;
+        }
+        
+        /* Profile image styling */
+        .profile-image {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 4px solid var(--accent-orange);
+            object-fit: cover;
+            margin-bottom: 32px;
+            box-shadow: 0 10px 30px rgba(235, 79, 30, 0.2);
+        }
+        
+        /* Service cards specific styling */
+        .service-card {
+            background: linear-gradient(145deg, var(--card-bg), #202020);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            border-color: var(--accent-orange);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(235, 79, 30, 0.2);
+        }
+        
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--accent-orange);
+        }
+        
+        .service-features {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .service-features li {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .service-details {
+            background-color: rgba(235, 79, 30, 0.1);
+            padding: 16px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .service-details h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--accent-orange);
+        }
+        
+        .whatsapp-button {
+            background: linear-gradient(135deg, var(--accent-orange), #d44a1a);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        
+        .whatsapp-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(235, 79, 30, 0.4);
+        }
+        
+        /* Portfolio section */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+        
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            height: 400px;
+            background: linear-gradient(45deg, #1a1a1a, #252525);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-orange);
+        }
+        
+        .portfolio-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+        
+        .portfolio-content {
+            padding: 20px;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .portfolio-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        
+        .portfolio-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 12px;
+            flex-grow: 1;
+        }
+        
+        .portfolio-github {
+            color: var(--accent-orange);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .portfolio-github:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        /* Process timeline styling */
+        .process-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            margin-top: 32px;
+        }
+        
+        .process-step {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background: var(--accent-orange);
+            color: var(--bg-dark);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+        
+        .step-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        
+        .step-content p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Fade in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-name {
+                font-size: 2.5rem;
+            }
+            .hero-title {
+                font-size: 1.5rem;
+            }
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            .process-step {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .step-number {
+                align-self: flex-start;
+            }
+            .services-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
+        /* Particles container */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        /* Services section grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 32px;
+        }
+        
+        /* Contact form styling (RESTORED TO PREVIOUS VERSION) */
+        .contact-form input,
+        .contact-form textarea {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            width: 100%;
+            transition: border-color 0.3s ease;
+        }
+        
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+        
+        .contact-form button {
+            background-color: var(--accent-orange);
+            color: var(--bg-dark);
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .contact-form button:hover {
+            background-color: #d44a1a;
+        }
+    </style>
+</head>
+<body>
+    <!-- Dynamic particle background -->
+    <div id="particles-js"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="flex flex-wrap justify-center items-center px-4">
+            <button class="nav-button active" data-section="intro">Home</button>
+            <button class="nav-button" data-section="services">What I Do</button>
+            <button class="nav-button" data-section="process">Process</button>
+            <button class="nav-button" data-section="portfolio">My Works</button>
+            <button class="nav-button" data-section="contact">Contact</button>
+        </div>
+    </nav>
+
+    <!-- Intro Section -->
+    <section id="intro" class="section active">
+        <div class="hero-content">
+            <!-- PROFILE IMAGE - REPLACE THE SRC ATTRIBUTE WITH YOUR ACTUAL IMAGE URL -->
+            <!-- Example: <img src="https://yourdomain.com/your-photo.jpg" alt="Fredys Matos Borges" class="profile-image"> -->
+            <img src="https://media.licdn.com/dms/image/v2/D4E03AQHhurTn8FDgcA/profile-displayphoto-scale_400_400/B4EZl8j6iyKkAg-/0/1758731417430?e=1768435200&v=beta&t=uD2Qb48n8JZ5OylPI4b1toSctOMT-bF-0IwGbBOSpt4" alt="Fredys Matos Borges" class="profile-image">
+            
+            <h1 class="hero-name">FREDYS MATOS BORGES</h1>
+            <h2 class="hero-title">Custom PCB Design & Review for IoT and Embedded Systems</h2>
+            <p class="hero-subtitle">
+                I help engineers and startups design and validate IoT hardware from concept to production-ready PCB.
+            </p>
+            
+            <!-- WhatsApp button - REPLACE PHONE NUMBER WITH YOUR ACTUAL WHATSAPP NUMBER -->
+            <!-- Format: https://wa.me/YOURPHONENUMBER (include country code, no spaces or special characters) -->
+            <a href="https://wa.me/+5353397877" target="_blank" class="whatsapp-button">
+                <i class="fab fa-whatsapp"></i> Request a PCB Design Quote
+            </a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-4xl font-bold mb-6 text-center">Professional PCB Design & Review Services</h2>
+            <p class="text-secondary text-lg text-center max-w-4xl mx-auto mb-12">
+                I specialize in designing and reviewing PCB layouts for IoT and embedded devices — helping startups, makers, and engineers reduce risk, improve manufacturability, and bring products to market faster.
+            </p>
+            
+            <div class="services-grid">
+                <!-- Service 1: PCB Design -->
+                <div class="service-card">
+                    <h3 class="service-title">PCB DESIGN (Full Service)</h3>
+                    <ul class="service-features">
+                        <li>Custom schematic capture</li>
+                        <li>Multi-Layer PCB Layout (up to 6-8 layers)</li>
+                        <li>Component Library & Footprint Management</li>
+                        <li>Design for Manufacturability (DFM) Guidance</li>
+                        <li>Comprehensive BOM with Sourcing Preferences</li>
+                        <li>Fabrication & Assembly Ready Files</li>
+                    </ul>
+                    
+                    <div class="service-details">
+                        <h4>Delivery time (typical)</h4>
+                        <p>Simple IoT PCB design: 5–10 business days</p>
+                        <p>Moderately complex design (like wireless, mixed-signal): 10–20 business days</p>
+                        
+                        <h4 class="mt-3">Price range</h4>
+                        <p>Simple boards (sensors / controllers): $250–$500</p>
+                        <p>Moderate complexity (wireless, mixed-signal): $500–$900+</p>
+                    </div>
+                    
+                    <!-- WhatsApp button for PCB Design service -->
+                    <a href="https://wa.me/+5353397877?text=Hi%20Fredys%2C%20I%20need%20PCB%20Design%20service%20for%20my%20project." target="_blank" class="whatsapp-button">
+                        <i class="fab fa-whatsapp"></i> Request PCB Design
+                    </a>
+                </div>
+                
+                <!-- Service 2: PCB Design Review -->
+                <div class="service-card">
+                    <h3 class="service-title">PCB DESIGN REVIEW & Optimization</h3>
+                    <ul class="service-features">
+                        <li>In-Depth Schematic Review</li>
+                        <li>PCB Layout Analysis & Critique</li>
+                        <li>Design for Manufacturability (DFM) Audit</li>
+                        <li>Design for Assembly (DFA) Feedback</li>
+                        <li>Signal & Power Integrity Check</li>
+                        <li>Annotated Report with Actionable Fixes</li>
+                    </ul>
+                    
+                    <div class="service-details">
+                        <h4>Delivery time (typical)</h4>
+                        <p>Standard review: 2–4 business days</p>
+                        
+                        <h4 class="mt-3">Price range</h4>
+                        <p>$80–$120</p>
+                    </div>
+                    
+                    <!-- WhatsApp button for PCB Design Review service -->
+                    <a href="https://wa.me/+5353397877?text=Hi%20Fredys%2C%20I%20need%20PCB%20Design%20Review%20service%20for%20my%20project." target="_blank" class="whatsapp-button">
+                        <i class="fab fa-whatsapp"></i> Request Design Review
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="section">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold mb-12 text-center">My Engineering Process</h2>
+            <div class="card">
+                <p class="text-secondary text-lg text-center mb-8">
+                    A structured approach to hardware development that minimizes risk and ensures successful project delivery.
+                </p>
+                <div class="process-timeline">
+                    <div class="process-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Requirements & Architecture</h3>
+                            <p>Understanding the system, power domains, sensors, communications, and constraints.</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Schematic Design</h3>
+                            <p>Creating clean and well-organized schematics with proper nets, power distribution, decoupling, and interfaces.</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>PCB Layout</h3>
+                            <p>Component placement and routing with focus on power integrity, signal routing, manufacturability, clearances, and design rules.</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Review & Optimization</h3>
+                            <p>Identifying issues early: return paths, noise, Design for Manufacturing (DFM), component footprints, and routing problems.</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3>Deliverables</h3>
+                            <p>Fabrication-ready Gerber files, Bill of Materials (BOM), design files, annotated report, and recommendations.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- WhatsApp button for PCB Design service at the end of Process section -->
+                <div class="text-center mt-12">
+                    <a href="https://wa.me/+5353397877?text=Hi%20Fredys%2C%20I%20want%20to%20start%20a%20PCB%20design%20project%20following%20your%20engineering%20process." target="_blank" class="whatsapp-button">
+                        <i class="fab fa-whatsapp"></i> Start Your PCB Design Project
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="section">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold mb-12 text-center">My Works</h2>
+            <div class="portfolio-grid">
+                <!-- PORTFOLIO ITEM 1 - REPLACE IMG SRC WITH YOUR ACTUAL IMAGE URL -->
+                <!-- Example: <img src="https://yourdomain.com/project1.jpg" alt="Project 1" class="portfolio-image"> -->
+                <!-- REPLACE GITHUB LINK WITH YOUR ACTUAL REPOSITORY URL -->
+                <div class="portfolio-item">
+                    <img src="https://github.com/MbFredys/PCB-Modular-Multi-Protocol-Hub/blob/781fff015d91ebc9022690dee40ad0e1659068a4/Release/HUB-3D.png" alt="Modular Multi Protocol Hub" class="portfolio-image">
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Modular Multi Protocol Hub</h3>
+                        <p class="portfolio-description">
+                            ESP32-S3 as the central controller with Wi-Fi and Bluetooth LE, USB programming, and Ethernet.
+                            Modular Expansion: Interchangeable radio boards for Zigbee/Thread (EFR32MG24) and 
+                            Proprietary RF (nRF24L01+), auto-detected via onboard EEPROM. 12V input with high-efficiency 
+                            5V and 3.3V regulation, independent LDOs per RF module, and battery backup. Low-noise layout 
+                            with isolated power domains, selectable chip or u.FL antennas, and SPI/IRQ high-speed communication.
+                            Protections: TVS diodes, ESD protection, ferrite filtering, solid ground planes, and clean RF 
+                            practices for long-term stability. A flexible, modern, open smart-home hub designed to bridge 
+                            Wi-Fi, BLE, Zigbee, Thread, Matter, and proprietary protocols.  
+                        </p>
+                        <a href="https://github.com/MbFredys/PCB-Modular-Multi-Protocol-Hub.git" target="_blank" class="portfolio-github">
+                            <i class="fab fa-github"></i> View project on GitHub
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- PORTFOLIO ITEM 2 - REPLACE IMG SRC WITH YOUR ACTUAL IMAGE URL -->
+                <!-- REPLACE GITHUB LINK WITH YOUR ACTUAL REPOSITORY URL -->
+                <div class="portfolio-item">
+                    <img src="https://github.com/MbFredys/PCB-3-Phase-Energy-Monitor/blob/7c473650a7b17593c4647db25b2fef2a7ba0667c/Release/3D_HIGH_QUALITY.png" alt="3 Phase Energy Monitor Device" class="portfolio-image">
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">3 Phase Energy Monitor Device</h3>
+                        <p class="portfolio-description">
+                            ESP32-S3-MINI-1 for processing and connectivity. Power Supply: PoE 802.3af via TPS2378DDAR + 5V → 3.3V conversion
+                            Energy Measurement: High-precision ATM90E32AS for 3-phase 4-wire systems. Connectivity: 10/100 Mbps 
+                            Ethernet with LAN8720A PHY and EMI protection. Isolation: Complete separation between high and low 
+                            voltage with Si86xx digital isolators. Protections: MOVs, TVS diodes, PTC fuses, and robust filtering throughout
+                            Application: Professional electrical monitoring for BMS integration in commercial/industrial environments.  
+                        </p>
+                        <a href="https://github.com/MbFredys/PCB-3-Phase-Energy-Monitor.git" target="_blank" class="portfolio-github">
+                            <i class="fab fa-github"></i> View project on GitHub
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- PORTFOLIO ITEM 3 - REPLACE IMG SRC WITH YOUR ACTUAL IMAGE URL -->
+                <!-- REPLACE GITHUB LINK WITH YOUR ACTUAL REPOSITORY URL -->
+                <div class="portfolio-item">
+                    <img src="https://github.com/MbFredys/PCB-Mini-Environmental-Sensor/blob/33d14922e9a7ea6b7b3b5bc8500e66088f4456ac/Release/3d-pro.png" alt="Mini Environmental Sensor" class="portfolio-image">
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Mini Environmental Sensor</h3>
+                        <p class="portfolio-description">
+                            Monitors temperature, humidity, and atmospheric pressure using BME280 sensor
+                            Measures air quality and CO2 equivalent with Sensirion SPG40 sensor
+                            WiFi and Bluetooth connectivity via ESP32-C3-VROOM-02
+                            Battery-powered operation with 3.7V Li-ion battery and USB-C charging
+                            Efficient power management using TPS62203 step-down converter
+                            Automatic data logging with cloud connectivity capabilities
+                            Ultra-low power consumption with deep sleep mode  
+                        </p>
+                        <a href="https://github.com/MbFredys/PCB-Mini-Environmental-Sensor.git" target="_blank" class="portfolio-github">
+                            <i class="fab fa-github"></i> View project on GitHub
+                        </a>
+                    </div>
+                </div>
+
+              <!-- PORTFOLIO ITEM 4 - REPLACE IMG SRC WITH YOUR ACTUAL IMAGE URL -->
+                <!-- REPLACE GITHUB LINK WITH YOUR ACTUAL REPOSITORY URL -->
+                <div class="portfolio-item">
+                    <img src="https://github.com/MbFredys/RGB-LED-and-High-Dencity-CCT-Controller/blob/102cb8d56c0dd06fdecf8e66da154de4da5086f1/Release/3D-pro.png" alt="RGB LED and High Dencity CCT Controller" class="portfolio-image">
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">RGB LED and High Dencity CCT Controller</h3>
+                        <p class="portfolio-description">
+                            Monitors temperature, humidity, and atmospheric pressure using BME280 sensor
+                            Measures air quality and CO2 equivalent with Sensirion SPG40 sensor
+                            WiFi and Bluetooth connectivity via ESP32-C3-VROOM-02
+                            Battery-powered operation with 3.7V Li-ion battery and USB-C charging
+                            Efficient power management using TPS62203 step-down converter
+                            Automatic data logging with cloud connectivity capabilities
+                            Ultra-low power consumption with deep sleep mode  
+                        </p>
+                        <a href="https://github.com/MbFredys/RGB-LED-and-High-Dencity-CCT-Controller.git" target="_blank" class="portfolio-github">
+                            <i class="fab fa-github"></i> View project on GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section (RESTORED TO PREVIOUS VERSION) -->
+    <section id="contact" class="section">
+        <div class="max-w-2xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center">Technical Inquiry</h2>
+            <div class="card">
+                <p class="text-secondary mb-6">
+                    For hardware design projects, technical consultation, or collaborative opportunities. 
+                    Please provide project specifications and requirements.
+                </p>
+                <form class="contact-form">
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="email" placeholder="Email Address" required>
+                    <input type="text" placeholder="Company / Organization">
+                    <textarea rows="4" placeholder="Project Description - Include technical requirements, timeline, and scope" required></textarea>
+                    <div class="text-center">
+                        <button type="submit">Submit Technical Inquiry</button>
+                    </div>
+                </form>
+            </div>
+            <div class="text-center mt-8 text-secondary">
+                <p>Based in Europe | Available for remote collaboration worldwide</p>
+                <p class="mt-2">All communications treated with professional confidentiality</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize particles.js background with the exact orange color
+        document.addEventListener('DOMContentLoaded', function() {
+            tsParticles.load("particles-js", {
+                fpsLimit: 60,
+                particles: {
+                    number: {
+                        value: 80,
+                        density: {
+                            enable: true,
+                            value_area: 800
+                        }
+                    },
+                    color: {
+                        value: "#EB4F1E" // Exact orange color
+                    },
+                    shape: {
+                        type: "circle"
+                    },
+                    opacity: {
+                        value: 0.2,
+                        random: true,
+                        anim: {
+                            enable: true,
+                            speed: 1,
+                            opacity_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    size: {
+                        value: 3,
+                        random: true,
+                        anim: {
+                            enable: false,
+                            speed: 20,
+                            size_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#EB4F1E", // Exact orange color
+                        opacity: 0.15,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false,
+                        attract: {
+                            enable: false,
+                            rotateX: 600,
+                            rotateY: 1200
+                        }
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: {
+                            enable: true,
+                            mode: "repulse"
+                        },
+                        onclick: {
+                            enable: true,
+                            mode: "push"
+                        },
+                        resize: true
+                    },
+                    modes: {
+                        repulse: {
+                            distance: 100,
+                            duration: 0.4
+                        },
+                        push: {
+                            particles_nb: 4
+                        }
+                    }
+                },
+                retina_detect: true
+            });
+        });
+
+        // Navigation functionality
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons and sections
+                document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Show corresponding section
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+
+        // Form submission handling
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // In a real implementation, this would send data to a backend
+            // For this demo, we'll just show an alert
+            alert('Thank you for your technical inquiry. This is a demonstration form - in a production environment, this would connect to your preferred contact method.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
+
