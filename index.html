@@ -1,1206 +1,1233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fredys Matos Borges | Professional PCB Design Engineer</title>
-    
-    <!-- Favicon - Browser tab icon -->
-    <link rel="icon" href="https://media.licdn.com/dms/image/v2/D4E03AQHhurTn8FDgcA/profile-displayphoto-scale_400_400/B4EZl8j6iyKkAg-/0/1758731417430?e=1768435200&v=beta&t=uD2Qb48n8JZ5OylPI4b1toSctOMT-bF-0IwGbBOSpt4" type="image/x-icon">
-    
-    <!-- Open Graph Meta Tags - Social Media Preview -->
-    <meta property="og:title" content="Fredys Matos Borges | Professional PCB Design Engineer">
-    <meta property="og:description" content="Professional PCB design and review services for IoT and embedded systems. Helping engineers and startups bring hardware products to market with manufacturing-ready designs.">
-    <meta property="og:image" content="https://avatars.githubusercontent.com/u/95711823?v=4">
-    <meta property="og:url" content="https://mbfredys.github.io/">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Fredys Matos Borges - PCB Design">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Fredys Matos Borges | Professional PCB Design Engineer">
-    <meta name="twitter:description" content="Professional PCB design and review services for IoT and embedded systems. Helping engineers and startups bring hardware products to market with manufacturing-ready designs.">
-    <meta name="twitter:image" content="https://media.licdn.com/dms/image/v2/D4E16AQHK1eafNfIBow/profile-displaybackgroundimage-shrink_350_1400/B4EZs1P0bgIIAc-/0/1766124908636?e=1768435200&v=beta&t=Ackn6qhAqjCmNr-Op4tMKMl8j12QTjuVAjyBEbmCJV8">
-    
-    <!-- Tailwind CSS via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts - Technical fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Tsparticles for dynamic background -->
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
-    <style>
-        :root {
-            --bg-dark: #0a0a0a;
-            --card-bg: #121212;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --accent-orange: #EB4F1E;
-            --border-color: #252525;
-            --success-green: #4ade80;
-        }
-        
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(235, 79, 30, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(235, 79, 30, 0.03) 0%, transparent 20%);
-        }
-        
-        code, pre {
-            font-family: 'IBM Plex Mono', monospace;
-        }
-        
-        /* Fixed navigation bar at top */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(180deg, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.8) 100%);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
-            z-index: 1000;
-            padding: 0.75rem 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Section styling - hidden by default, only active section shows */
-        .section {
-            display: none;
-            animation: fadeIn 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-            padding: 120px 20px 80px;
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .section.active {
-            display: block;
-        }
-        
-        /* Enhanced card component for content boxes */
-        .card {
-            background: linear-gradient(145deg, var(--card-bg), #181818);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 32px;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.6s ease;
-        }
-        
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-        
-        .card:hover {
-            border-color: rgba(235, 79, 30, 0.3);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(235, 79, 30, 0.1);
-        }
-        
-        /* Navigation button styling */
-        .nav-button {
-            background: transparent;
-            border: 2px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 12px 32px;
-            margin: 0 8px;
-            border-radius: 60px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            font-weight: 600;
-            font-size: 0.95rem;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .nav-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(235, 79, 30, 0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .nav-button:hover::before {
-            left: 100%;
-        }
-        
-        .nav-button:hover {
-            background-color: rgba(26, 26, 26, 0.8);
-            border-color: var(--accent-orange);
-            color: var(--accent-orange);
-            transform: translateY(-2px);
-        }
-        
-        .nav-button.active {
-            background: linear-gradient(135deg, var(--accent-orange), #d44a1a);
-            border-color: var(--accent-orange);
-            color: var(--bg-dark);
-            box-shadow: 0 8px 25px rgba(235, 79, 30, 0.4);
-        }
-        
-        /* Hero section specific styles */
-        .hero-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-        }
-        
-        .hero-badge {
-            background: rgba(235, 79, 30, 0.15);
-            border: 1px solid rgba(235, 79, 30, 0.3);
-            color: var(--accent-orange);
-            padding: 8px 24px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 24px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: 0.5px;
-        }
-        
-        .hero-name {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 16px;
-            background: linear-gradient(90deg, var(--text-primary), var(--accent-orange));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.1;
-            letter-spacing: -0.5px;
-        }
-        
-        .hero-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--accent-orange);
-            letter-spacing: -0.3px;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.35rem;
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-            line-height: 1.7;
-            max-width: 750px;
-            font-weight: 400;
-        }
-        
-        /* Profile image styling */
-        .profile-container {
-            position: relative;
-            margin-bottom: 40px;
-        }
-        
-        .profile-image {
-            width: 280px;
-            height: 280px;
-            border-radius: 20px;
-            border: 4px solid var(--accent-orange);
-            object-fit: cover;
-            box-shadow: 0 25px 50px rgba(235, 79, 30, 0.25);
-            transition: all 0.4s ease;
-        }
-        
-        .profile-image:hover {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: 0 35px 70px rgba(235, 79, 30, 0.35);
-        }
-        
-        .profile-border {
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            border: 2px solid rgba(235, 79, 30, 0.2);
-            border-radius: 25px;
-            z-index: -1;
-        }
-        
-        /* Enhanced service cards */
-        .service-card {
-            background: linear-gradient(145deg, var(--card-bg), #1d1d1d);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 36px;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--accent-orange);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .service-card:hover::before {
-            opacity: 1;
-        }
-        
-        .service-card:hover {
-            border-color: rgba(235, 79, 30, 0.4);
-            transform: translateY(-5px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(235, 79, 30, 0.15);
-        }
-        
-        .service-icon-container {
-            width: 60px;
-            height: 60px;
-            background: rgba(235, 79, 30, 0.1);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 24px;
-            border: 1px solid rgba(235, 79, 30, 0.2);
-        }
-        
-        .service-icon {
-            font-size: 1.8rem;
-            color: var(--accent-orange);
-        }
-        
-        .service-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--accent-orange);
-            text-align: center;
-        }
-        
-        .service-features {
-            margin-bottom: 24px;
-        }
-        
-        .service-features li {
-            margin-bottom: 12px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            position: relative;
-            padding-left: 24px;
-        }
-        
-        .service-features li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: var(--success-green);
-            font-weight: bold;
-        }
-        
-        .service-details {
-            background-color: rgba(235, 79, 30, 0.08);
-            border: 1px solid rgba(235, 79, 30, 0.2);
-            padding: 20px;
-            border-radius: 16px;
-            margin: 24px 0;
-        }
-        
-        .service-details h4 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--accent-orange);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .whatsapp-button {
-            background: linear-gradient(135deg, var(--accent-orange), #d44a1a);
-            color: white;
-            border: none;
-            padding: 16px 40px;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            letter-spacing: 0.5px;
-            box-shadow: 0 10px 25px rgba(235, 79, 30, 0.3);
-        }
-        
-        .whatsapp-button:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(235, 79, 30, 0.45);
-        }
-        
-        .whatsapp-button i {
-            font-size: 1.4rem;
-        }
-        
-        /* Portfolio section */
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 32px;
-            margin-top: 32px;
-        }
-        
-        .portfolio-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 20px;
-            height: 450px;
-            background: linear-gradient(145deg, #121212, #1a1a1a);
-            border: 1px solid var(--border-color);
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        
-        .portfolio-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(235, 79, 30, 0.2);
-            border-color: var(--accent-orange);
-        }
-        
-        .portfolio-image-container {
-            height: 240px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .portfolio-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        .portfolio-item:hover .portfolio-image {
-            transform: scale(1.05);
-        }
-        
-        .portfolio-overlay {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(235, 79, 30, 0.9);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            font-family: 'IBM Plex Mono', monospace;
-        }
-        
-        .portfolio-content {
-            padding: 24px;
-            height: 210px;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .portfolio-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
-        }
-        
-        .portfolio-description {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 16px;
-            flex-grow: 1;
-        }
-        
-        .portfolio-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-        
-        .tech-tag {
-            background: rgba(235, 79, 30, 0.15);
-            color: var(--accent-orange);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            font-family: 'IBM Plex Mono', monospace;
-        }
-        
-        .portfolio-github {
-            color: var(--accent-orange);
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .portfolio-github:hover {
-            color: white;
-            text-decoration: underline;
-            transform: translateX(4px);
-        }
-        
-        /* Process timeline styling */
-        .process-timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-            margin-top: 40px;
-            position: relative;
-        }
-        
-        .process-timeline::before {
-            content: '';
-            position: absolute;
-            left: 24px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, var(--accent-orange), rgba(235, 79, 30, 0.3));
-            z-index: 1;
-        }
-        
-        .process-step {
-            display: flex;
-            gap: 32px;
-            align-items: flex-start;
-            position: relative;
-        }
-        
-        .step-number {
-            background: var(--accent-orange);
-            color: var(--bg-dark);
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 1.4rem;
-            flex-shrink: 0;
-            position: relative;
-            z-index: 2;
-            box-shadow: 0 8px 20px rgba(235, 79, 30, 0.4);
-            border: 3px solid var(--bg-dark);
-        }
-        
-        .step-content {
-            background: rgba(26, 26, 26, 0.6);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 28px;
-            flex: 1;
-            transition: all 0.3s ease;
-        }
-        
-        .step-content:hover {
-            border-color: var(--accent-orange);
-            background: rgba(26, 26, 26, 0.8);
-        }
-        
-        .step-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-            font-weight: 700;
-        }
-        
-        .step-content p {
-            color: var(--text-secondary);
-            line-height: 1.7;
-            font-size: 1.05rem;
-        }
-        
-        /* Stats section - SMALLER ICONS SIDE BY SIDE */
-        .stats-section {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 40px 0 60px;
-            flex-wrap: wrap;
-        }
-        
-        .stat-item {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .stat-icon {
-            color: var(--accent-orange);
-            font-size: 1.2rem;
-            background: rgba(235, 79, 30, 0.1);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .stat-number {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--accent-orange);
-            font-family: 'IBM Plex Mono', monospace;
-        }
-        
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-        
-        /* Fade in animation */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .hero-name {
-                font-size: 2.8rem;
-            }
-            .hero-title {
-                font-size: 1.6rem;
-            }
-            .hero-subtitle {
-                font-size: 1.15rem;
-            }
-            .profile-image {
-                width: 220px;
-                height: 220px;
-            }
-            .portfolio-grid {
-                grid-template-columns: 1fr;
-            }
-            .process-step {
-                flex-direction: column;
-                gap: 16px;
-            }
-            .process-timeline::before {
-                display: none;
-            }
-            .step-number {
-                align-self: flex-start;
-                margin-bottom: 16px;
-            }
-            .services-grid {
-                grid-template-columns: 1fr !important;
-            }
-            .stats-section {
-                gap: 25px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .hero-name {
-                font-size: 2.3rem;
-            }
-            .hero-title {
-                font-size: 1.4rem;
-            }
-            .nav-button {
-                padding: 10px 20px;
-                margin: 0 4px;
-                font-size: 0.85rem;
-            }
-            .stats-section {
-                gap: 20px;
-                justify-content: space-around;
-            }
-            .stat-number {
-                font-size: 1.6rem;
-            }
-        }
-        
-        /* Particles container */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            pointer-events: none;
-        }
-        
-        /* Services section grid */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 36px;
-            margin-top: 40px;
-        }
-        
-        /* Contact form styling */
-        .contact-form input,
-        .contact-form textarea {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 20px;
-            width: 100%;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .contact-form input:focus,
-        .contact-form textarea:focus {
-            outline: none;
-            border-color: var(--accent-orange);
-            box-shadow: 0 0 0 3px rgba(235, 79, 30, 0.2);
-        }
-        
-        .contact-form button {
-            background: linear-gradient(135deg, var(--accent-orange), #d44a1a);
-            color: var(--bg-dark);
-            border: none;
-            padding: 16px 48px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            width: 100%;
-            max-width: 320px;
-            margin: 20px auto 0;
-            display: block;
-            letter-spacing: 0.5px;
-            box-shadow: 0 8px 20px rgba(235, 79, 30, 0.3);
-        }
-        
-        .contact-form button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(235, 79, 30, 0.4);
-        }
-        
-        /* Trust indicators */
-        .trust-section {
-            text-align: center;
-            margin: 50px 0;
-            padding: 30px 0;
-        }
-        
-        .trust-text {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 800px;
-            margin: 0 auto 20px;
-            line-height: 1.7;
-        }
-        
-        .certifications {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-        
-        .cert-item {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .cert-item i {
-            color: var(--success-green);
-        }
-    </style>
+  <!-- ========================================
+       🔐 BASIC META: Encoding, viewport, language
+       ======================================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Primary title (SEO critical) -->
+  <title>Fredys Matos Borges | Professional PCB Design Engineer for IoT</title>
+  <!-- Meta description (155-160 chars ideal for SEO) -->
+  <meta name="description" content="Expert PCB design & review for IoT, embedded systems, and industrial electronics. Based in Cuba. 98% first-pass success. Global remote collaboration.">
+
+  <!-- ========================================
+       🌐 ADVANCED SEO: Open Graph (Facebook, LinkedIn, WhatsApp)
+       ======================================== -->
+  <meta property="og:title" content="Fredys Matos Borges | Professional PCB Design Engineer">
+  <meta property="og:description" content="Expert PCB design & review for IoT, embedded systems, and industrial electronics. Based in Cuba. 98% first-pass success. Global remote collaboration.">
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/95711823?v=4">
+  <meta property="og:url" content="https://mbfredys.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Fredys Matos Borges - PCB Design">
+
+  <!-- ========================================
+       🐦 TWITTER CARD: Enhanced social preview
+       ======================================== -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Fredys Matos Borges | Professional PCB Design Engineer">
+  <meta name="twitter:description" content="Expert PCB design & review for IoT, embedded systems, and industrial electronics.">
+  <meta name="twitter:image" content="https://media.licdn.com/dms/image/v2/D4E16AQHK1eafNfIBow/profile-displaybackgroundimage-shrink_350_1400/B4EZs1P0bgIIAc-/0/1766124908636?e=1768435200&v=beta&t=Ackn6qhAqjCmNr-Op4tMKMl8j12QTjuVAjyBEbmCJV8">
+
+  <!-- Canonical URL: avoids duplicate content penalties -->
+  <link rel="canonical" href="https://mbfredys.github.io/">
+
+  <!-- ========================================
+       🖼️ FAVICON: Tab icon (SEO + UX)
+       ======================================== -->
+  <link rel="icon" href="https://media.licdn.com/dms/image/v2/D4E03AQHhurTn8FDgcA/profile-displayphoto-scale_400_400/B4EZl8j6iyKkAg-/0/1758731417430?e=1768435200&v=beta&t=uD2Qb48n8JZ5OylPI4b1toSctOMT-bF-0IwGbBOSpt4" type="image/x-icon">
+
+  <!-- ========================================
+       🎨 EXTERNAL RESOURCES
+       ======================================== -->
+  <!-- Tailwind CSS (utility-first framework) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome (vector icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Technical fonts: IBM Plex Mono (code), Inter (body) -->
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- tsparticles: dynamic background -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+
+  <!-- ========================================
+       📊 BUSINESS ANALYTICS: Umami (privacy-friendly)
+       ======================================== -->
+  <!-- Replace YOUR_UMAMI_SCRIPT_ID and YOUR_UMAMI_WEBSITE_ID with your actual Umami credentials -->
+  <script async defer data-website-id="9ab44821-54fa-4f67-bd9a-69f7121468b9" src="https://cloud.umami.is/script.js" data-website-id="2c2dbd72-3437-436f-afdd-d1679a043683"></script>
+
+  <!-- ========================================
+       🖌️ CUSTOM STYLES
+       ======================================== -->
+  <style>
+    :root {
+      --bg-dark: #0a0a0a;
+      --card-bg: #121212;
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a0;
+      --accent-orange: #EB4F1E;
+      --border-color: #252525;
+      --success-green: #4ade80;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(235, 79, 30, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(235, 79, 30, 0.03) 0%, transparent 20%);
+    }
+
+    code, pre {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.8) 100%);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 1000;
+      padding: 0.75rem 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn 0.8s cubic-bezier(0.23,1,0.32,1);
+      padding: 120px 20px 80px;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
+    .section.active {
+      display: block;
+    }
+
+    .card {
+      background: linear-gradient(145deg, var(--card-bg), #181818);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 32px;
+      transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s ease;
+    }
+    .card:hover::before {
+      transform: scaleX(1);
+    }
+    .card:hover {
+      border-color: rgba(235,79,30,0.3);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 0 2px rgba(235,79,30,0.1);
+    }
+
+    .nav-button {
+      background: transparent;
+      border: 2px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 12px 32px;
+      margin: 0 8px;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(235,79,30,0.2), transparent);
+      transition: left 0.5s;
+    }
+    .nav-button:hover::before {
+      left: 100%;
+    }
+    .nav-button:hover {
+      background-color: rgba(26,26,26,0.8);
+      border-color: var(--accent-orange);
+      color: var(--accent-orange);
+      transform: translateY(-2px);
+    }
+    .nav-button.active {
+      background: linear-gradient(135deg, var(--accent-orange), #d44a1a);
+      border-color: var(--accent-orange);
+      color: var(--bg-dark);
+      box-shadow: 0 8px 25px rgba(235,79,30,0.4);
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero-badge {
+      background: rgba(235,79,30,0.15);
+      border: 1px solid rgba(235,79,30,0.3);
+      color: var(--accent-orange);
+      padding: 8px 24px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.5px;
+    }
+    .hero-name {
+      font-size: 4rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      background: linear-gradient(90deg, var(--text-primary), var(--accent-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+    .hero-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--accent-orange);
+      letter-spacing: -0.3px;
+    }
+    .hero-subtitle {
+      font-size: 1.35rem;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      line-height: 1.7;
+      max-width: 750px;
+      font-weight: 400;
+    }
+
+    .profile-container {
+      position: relative;
+      margin-bottom: 40px;
+    }
+    .profile-image {
+      width: 280px;
+      height: 280px;
+      border-radius: 20px;
+      border: 4px solid var(--accent-orange);
+      object-fit: cover;
+      box-shadow: 0 25px 50px rgba(235,79,30,0.25);
+      transition: all 0.4s ease;
+    }
+    .profile-image:hover {
+      transform: scale(1.05) rotate(2deg);
+      box-shadow: 0 35px 70px rgba(235,79,30,0.35);
+    }
+    .profile-border {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border: 2px solid rgba(235,79,30,0.2);
+      border-radius: 25px;
+      z-index: -1;
+    }
+
+    .service-card {
+      background: linear-gradient(145deg, var(--card-bg), #1d1d1d);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 36px;
+      transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-orange);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .service-card:hover::before {
+      opacity: 1;
+    }
+    .service-card:hover {
+      border-color: rgba(235,79,30,0.4);
+      transform: translateY(-5px);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 0 2px rgba(235,79,30,0.15);
+    }
+    .service-icon-container {
+      width: 60px;
+      height: 60px;
+      background: rgba(235,79,30,0.1);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      border: 1px solid rgba(235,79,30,0.2);
+    }
+    .service-icon {
+      font-size: 1.8rem;
+      color: var(--accent-orange);
+    }
+    .service-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--accent-orange);
+      text-align: center;
+    }
+    .service-features {
+      margin-bottom: 24px;
+    }
+    .service-features li {
+      margin-bottom: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      position: relative;
+      padding-left: 24px;
+    }
+    .service-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--success-green);
+      font-weight: bold;
+    }
+    .service-details {
+      background-color: rgba(235,79,30,0.08);
+      border: 1px solid rgba(235,79,30,0.2);
+      padding: 20px;
+      border-radius: 16px;
+      margin: 24px 0;
+    }
+    .service-details h4 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--accent-orange);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .whatsapp-button {
+      background: linear-gradient(135deg, var(--accent-orange), #d44a1a);
+      color: white;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      box-shadow: 0 10px 25px rgba(235,79,30,0.3);
+    }
+    .whatsapp-button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(235,79,30,0.45);
+    }
+    .whatsapp-button i {
+      font-size: 1.4rem;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 32px;
+      margin-top: 32px;
+    }
+    .portfolio-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      height: 450px;
+      background: linear-gradient(145deg, #121212, #1a1a1a);
+      border: 1px solid var(--border-color);
+      transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+    }
+    .portfolio-item:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 2px rgba(235,79,30,0.2);
+      border-color: var(--accent-orange);
+    }
+    .portfolio-image-container {
+      height: 240px;
+      overflow: hidden;
+      position: relative;
+    }
+    .portfolio-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .portfolio-item:hover .portfolio-image {
+      transform: scale(1.05);
+    }
+    .portfolio-overlay {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(235,79,30,0.9);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .portfolio-content {
+      padding: 24px;
+      height: 210px;
+      display: flex;
+      flex-direction: column;
+    }
+    .portfolio-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
+    .portfolio-description {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      flex-grow: 1;
+    }
+    .portfolio-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .tech-tag {
+      background: rgba(235,79,30,0.15);
+      color: var(--accent-orange);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .portfolio-github {
+      color: var(--accent-orange);
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .portfolio-github:hover {
+      color: white;
+      text-decoration: underline;
+      transform: translateX(4px);
+    }
+
+    .process-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      margin-top: 40px;
+      position: relative;
+    }
+    .process-timeline::before {
+      content: '';
+      position: absolute;
+      left: 24px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-orange), rgba(235,79,30,0.3));
+      z-index: 1;
+    }
+    .process-step {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      position: relative;
+    }
+    .step-number {
+      background: var(--accent-orange);
+      color: var(--bg-dark);
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 8px 20px rgba(235,79,30,0.4);
+      border: 3px solid var(--bg-dark);
+    }
+    .step-content {
+      background: rgba(26,26,26,0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 28px;
+      flex: 1;
+      transition: all 0.3s ease;
+    }
+    .step-content:hover {
+      border-color: var(--accent-orange);
+      background: rgba(26,26,26,0.8);
+    }
+    .step-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+    .step-content p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+
+    .stats-section {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin: 40px 0 60px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .stat-icon {
+      color: var(--accent-orange);
+      font-size: 1.2rem;
+      background: rgba(235,79,30,0.1);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent-orange);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .hero-name { font-size: 2.8rem; }
+      .hero-title { font-size: 1.6rem; }
+      .hero-subtitle { font-size: 1.15rem; }
+      .profile-image { width: 220px; height: 220px; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .process-step { flex-direction: column; gap: 16px; }
+      .process-timeline::before { display: none; }
+      .step-number { align-self: flex-start; margin-bottom: 16px; }
+      .services-grid, .tech-grid { grid-template-columns: 1fr !important; }
+      .stats-section { gap: 25px; }
+    }
+    @media (max-width: 480px) {
+      .hero-name { font-size: 2.3rem; }
+      .hero-title { font-size: 1.4rem; }
+      .nav-button { padding: 10px 20px; margin: 0 4px; font-size: 0.85rem; }
+      .stats-section { gap: 20px; justify-content: space-around; }
+      .stat-number { font-size: 1.6rem; }
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 36px;
+      margin-top: 40px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      width: 100%;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--accent-orange);
+      box-shadow: 0 0 0 3px rgba(235,79,30,0.2);
+    }
+    .contact-form button {
+      background: linear-gradient(135deg, var(--accent-orange), #d44a1a);
+      color: var(--bg-dark);
+      border: none;
+      padding: 16px 48px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      width: 100%;
+      max-width: 320px;
+      margin: 20px auto 0;
+      display: block;
+      letter-spacing: 0.5px;
+      box-shadow: 0 8px 20px rgba(235,79,30,0.3);
+    }
+    .contact-form button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(235,79,30,0.4);
+    }
+
+    .trust-section {
+      text-align: center;
+      margin: 50px 0;
+      padding: 30px 0;
+    }
+    .trust-text {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 800px;
+      margin: 0 auto 20px;
+      line-height: 1.7;
+    }
+    .certifications {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .cert-item {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cert-item i {
+      color: var(--success-green);
+    }
+
+    /* New: Who I Work With section */
+    .client-section {
+      text-align: center;
+      margin: 60px 0;
+    }
+    .client-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+      color: var(--accent-orange);
+    }
+    .client-logos {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40px;
+      margin-top: 20px;
+    }
+    .client-logo {
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(235,79,30,0.05);
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 16px;
+      transition: all 0.3s ease;
+    }
+    .client-logo:hover {
+      border-color: var(--accent-orange);
+      transform: scale(1.05);
+    }
+
+    /* Tech stack logos */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .tech-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(26,26,26,0.7);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px 12px;
+      transition: all 0.3s ease;
+    }
+    .tech-logo:hover {
+      border-color: var(--accent-orange);
+      transform: translateY(-3px);
+    }
+    .tech-icon {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      color: var(--accent-orange);
+    }
+    .tech-name {
+      font-size: 0.85rem;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+
+    /* Privacy notice */
+    .privacy-notice {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 12px;
+      line-height: 1.5;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
 </head>
 <body>
-    <!-- Dynamic particle background -->
-    <div id="particles-js"></div>
+  <!-- Particle background -->
+  <div id="particles-js"></div>
 
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="flex flex-wrap justify-center items-center px-4">
-            <button class="nav-button active" data-section="intro">Home</button>
-            <button class="nav-button" data-section="services">Services</button>
-            <button class="nav-button" data-section="process">Process</button>
-            <button class="nav-button" data-section="portfolio">Portfolio</button>
-            <button class="nav-button" data-section="contact">Contact</button>
+  <!-- Navigation -->
+  <nav class="navbar" aria-label="Main navigation">
+    <div class="flex flex-wrap justify-center items-center px-4">
+      <button class="nav-button active" data-section="intro" aria-label="Go to Home">Home</button>
+      <button class="nav-button" data-section="services" aria-label="Go to Services">Services</button>
+      <button class="nav-button" data-section="process" aria-label="Go to Process">Process</button>
+      <button class="nav-button" data-section="portfolio" aria-label="Go to Portfolio">Portfolio</button>
+      <button class="nav-button" data-section="contact" aria-label="Go to Contact">Contact</button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="intro" class="section active" aria-labelledby="intro-heading">
+      <div class="hero-content">
+        <div class="profile-container">
+          <div class="profile-border"></div>
+          <img 
+            src="https://avatars.githubusercontent.com/u/95711823?v=4" 
+            alt="Fredys Matos Borges, PCB Design Engineer specializing in IoT and embedded systems, based in Havana, Cuba" 
+            class="profile-image"
+            loading="lazy"
+          >
         </div>
-    </nav>
+        <div class="hero-badge">
+          <i class="fas fa-microchip" aria-hidden="true"></i> Automation Control Engineer
+        </div>
+        <h1 class="hero-name" id="intro-heading">FREDYS MATOS BORGES</h1>
+        <h2 class="hero-title">Professional PCB Design & Review for IoT and Embedded Systems</h2>
+        <p class="hero-subtitle">
+          I help engineers and startups design and validate IoT hardware from concept to production-ready PCB with military-grade reliability and manufacturing excellence.
+        </p>
+        <a 
+          href="https://wa.me/+5353397877" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="whatsapp-button"
+          aria-label="Request a PCB design quote via WhatsApp"
+        >
+          <i class="fab fa-whatsapp" aria-hidden="true"></i> Request a PCB Design Quote
+        </a>
 
-    <!-- Intro Section -->
-    <section id="intro" class="section active">
-        <div class="hero-content">
-            <div class="profile-container">
-                <div class="profile-border"></div>
-                <img src="https://avatars.githubusercontent.com/u/95711823?v=4" alt="Fredys Matos Borges" class="profile-image">
+        <div class="stats-section" aria-label="Key performance metrics">
+          <div class="stat-item">
+            <div class="stat-icon" aria-hidden="true"><i class="fas fa-layer-group"></i></div>
+            <div class="stat-number">15+</div>
+            <div class="stat-label">PCB Designs</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon" aria-hidden="true"><i class="fas fa-check-circle"></i></div>
+            <div class="stat-number">98%</div>
+            <div class="stat-label">First-Pass Success</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon" aria-hidden="true"><i class="fas fa-server"></i></div>
+            <div class="stat-number">8</div>
+            <div class="stat-label">Layer Max</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="section" aria-labelledby="services-heading">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-4xl font-bold mb-6 text-center" id="services-heading">Professional PCB Design & Review Services</h2>
+        <p class="text-secondary text-lg text-center max-w-4xl mx-auto mb-12">
+          I specialize in designing and reviewing PCB layouts for IoT and embedded devices — helping startups, makers, and engineers reduce risk, improve manufacturability, and bring products to market faster with zero-defect manufacturing.
+        </p>
+        <div class="services-grid">
+          <div class="service-card" role="article" aria-labelledby="service1-title">
+            <div class="service-icon-container">
+              <i class="fas fa-microchip service-icon" aria-hidden="true"></i>
             </div>
-            
-            <div class="hero-badge">
-                <i class="fas fa-microchip"></i> Automation Control Engineer
+            <h3 class="service-title" id="service1-title">PCB DESIGN (Full Service)</h3>
+            <ul class="service-features">
+              <li>Schematic capture with professional symbol libraries</li>
+              <li>Multi-layer PCB layout (up to 8 layers) with HDI support</li>
+              <li>Design for Manufacturability (DFM) validation</li>
+              <li>Comprehensive BOM with sourcing alternatives</li>
+              <li>Fabrication-ready files (Gerber, ODB++, Pick & Place)</li>
+            </ul>
+            <div class="service-details">
+              <h4><i class="fas fa-clock" aria-hidden="true"></i> Delivery time (typical)</h4>
+              <p>Simple design: 5–10 business days</p>
+              <p>Complex design: 10–20+ business days</p>
+              <h4 class="mt-4"><i class="fas fa-dollar-sign" aria-hidden="true"></i> Price range</h4>
+              <p>Simple boards: $250–$500</p>
+              <p>Moderate/complex: $500–$900+</p>
             </div>
-            
-            <h1 class="hero-name">FREDYS MATOS BORGES</h1>
-            <h2 class="hero-title">Professional PCB Design & Review for IoT and Embedded Systems</h2>
-            <p class="hero-subtitle">
-                I help engineers and startups design and validate IoT hardware from concept to production-ready PCB with military-grade reliability and manufacturing excellence.
-            </p>
-            
-            <a href="https://wa.me/+5353397877" target="_blank" class="whatsapp-button">
-                <i class="fab fa-whatsapp"></i> Request a PCB Design Quote
+            <a 
+              href="https://wa.me/+5353397877?text=Hi%20Fredys%2C%20I%20need%20a%20full%20PCB%20design%20service." 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="whatsapp-button"
+              aria-label="Request full PCB design service via WhatsApp"
+            >
+              <i class="fab fa-whatsapp" aria-hidden="true"></i> Request PCB Design
             </a>
-            
-            <!-- Stats Section - SMALLER ICONS SIDE BY SIDE -->
-            <div class="stats-section">
-                <div class="stat-item">
-                    <div class="stat-icon">
-                        <i class="fas fa-layer-group"></i>
-                    </div>
-                    <div class="stat-number">15+</div>
-                    <div class="stat-label">PCB Designs</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="stat-number">98%</div>
-                    <div class="stat-label">First-Pass Success</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-icon">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <div class="stat-number">8</div>
-                    <div class="stat-label">Layer Max</div>
-                </div>
+          </div>
+
+          <div class="service-card" role="article" aria-labelledby="service2-title">
+            <div class="service-icon-container">
+              <i class="fas fa-search service-icon" aria-hidden="true"></i>
             </div>
+            <h3 class="service-title" id="service2-title">PCB DESIGN Review & Optimization</h3>
+            <ul class="service-features">
+              <li>Schematic functionality review</li>
+              <li>Signal & power integrity analysis</li>
+              <li>DFM/DFA audit using real manufacturer rules</li>
+              <li>Thermal and EMI compliance check</li>
+              <li>Clear improvement roadmap with annotations</li>
+            </ul>
+            <div class="service-details">
+              <h4><i class="fas fa-clock" aria-hidden="true"></i> Delivery time (typical)</h4>
+              <p>2–4 business days</p>
+              <h4 class="mt-4"><i class="fas fa-dollar-sign" aria-hidden="true"></i> Price</h4>
+              <p>$80–$120</p>
+            </div>
+            <a 
+              href="https://wa.me/+5353397877?text=Hi%20Fredys%2C%20I%20need%20a%20PCB%20design%20review." 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="whatsapp-button"
+              aria-label="Request PCB design review via WhatsApp"
+            >
+              <i class="fab fa-whatsapp" aria-hidden="true"></i> Request Design Review
+            </a>
+          </div>
         </div>
+
+        <!-- WHO I WORK WITH -->
+        <div class="client-section" aria-labelledby="client-heading">
+          <h3 class="client-title" id="client-heading">Who I Work With</h3>
+          <div class="client-logos" role="list" aria-label="Types of clients I serve">
+            <div class="client-logo" role="listitem">Startups</div>
+            <div class="client-logo" role="listitem">Makers</div>
+            <div class="client-logo" role="listitem">SMEs</div>
+            <div class="client-logo" role="listitem">Hardware Engineers</div>
+          </div>
+        </div>
+
+        <!-- TECH STACK -->
+        <div class="client-section">
+          <h3 class="client-title">Technologies & Tools</h3>
+          <div class="tech-grid" role="list" aria-label="Professional PCB design tools and technologies">
+            <div class="tech-logo" role="listitem">
+              <i class="fab fa-algolia tech-icon" aria-hidden="true"></i>
+              <span class="tech-name">Altium Designer</span>
+            </div>
+            <div class="tech-logo" role="listitem">
+              <i class="fas fa-project-diagram tech-icon" aria-hidden="true"></i>
+              <span class="tech-name">KiCad</span>
+            </div>
+            <div class="tech-logo" role="listitem">
+              <i class="fab fa-microchip tech-icon" aria-hidden="true"></i>
+              <span class="tech-name">ESP32/STM32</span>
+            </div>
+            <div class="tech-logo" role="listitem">
+              <i class="fas fa-bolt tech-icon" aria-hidden="true"></i>
+              <span class="tech-name">Power Electronics</span>
+            </div>
+            <div class="tech-logo" role="listitem">
+              <i class="fas fa-wifi tech-icon" aria-hidden="true"></i>
+              <span class="tech-name">RF & Wireless</span>
+            </div>
+            <div class="tech-logo" role="listitem">
+              <i class="fas fa-shield-alt tech-icon" aria-hidden="true"></i>
+              <span class="tech-name">EMC/EMI Design</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trust -->
+        <div class="trust-section" aria-label="Industry compliance and quality assurance">
+          <p class="trust-text">
+            Every design undergoes rigorous validation against IPC-2221, IPC-7351, and real-world DFM rules. My PCBs are optimized for high-yield manufacturing.
+          </p>
+          <div class="certifications">
+            <div class="cert-item"><i class="fas fa-check-circle" aria-hidden="true"></i> IPC Compliant</div>
+            <div class="cert-item"><i class="fas fa-check-circle" aria-hidden="true"></i> RoHS/REACH</div>
+            <div class="cert-item"><i class="fas fa-check-circle" aria-hidden="true"></i> CE/EMC Ready</div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="section">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl font-bold mb-6 text-center">Professional PCB Design & Review Services</h2>
-            <p class="text-secondary text-lg text-center max-w-4xl mx-auto mb-12">
-                I specialize in designing and reviewing PCB layouts for IoT and embedded devices — helping startups, makers, and engineers reduce risk, improve manufacturability, and bring products to market faster with zero-defect manufacturing.
-            </p>
-            
-            <div class="services-grid">
-                <!-- Service 1: PCB Design -->
-                <div class="service-card">
-                    <div class="service-icon-container">
-                        <i class="fas fa-microchip service-icon"></i>
-                    </div>
-                    <h3 class="service-title">PCB DESIGN (Full Service)</h3>
-                    <ul class="service-features">
-                        <li>Custom schematic capture with professional symbol libraries</li>
-                        <li>Multi-Layer PCB Layout (up to 6-8 layers) with HDI capabilities</li>
-                        <li>Component Library & Footprint Management with 3D models</li>
-                        <li>Design for Manufacturability (DFM) Guidance and validation</li>
-                        <li>Comprehensive BOM with Sourcing Preferences and alternates</li>
-                        <li>Fabrication & Assembly Ready Files (Gerber, ODB++, Pick & Place)</li>
-                    </ul>
-                    
-                    <div class="service-details">
-                        <h4><i class="fas fa-clock"></i> Delivery time (typical)</h4>
-                        <p>Simple IoT PCB design: 5–10 business days</p>
-                        <p>Moderately complex design: 10–20 business days</p>
-                        
-                        <h4 class="mt-4"><i class="fas fa-dollar-sign"></i> Price range</h4>
-                        <p>Simple boards: $250–$500</p>
-                        <p>Moderate complexity: $500–$900+</p>
-                    </div>
-                    
-                    <a href="https://wa.me/+5353397877?text=Hi%20Fredys%2C%20I%20need%20PCB%20Design%20service%20for%20my%20project." target="_blank" class="whatsapp-button">
-                        <i class="fab fa-whatsapp"></i> Request PCB Design
-                    </a>
-                </div>
-                
-                <!-- Service 2: PCB Design Review -->
-                <div class="service-card">
-                    <div class="service-icon-container">
-                        <i class="fas fa-search service-icon"></i>
-                    </div>
-                    <h3 class="service-title">PCB DESIGN Review & Optimization</h3>
-                    <ul class="service-features">
-                        <li>In-Depth Schematic Review for functionality and best practices</li>
-                        <li>PCB Layout Analysis & Critique for signal/power integrity</li>
-                        <li>Design for Manufacturability (DFM) Audit with real factory rules</li>
-                        <li>Design for Assembly (DFA) Feedback for assembly optimization</li>
-                        <li>Signal & Power Integrity Check with simulation validation</li>
-                        <li>Annotated Report with Actionable Fixes and improvement roadmap</li>
-                    </ul>
-                    
-                    <div class="service-details">
-                        <h4><i class="fas fa-clock"></i> Delivery time (typical)</h4>
-                        <p>Standard review: 2–4 business days</p>
-                        
-                        <h4 class="mt-4"><i class="fas fa-dollar-sign"></i> Price range</h4>
-                        <p>$80–$120</p>
-                    </div>
-                    
-                    <a href="https://wa.me/+5353397877?text=Hi%20Fredys%2C%20I%20need%20PCB%20Design%20Review%20service%20for%20my%20project." target="_blank" class="whatsapp-button">
-                        <i class="fab fa-whatsapp"></i> Request Design Review
-                    </a>
-                </div>
+    <!-- Process -->
+    <section id="process" class="section" aria-labelledby="process-heading">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-4xl font-bold mb-12 text-center" id="process-heading">My Engineering Process</h2>
+        <div class="card">
+          <p class="text-secondary text-lg text-center mb-8">
+            A structured, battle-tested approach that minimizes risk and ensures manufacturing-ready results.
+          </p>
+          <div class="process-timeline" aria-label="5-step PCB design workflow">
+            <div class="process-step">
+              <div class="step-number" aria-label="Step 1">1</div>
+              <div class="step-content">
+                <h3>Requirements & Architecture</h3>
+                <p>Define system specs, power, comms, environment, and create block diagrams.</p>
+              </div>
             </div>
-            
-            <!-- Trust Section -->
-            <div class="trust-section">
-                <p class="trust-text">
-                    Every design undergoes rigorous validation against industry standards including IPC-2221, IPC-7351, and manufacturer-specific DFM rules. 
-                    My designs are optimized for high-yield manufacturing with real-world production constraints in mind.
-                </p>
-                <div class="certifications">
-                    <div class="cert-item"><i class="fas fa-check-circle"></i> IPC Standards Compliant</div>
-                    <div class="cert-item"><i class="fas fa-check-circle"></i> RoHS/REACH Compliant</div>
-                    <div class="cert-item"><i class="fas fa-check-circle"></i> CE/EMC Ready</div>
-                </div>
+            <div class="process-step">
+              <div class="step-number" aria-label="Step 2">2</div>
+              <div class="step-content">
+                <h3>Schematic Design</h3>
+                <p>Professional schematics with proper net naming, power planning, and component selection.</p>
+              </div>
             </div>
+            <div class="process-step">
+              <div class="step-number" aria-label="Step 3">3</div>
+              <div class="step-content">
+                <h3>PCB Layout</h3>
+                <p>Precision routing with focus on signal/power integrity, thermal, EMI, and DFM.</p>
+              </div>
+            </div>
+            <div class="process-step">
+              <div class="step-number" aria-label="Step 4">4</div>
+              <div class="step-content">
+                <h3>Review & Optimization</h3>
+                <p>Full validation: crosstalk, return paths, power delivery, thermal, DFM/DFA.</p>
+              </div>
+            </div>
+            <div class="process-step">
+              <div class="step-number" aria-label="Step 5">5</div>
+              <div class="step-content">
+                <h3>Deliverables</h3>
+                <p>Gerber, ODB++, BOM, assembly drawings, test docs — ready for manufacturing.</p>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-16">
+            <a 
+              href="https://wa.me/+5353397877?text=Hi%20Fredys%2C%20I%20want%20to%20start%20a%20PCB%20project." 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="whatsapp-button"
+              aria-label="Start your PCB project via WhatsApp"
+            >
+              <i class="fab fa-whatsapp" aria-hidden="true"></i> Start Your PCB Project
+            </a>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- Process Section -->
-    <section id="process" class="section">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-4xl font-bold mb-12 text-center">My Engineering Process</h2>
-            <div class="card">
-                <p class="text-secondary text-lg text-center mb-8">
-                    A structured, battle-tested approach to hardware development that minimizes risk and ensures successful project delivery with manufacturing-ready results.
-                </p>
-                <div class="process-timeline">
-                    <div class="process-step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h3>Requirements & Architecture</h3>
-                            <p>Understanding the system requirements, power domains, sensors, communications protocols, environmental constraints, and regulatory requirements. Creating system architecture and block diagrams.</p>
-                        </div>
-                    </div>
-                    <div class="process-step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h3>Schematic Design</h3>
-                            <p>Creating clean, professional schematics with proper net naming, power distribution planning, decoupling capacitor placement, interface definitions, and component selection with sourcing considerations.</p>
-                        </div>
-                    </div>
-                    <div class="process-step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h3>PCB Layout</h3>
-                            <p>Strategic component placement and precision routing with focus on power integrity, signal integrity, manufacturability, thermal management, EMI/EMC compliance, and adherence to design rules.</p>
-                        </div>
-                    </div>
-                    <div class="process-step">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h3>Review & Optimization</h3>
-                            <p>Comprehensive design validation: return path analysis, crosstalk assessment, power delivery network verification, DFM/DFA checking, thermal analysis, and manufacturability optimization.</p>
-                        </div>
-                    </div>
-                    <div class="process-step">
-                        <div class="step-number">5</div>
-                        <div class="step-content">
-                            <h3>Deliverables</h3>
-                            <p>Fabrication-ready output packages: Gerber files, ODB++, Pick & Place files, comprehensive BOM, assembly drawings, test procedures, and detailed design documentation for seamless handoff to manufacturing.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-16">
-                    <a href="https://wa.me/+5353397877?text=Hi%20Fredys%2C%20I%20want%20to%20start%20a%20PCB%20design%20project%20following%20your%20engineering%20process." target="_blank" class="whatsapp-button">
-                        <i class="fab fa-whatsapp"></i> Start Your PCB Design Project
-                    </a>
-                </div>
+    <!-- Portfolio -->
+    <section id="portfolio" class="section" aria-labelledby="portfolio-heading">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-4xl font-bold mb-12 text-center" id="portfolio-heading">Featured Projects</h2>
+        <div class="portfolio-grid">
+          <div class="portfolio-item" role="article" aria-labelledby="proj1-title">
+            <div class="portfolio-image-container">
+              <img 
+                src="https://raw.githubusercontent.com/MbFredys/PCB-Modular-Multi-Protocol-Hub/main/Release/HUB-3D.png" 
+                alt="3D render of Modular Multi-Protocol IoT Hub PCB with ESP32-S3, Zigbee, Thread, and Ethernet interfaces" 
+                class="portfolio-image"
+                loading="lazy"
+              >
+              <div class="portfolio-overlay">IoT Gateway</div>
             </div>
+            <div class="portfolio-content">
+              <h3 class="portfolio-title" id="proj1-title">Modular Multi Protocol Hub</h3>
+              <div class="portfolio-tech">
+                <span class="tech-tag">ESP32-S3</span>
+                <span class="tech-tag">Zigbee</span>
+                <span class="tech-tag">Thread</span>
+                <span class="tech-tag">Ethernet</span>
+              </div>
+              <p class="portfolio-description">
+                Industrial IoT gateway with modular radios, isolated power, battery backup, and full EMI shielding.
+              </p>
+              <a 
+                href="https://github.com/MbFredys/PCB-Modular-Multi-Protocol-Hub" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="portfolio-github"
+                aria-label="View Modular Multi Protocol Hub project on GitHub"
+              >
+                <i class="fab fa-github" aria-hidden="true"></i> View Project
+              </a>
+            </div>
+          </div>
+
+          <div class="portfolio-item" role="article" aria-labelledby="proj2-title">
+            <div class="portfolio-image-container">
+              <img 
+                src="https://raw.githubusercontent.com/MbFredys/PCB-3-Phase-Energy-Monitor/main/Release/3D_HIGH_QUALITY.png" 
+                alt="3D model of 3-Phase Energy Monitor PCB for building management systems with ESP32-S3 and ATM90E32 sensor" 
+                class="portfolio-image"
+                loading="lazy"
+              >
+              <div class="portfolio-overlay">Smart Building</div>
+            </div>
+            <div class="portfolio-content">
+              <h3 class="portfolio-title" id="proj2-title">3 Phase Energy Monitor</h3>
+              <div class="portfolio-tech">
+                <span class="tech-tag">ESP32-S3</span>
+                <span class="tech-tag">PoE</span>
+                <span class="tech-tag">ATM90E32</span>
+                <span class="tech-tag">Isolation</span>
+              </div>
+              <p class="portfolio-description">
+                Energy monitoring for BMS with 3-phase measurement, full isolation, PoE, and industrial protection.
+              </p>
+              <a 
+                href="https://github.com/MbFredys/PCB-3-Phase-Energy-Monitor" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="portfolio-github"
+                aria-label="View 3 Phase Energy Monitor project on GitHub"
+              >
+                <i class="fab fa-github" aria-hidden="true"></i> View Project
+              </a>
+            </div>
+          </div>
+
+          <div class="portfolio-item" role="article" aria-labelledby="proj3-title">
+            <div class="portfolio-image-container">
+              <img 
+                src="https://raw.githubusercontent.com/MbFredys/PCB-Mini-Environmental-Sensor/main/Release/3d-pro.png" 
+                alt="3D visualization of Mini Environmental Sensor PCB with ESP32-C3, BME280, and SPG40 air quality sensors" 
+                class="portfolio-image"
+                loading="lazy"
+              >
+              <div class="portfolio-overlay">Sensors</div>
+            </div>
+            <div class="portfolio-content">
+              <h3 class="portfolio-title" id="proj3-title">Mini Environmental Sensor</h3>
+              <div class="portfolio-tech">
+                <span class="tech-tag">ESP32-C3</span>
+                <span class="tech-tag">BME280</span>
+                <span class="tech-tag">SPG40</span>
+                <span class="tech-tag">Li-Po</span>
+              </div>
+              <p class="portfolio-description">
+                Battery-powered environmental monitor with multi-sensor air quality, cloud connectivity, and power management.
+              </p>
+              <a 
+                href="https://github.com/MbFredys/PCB-Mini-Environmental-Sensor" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="portfolio-github"
+                aria-label="View Mini Environmental Sensor project on GitHub"
+              >
+                <i class="fab fa-github" aria-hidden="true"></i> View Project
+              </a>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="section">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-4xl font-bold mb-12 text-center">Featured Projects</h2>
-            <div class="portfolio-grid">
-                <!-- PORTFOLIO ITEM 1 -->
-                <div class="portfolio-item">
-                    <div class="portfolio-image-container">
-                        <img src="https://raw.githubusercontent.com/MbFredys/PCB-Modular-Multi-Protocol-Hub/main/Release/HUB-3D.png" alt="Modular Multi Protocol Hub" class="portfolio-image">
-                        <div class="portfolio-overlay">IoT Gateway</div>
-                    </div>
-                    <div class="portfolio-content">
-                        <h3 class="portfolio-title">Modular Multi Protocol Hub</h3>
-                        <div class="portfolio-tech">
-                            <span class="tech-tag">ESP32-S3</span>
-                            <span class="tech-tag">Zigbee</span>
-                            <span class="tech-tag">Thread</span>
-                            <span class="tech-tag">Ethernet</span>
-                        </div>
-                        <p class="portfolio-description">
-                            Industrial IoT gateway with modular radios, isolated power, battery backup, EEPROM auto-detection & full EMI shielding.
-                        </p>
-                        <a href="https://github.com/MbFredys/PCB-Modular-Multi-Protocol-Hub" target="_blank" class="portfolio-github">
-                            <i class="fab fa-github"></i> View Project
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- PORTFOLIO ITEM 2 -->
-                <div class="portfolio-item">
-                    <div class="portfolio-image-container">
-                        <img src="https://raw.githubusercontent.com/MbFredys/PCB-3-Phase-Energy-Monitor/main/Release/3D_HIGH_QUALITY.png" alt="3 Phase Energy Monitor Device" class="portfolio-image">
-                        <div class="portfolio-overlay">Smart Building</div>
-                    </div>
-                    <div class="portfolio-content">
-                        <h3 class="portfolio-title">3 Phase Energy Monitor</h3>
-                        <div class="portfolio-tech">
-                            <span class="tech-tag">ESP32-S3</span>
-                            <span class="tech-tag">PoE</span>
-                            <span class="tech-tag">ATM90E32</span>
-                            <span class="tech-tag">Isolation</span>
-                        </div>
-                        <p class="portfolio-description">
-                           Energy monitoring for BMS. Features 3-phase measurement, full voltage isolation, PoE, and industrial-grade protection.
-                        </p>
-                        <a href="https://github.com/MbFredys/PCB-3-Phase-Energy-Monitor" target="_blank" class="portfolio-github">
-                            <i class="fab fa-github"></i> View Project
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- PORTFOLIO ITEM 3 -->
-                <div class="portfolio-item">
-                    <div class="portfolio-image-container">
-                        <img src="https://raw.githubusercontent.com/MbFredys/PCB-Mini-Environmental-Sensor/main/Release/3d-pro.png" alt="Mini Environmental Sensor" class="portfolio-image">
-                        <div class="portfolio-overlay">Sensors</div>
-                    </div>
-                    <div class="portfolio-content">
-                        <h3 class="portfolio-title">Mini Environmental Sensor</h3>
-                        <div class="portfolio-tech">
-                            <span class="tech-tag">ESP32-C3</span>
-                            <span class="tech-tag">BME280</span>
-                            <span class="tech-tag">SPG40</span>
-                            <span class="tech-tag">Li-Po</span>
-                        </div>
-                        <p class="portfolio-description">
-                            Battery-powered environmental monitor with multi-sensor air quality, cloud connectivity, and advanced power management.
-                        </p>
-                        <a href="https://github.com/MbFredys/PCB-Mini-Environmental-Sensor" target="_blank" class="portfolio-github">
-                            <i class="fab fa-github"></i> View Project
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Contact -->
+    <section id="contact" class="section" aria-labelledby="contact-heading">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-4xl font-bold mb-8 text-center" id="contact-heading">Start Your Hardware Project</h2>
+        <div class="card">
+          <p class="text-secondary text-lg mb-8 text-center">
+            Ready to bring your IoT or embedded hardware to life? Let's discuss your requirements.
+          </p>
+          <form class="contact-form" action="https://formsubmit.co/mb.freddys@gmail.com" method="POST" aria-label="Technical inquiry form">
+            <!-- Honeypot field for spam protection -->
+            <input type="text" name="_honey" style="display:none;">
+            <!-- Subject field (hidden, auto-filled) -->
+            <input type="hidden" name="_subject" value="New PCB Design Inquiry - mbfredys.github.io">
+            <!-- Redirect after submit -->
+            <input type="hidden" name="_next" value="https://mbfredys.github.io/thank-you.html">
+            <!-- Disable CAPTCHA -->
+            <input type="hidden" name="_captcha" value="false">
+            <!-- Auto-reply to client -->
+            <input type="hidden" name="_autoresponse" value="Thank you for your inquiry! I'll review your project details and get back to you within 24-48 hours. In the meantime, feel free to reach me directly on WhatsApp: +53 53397877.">
 
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-        <div class="max-w-3xl mx-auto">
-            <h2 class="text-4xl font-bold mb-8 text-center">Start Your Hardware Project</h2>
-            <div class="card">
-                <p class="text-secondary text-lg mb-8 text-center">
-                    Ready to bring your IoT or embedded hardware project to life? Let's discuss your requirements and create a manufacturing-ready PCB design that meets your technical and business goals.
-                </p>
-                <!-- Contact form that sends to your Gmail -->
-                <form class="contact-form" action="https://formsubmit.co/mb.freddys@gmail.com" method="POST">
-                    <input type="text" name="name" placeholder="Full Name" required>
-                    <input type="email" name="email" placeholder="Email Address" required>
-                    <input type="text" name="company" placeholder="Company / Organization">
-                    <textarea name="message" rows="5" placeholder="Project Description - Include technical requirements, timeline, scope, and manufacturing volume expectations" required></textarea>
-                    <!-- Redirect after submission -->
-                    <input type="hidden" name="_next" value="https://mbfredys.github.io/thank-you.html">
-                    <!-- Disable captcha -->
-                    <input type="hidden" name="_captcha" value="false">
-                    <button type="submit">Submit Technical Inquiry</button>
-                </form>
-            </div>
-            <div class="text-center mt-12 text-secondary">
-                <p class="text-xl">Based in Cuba | Global Remote Collaboration</p>
-                <p class="mt-4">All communications treated with professional confidentiality</p>
-                <div class="mt-6 flex justify-center gap-8">
-                    <a href="https://wa.me/+5353397877" target="_blank" class="whatsapp-button" style="padding: 12px 28px; font-size: 0.95rem;">
-                        <i class="fab fa-whatsapp"></i> WhatsApp
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+            <input type="text" name="name" placeholder="Full Name" required aria-label="Your full name">
+            <input type="email" name="email" placeholder="Email Address" required aria-label="Your email address">
+            <input type="text" name="company" placeholder="Company / Organization" aria-label="Your company or organization">
+            <textarea name="message" rows="5" placeholder="Project Description: technical requirements, timeline, scope, and expected production volume" required aria-label="Detailed project description"></textarea>
 
-    <script>
-        // Initialize particles.js background with enhanced configuration
-        document.addEventListener('DOMContentLoaded', function() {
-            tsParticles.load("particles-js", {
-                fpsLimit: 60,
-                particles: {
-                    number: {
-                        value: 120,
-                        density: {
-                            enable: true,
-                            value_area: 800
-                        }
-                    },
-                    color: {
-                        value: "#EB4F1E"
-                    },
-                    shape: {
-                        type: "circle"
-                    },
-                    opacity: {
-                        value: 0.15,
-                        random: true,
-                        anim: {
-                            enable: true,
-                            speed: 0.5,
-                            opacity_min: 0.05,
-                            sync: false
-                        }
-                    },
-                    size: {
-                        value: 2,
-                        random: true,
-                        anim: {
-                            enable: false,
-                            speed: 20,
-                            size_min: 0.1,
-                            sync: false
-                        }
-                    },
-                    line_linked: {
-                        enable: true,
-                        distance: 120,
-                        color: "#EB4F1E",
-                        opacity: 0.1,
-                        width: 1
-                    },
-                    move: {
-                        enable: true,
-                        speed: 1.5,
-                        direction: "none",
-                        random: true,
-                        straight: false,
-                        out_mode: "out",
-                        bounce: false,
-                        attract: {
-                            enable: true,
-                            rotateX: 3000,
-                            rotateY: 3000
-                        }
-                    }
-                },
-                interactivity: {
-                    detect_on: "canvas",
-                    events: {
-                        onhover: {
-                            enable: true,
-                            mode: "repulse"
-                        },
-                        onclick: {
-                            enable: true,
-                            mode: "push"
-                        },
-                        resize: true
-                    },
-                    modes: {
-                        repulse: {
-                            distance: 150,
-                            duration: 0.4
-                        },
-                        push: {
-                            particles_nb: 6
-                        }
-                    }
-                },
-                retina_detect: true
-            });
+            <button type="submit" aria-label="Submit your technical inquiry">Submit Technical Inquiry</button>
+          </form>
+          <p class="privacy-notice" aria-label="Privacy and data usage statement">
+            Your data is used solely to respond to your inquiry. I do not share your information with third parties. Messages are stored securely and deleted after project completion.
+          </p>
+        </div>
+        <div class="text-center mt-12 text-secondary">
+          <p class="text-xl">Based in Havana, Cuba | Global Remote Collaboration</p>
+          <p class="mt-4">All communications are treated with professional confidentiality</p>
+          <div class="mt-6 flex justify-center gap-8">
+            <a 
+              href="https://wa.me/+5353397877" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="whatsapp-button" 
+              style="padding: 12px 28px; font-size: 0.95rem;"
+              aria-label="Contact me directly via WhatsApp"
+            >
+              <i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script>
+    // Initialize tsparticles background
+    document.addEventListener('DOMContentLoaded', function() {
+      tsParticles.load("particles-js", {
+        fpsLimit: 60,
+        particles: {
+          number: { value: 120, density: { enable: true, value_area: 800 } },
+          color: { value: "#EB4F1E" },
+          shape: { type: "circle" },
+          opacity: { value: 0.15, random: true, anim: { enable: true, speed: 0.5, opacity_min: 0.05, sync: false } },
+          size: { value: 2, random: true, anim: { enable: false, speed: 20, size_min: 0.1, sync: false } },
+          line_linked: { enable: true, distance: 120, color: "#EB4F1E", opacity: 0.1, width: 1 },
+          move: {
+            enable: true,
+            speed: 1.5,
+            direction: "none",
+            random: true,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+            attract: { enable: true, rotateX: 3000, rotateY: 3000 }
+          }
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" },
+            resize: true
+          },
+          modes: {
+            repulse: { distance: 150, duration: 0.4 },
+            push: { particles_nb: 6 }
+          }
+        },
+        retina_detect: true
+      });
+
+      // Navigation logic
+      document.querySelectorAll('.nav-button').forEach(button => {
+        button.addEventListener('click', function() {
+          document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+          document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+          this.classList.add('active');
+          const sectionId = this.getAttribute('data-section');
+          document.getElementById(sectionId).classList.add('active');
+          // Focus for accessibility
+          document.getElementById(sectionId).focus({ preventScroll: true });
         });
-
-        // Navigation functionality
-        document.querySelectorAll('.nav-button').forEach(button => {
-            button.addEventListener('click', function() {
-                document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
-                document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
-                
-                this.classList.add('active');
-                
-                const sectionId = this.getAttribute('data-section');
-                document.getElementById(sectionId).classList.add('active');
-            });
-        });
-    </script>
+      });
+    });
+  </script>
 </body>
 </html>
-
-<!-- Browser tab icon -->
-<link rel="icon" href="YOUR_PROFILE_PHOTO_URL" type="image/x-icon">
-
-<!-- Social media preview -->
-<meta property="og:title" content="Your Professional Title">
-<meta property="og:description" content="Professional description of your services">
-<meta property="og:image" content="PROFESSIONAL_PCB_IMAGE_URL">
-<meta property="og:url" content="YOUR_WEBSITE_URL">
-
-<!-- Twitter specific -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="PROFESSIONAL_PCB_IMAGE_URL">
-
 
