@@ -279,7 +279,7 @@ export const translations: Record<Language, Translation> = {
       ],
       experienceList: [
         {
-          title: 'PCB / Automation & Control Engineer',
+          title: 'PCB/Hardware Engineer',
           company: 'InGnia Technology',
           period: '2025-2026',
           location: 'Remote, Havana, Cuba',
@@ -291,7 +291,7 @@ export const translations: Record<Language, Translation> = {
           ]
         },
         {
-          title: 'Automation & Control Engineer',
+          title: 'Hardware Engineer',
           company: 'Circe Smart Navigation Solutions',
           period: '2025',
           location: 'Remote, Barcelona, Spain',
@@ -304,7 +304,7 @@ export const translations: Record<Language, Translation> = {
           ]
         },
         {
-          title: 'Automation & Control Engineer',
+          title: 'Automation / Hardware Engineer',
           company: 'Soluciones Electro-Automáticas SEA SRL',
           period: '2023-2026',
           location: 'Hybrid, Havana, Cuba',
@@ -706,7 +706,7 @@ export const translations: Record<Language, Translation> = {
       ],
       experienceList: [
         {
-          title: 'Ingeniero Diseñador de PCB / Automatización y Control',
+          title: 'PCB/Hardware Engineer',
           company: 'InGnia Technology',
           period: '2025-2026',
           location: 'Remoto, La Habana, Cuba',
@@ -718,7 +718,7 @@ export const translations: Record<Language, Translation> = {
           ]
         },
         {
-          title: 'Ingeniero de Automatización y Control',
+          title: 'Hardware Engineer',
           company: 'Circe Smart Navigation Solutions',
           period: '2025',
           location: 'Remoto, Barcelona, España',
@@ -731,7 +731,7 @@ export const translations: Record<Language, Translation> = {
           ]
         },
         {
-          title: 'Ingeniero de Automatización y Control',
+          title: 'Automation / Hardware Engineer',
           company: 'Soluciones Electro-Automáticas SEA SRL',
           period: '2023-2026',
           location: 'Híbrido, La Habana, Cuba',
