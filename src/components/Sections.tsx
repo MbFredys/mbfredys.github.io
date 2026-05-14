@@ -214,11 +214,11 @@ export const Hero = ({ t }: SectionProps) => (
         <div className="relative aspect-[4/5] max-w-md mx-auto">
           {/* Main profile circle inspired layout */}
           <div className="absolute inset-0 border-4 border-accent rounded-full p-2 translate-x-4 -translate-y-4 -z-10 opacity-30" />
-          <div className="w-full h-full bg-zinc-900 rounded-2xl overflow-hidden shadow-[0_0_100px_rgba(220,38,38,0.1)] grayscale hover:grayscale-0 transition-all duration-700">
+          <div className="w-full h-full bg-zinc-900 rounded-2xl overflow-hidden shadow-[0_0_100px_rgba(220,38,38,0.1)]">
              <img 
                src="https://raw.githubusercontent.com/MbFredys/mbfredys.github.io/47ba89e7f14ab204eb9e98f56ce4f324ed4c88de/images/Imagen-trabajando-Fredys-2.webp"
                alt="Fredys Matos Borges"
-               className="w-full h-full object-cover object-top"
+               className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-700"
                referrerPolicy="no-referrer"
              />
           </div>
@@ -263,11 +263,11 @@ export const SkillsetTabs = ({ t }: SectionProps) => {
                   <div className="relative">
                      <div className="relative w-full max-w-sm mx-auto aspect-square">
                         <div className="absolute inset-0 border-2 border-accent border-dashed rounded-full animate-[spin_20s_linear_infinite]" />
-                        <div className="absolute inset-4 rounded-full overflow-hidden border-8 border-zinc-900 bg-zinc-900">
+                        <div className="absolute inset-4 rounded-full overflow-hidden border-8 border-zinc-900 bg-zinc-900 group">
                           <img 
                             src="https://raw.githubusercontent.com/MbFredys/mbfredys.github.io/5b077670ffc85fdc38d7978ac03a7b8ff81b9ff9/images/perfil-7.webp" 
                             alt="Fredys Matos" 
-                            className="w-full h-full object-cover object-top grayscale brightness-75 hover:grayscale-0 transition-all duration-500"
+                            className="w-full h-full object-cover object-top grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500"
                             referrerPolicy="no-referrer"
                             loading="eager"
                           />
