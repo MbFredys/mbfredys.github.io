@@ -16,7 +16,13 @@ export default function ProjectDetail({ lang }: ProjectDetailProps) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [id]);
+    if (project) {
+      document.title = `${project.title} | Fredys Matos Borges Portfolio`;
+    }
+    return () => {
+      document.title = 'Fredys Matos Borges | PCB Design Specialist & Automation Engineer';
+    };
+  }, [id, project]);
 
   if (!project) {
     return (
@@ -28,10 +34,13 @@ export default function ProjectDetail({ lang }: ProjectDetailProps) {
   }
 
   const handleContactAction = (type: string, obValue: string, text: string) => {
+    // Basic bot check: Ignore instant clicks
+    if (typeof window !== 'undefined' && (performance.now() < 1000)) return;
+
     const value = secureAtob(obValue);
     if (type === 'whatsapp') {
       const url = `https://wa.me/${value}?text=${encodeURIComponent(text)}`;
-      window.open(url, '_blank');
+      window.open(url, '_blank', 'noopener,noreferrer');
     }
   };
 
@@ -45,7 +54,7 @@ export default function ProjectDetail({ lang }: ProjectDetailProps) {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 group text-[10px] font-mono font-bold uppercase tracking-widest text-white/50 hover:text-white transition-colors">
+          <Link to="/#selected-projects" className="flex items-center gap-2 group text-[10px] font-mono font-bold uppercase tracking-widest text-white/50 hover:text-white transition-colors">
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
             {lang === 'en' ? 'Back to Portfolio' : 'Volver al Portafolio'}
           </Link>
@@ -94,9 +103,8 @@ export default function ProjectDetail({ lang }: ProjectDetailProps) {
                  <div className="relative aspect-[4/3] rounded-[40px] overflow-hidden border border-white/10 shadow-2xl">
                     <img 
                       src={project.image} 
-                      alt={project.title} 
+                      alt={`${project.title} - PCB Design and Industrial Automation Case Study by Fredys Matos Borges`} 
                       className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 transition-all duration-700 pointer-events-none select-none" 
-                      referrerPolicy="no-referrer"
                       onContextMenu={preventDefaults}
                       onDragStart={preventDefaults}
                     />
