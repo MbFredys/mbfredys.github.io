@@ -79,7 +79,7 @@ export interface Translation {
     badge: string;
     title: string;
     titleAccent: string;
-    consequences: { title: string; desc: string; type: 'noise' | 'power' | 'mfg' }[];
+    consequences: { title: string; desc: string; image: string; type: 'noise' | 'power' | 'mfg' }[];
     footer: string;
     cta: string;
   };
@@ -346,18 +346,21 @@ export const translations: Record<Language, Translation> = {
       titleAccent: 'never just a small error',
       consequences: [
         {
-          title: 'Electrical Noise',
-          desc: 'Poor grounding and routing can create unstable systems.',
+          title: 'Electrical Noise & Signal Issues',
+          desc: 'Poor grounding, noisy power rails or routing mistakes can lead to unstable readings, communication failures and unpredictable behavior.',
+          image: 'https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&q=80&w=600',
           type: 'noise'
         },
         {
-          title: 'Power Instability',
-          desc: 'Voltage issues may cause resets and unexpected failures.',
+          title: 'Power Instability & Random Resets',
+          desc: 'Weak power integrity and poor decoupling often cause voltage drops, boot failures and random system resets.',
+          image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=600',
           type: 'power'
         },
         {
-          title: 'Manufacturing Loss',
-          desc: 'One PCB mistake can cost weeks and hundreds of euros.',
+          title: 'Costly Manufacturing Iterations',
+          desc: 'One design mistake can mean failed prototypes, production delays and expensive rework after fabrication.',
+          image: 'https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&q=80&w=600',
           type: 'mfg'
         }
       ],
@@ -773,18 +776,21 @@ export const translations: Record<Language, Translation> = {
       titleAccent: 'nunca es solo un error pequeño',
       consequences: [
         {
-          title: 'Ruido Eléctrico',
-          desc: 'Un mal ruteado o tierra deficiente crean sistemas inestables.',
+          title: 'Ruido Eléctrico y Señal',
+          desc: 'Tierra deficiente, planos ruidosos o errores de ruteo causan lecturas inestables y comportamientos impredecibles.',
+          image: 'https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&q=80&w=600',
           type: 'noise'
         },
         {
-          title: 'Inestabilidad de Potencia',
-          desc: 'Problemas de voltaje pueden causar reinicios y fallos inesperados.',
+          title: 'Potencia y Reinicios Aleatorios',
+          desc: 'La mala integridad de potencia y desacoplo deficiente causan caídas de voltaje y fallos aleatorios del sistema.',
+          image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=600',
           type: 'power'
         },
         {
-          title: 'Pérdida en Fabricación',
-          desc: 'Un solo error en la PCB puede costar semanas y cientos de euros.',
+          title: 'Iteraciones de Fabricación Costosas',
+          desc: 'Un error de diseño puede significar prototipos fallidos, retrasos y re-trabajos costosos tras la fabricación.',
+          image: 'https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&q=80&w=600',
           type: 'mfg'
         }
       ],
