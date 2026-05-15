@@ -41,7 +41,17 @@ import {
 } from 'lucide-react';
 import { Language, Translation, OB_EMAIL, OB_PHONE, OB_PHONE_F, secureAtob } from '../constants';
 
+// Bot Protection State
+let pageLoadTime = Date.now();
+
 const handleContactAction = (type: 'whatsapp' | 'tel', obValue: string, message?: string) => {
+  // Anti-bot check: Reject if action is too fast after page load (usually bots)
+  const timeSinceLoad = Date.now() - pageLoadTime;
+  if (timeSinceLoad < 1000) {
+    console.warn('Bot-like activity detected.');
+    return;
+  }
+
   const value = secureAtob(obValue);
   if (type === 'whatsapp') {
     window.open(`https://wa.me/${value}?text=${encodeURIComponent(message || '')}`, '_blank', 'noopener,noreferrer');
@@ -73,9 +83,8 @@ export const Navbar = ({ lang, setLang, t }: { lang: Language, setLang: (l: Lang
           <div className="w-10 h-10 rounded-full overflow-hidden border border-accent/30 bg-zinc-900 group">
             <img 
               src="https://avatars.githubusercontent.com/u/95711823?v=4" 
-              alt="Fredys Matos" 
+              alt="Fredys Matos Borges - Automation & PCB Design Expert Logo" 
               className="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
-              referrerPolicy="no-referrer"
             />
           </div>
           <div className="font-sans font-bold text-lg tracking-tight hidden sm:block">
@@ -91,6 +100,13 @@ export const Navbar = ({ lang, setLang, t }: { lang: Language, setLang: (l: Lang
           </div>
           
           <div className="flex items-center gap-4">
+            <div className="hidden xl:flex items-center gap-2 group/shield">
+              <Shield size={14} className="text-green-500 animate-pulse" />
+              <span className="text-[8px] font-mono font-bold uppercase tracking-widest text-white/30 group-hover/shield:text-green-500/60 transition-colors">
+                {lang === 'en' ? 'Secured Connection' : 'Conexión Segura'}
+              </span>
+            </div>
+            
             <button 
               onClick={() => setLang(lang === 'en' ? 'es' : 'en')}
               className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-bold hover:bg-white/5 transition-all focus:ring-2 focus:ring-accent"
@@ -159,21 +175,22 @@ export const Hero = ({ t }: SectionProps) => (
     <div className="absolute top-1/4 -right-20 w-96 h-96 border border-accent/20 rounded-full -z-0 opacity-20 animate-pulse" />
     <div className="absolute -bottom-20 -left-20 w-[500px] h-[500px] border border-accent/10 rounded-full -z-0 opacity-10" />
 
-    <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center relative z-10 w-full">
+    <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10 w-full">
       <motion.div
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8 }}
+        className="text-center lg:text-left pt-10 lg:pt-0"
       >
-        <div className="mb-6 flex items-center gap-3">
-            <div className="h-[2px] w-12 bg-accent" />
-            <span className="text-accent font-mono font-bold uppercase tracking-[0.3em] text-[10px]">{t.hero.specialist}</span>
+        <div className="mb-6 flex items-center justify-center lg:justify-start gap-3">
+            <div className="h-[2px] w-8 lg:w-12 bg-accent" />
+            <span className="text-accent font-mono font-bold uppercase tracking-[0.3em] text-[8px] lg:text-[10px]">{t.hero.specialist}</span>
         </div>
-        <h1 className="font-display text-6xl md:text-8xl font-bold leading-[0.9] text-white mb-6 tracking-[-0.04em]">
+        <h1 className="font-display text-4xl md:text-6xl lg:text-8xl font-bold leading-[0.9] text-white mb-6 tracking-[-0.04em]">
           {t.hero.greeting} <br />
           <span className="text-accent">{t.hero.role}</span>
         </h1>
-        <p className="text-xl text-white/50 max-w-lg mb-10 leading-relaxed font-light tracking-tight">
+        <p className="text-lg lg:text-xl text-white/50 max-w-lg mb-10 leading-relaxed font-light tracking-tight mx-auto lg:mx-0">
           {t.hero.subtitle}
         </p>
 
@@ -189,16 +206,16 @@ export const Hero = ({ t }: SectionProps) => (
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
           <button 
             onClick={() => handleContactAction('whatsapp', OB_PHONE, t.whatsapp.hero)}
-            className="px-10 py-4 bg-accent text-black font-bold uppercase text-[10px] tracking-[0.2em] rounded-full hover:bg-white transition-all min-h-[44px] flex items-center shadow-lg shadow-accent/20"
+            className="px-8 lg:px-10 py-3 lg:py-4 bg-accent text-black font-bold uppercase text-[9px] lg:text-[10px] tracking-[0.2em] rounded-full hover:bg-white transition-all min-h-[44px] flex items-center shadow-lg shadow-accent/20"
           >
             {t.hero.getReview}
           </button>
           <a 
             href="#samples"
-            className="px-10 py-4 bg-transparent border border-white/20 text-white font-bold uppercase text-[10px] tracking-[0.2em] rounded-full hover:bg-white hover:text-black transition-all min-h-[44px] flex items-center"
+            className="px-8 lg:px-10 py-3 lg:py-4 bg-transparent border border-white/20 text-white font-bold uppercase text-[9px] lg:text-[10px] tracking-[0.2em] rounded-full hover:bg-white hover:text-black transition-all min-h-[44px] flex items-center"
           >
             {t.hero.viewSamples}
           </a>
@@ -216,10 +233,9 @@ export const Hero = ({ t }: SectionProps) => (
           <div className="absolute inset-0 border-4 border-accent rounded-full p-2 translate-x-4 -translate-y-4 -z-10 opacity-30" />
           <div className="w-full h-full bg-zinc-900 rounded-2xl overflow-hidden shadow-[0_0_100px_rgba(220,38,38,0.1)]">
              <img 
-               src="https://raw.githubusercontent.com/MbFredys/mbfredys.github.io/47ba89e7f14ab204eb9e98f56ce4f324ed4c88de/images/Imagen-trabajando-Fredys-2.webp"
-               alt="Fredys Matos Borges"
+               src="https://raw.githubusercontent.com/MbFredys/mbfredys.github.io/1a8d3dd045509afbf16f21a92448e0fcae34f55f/images/Imagen-trabajando-Fredys-2.webp"
+               alt="Fredys Matos Borges - Industrial Automation and PCB Design Specialist"
                className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-700"
-               referrerPolicy="no-referrer"
              />
           </div>
           <div className="absolute -bottom-10 -right-10 w-40 h-40 border-8 border-accent rounded-full -z-10 opacity-20" />
@@ -265,11 +281,9 @@ export const SkillsetTabs = ({ t }: SectionProps) => {
                         <div className="absolute inset-0 border-2 border-accent border-dashed rounded-full animate-[spin_20s_linear_infinite]" />
                         <div className="absolute inset-4 rounded-full overflow-hidden border-8 border-zinc-900 bg-zinc-900 group">
                           <img 
-                            src="https://raw.githubusercontent.com/MbFredys/mbfredys.github.io/5b077670ffc85fdc38d7978ac03a7b8ff81b9ff9/images/perfil-7.webp" 
-                            alt="Fredys Matos" 
+                            src="https://raw.githubusercontent.com/MbFredys/mbfredys.github.io/1a8d3dd045509afbf16f21a92448e0fcae34f55f/images/perfil-7.webp" 
+                            alt="Fredys Matos Borges - Lead PCB Design Specialist" 
                             className="w-full h-full object-cover object-top grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500"
-                            referrerPolicy="no-referrer"
-                            loading="eager"
                           />
                         </div>
                      </div>
@@ -452,7 +466,7 @@ export const SkillsetTabs = ({ t }: SectionProps) => {
 };
 
 
-export const ProblemSection = ({ t }: SectionProps) => {
+export const ProblemSection = ({ t, lang }: SectionProps) => {
   const getIcon = (type: string) => {
     switch (type) {
       case 'noise': return <ZapOff size={40} className="text-accent" />;
@@ -491,28 +505,69 @@ export const ProblemSection = ({ t }: SectionProps) => {
           </h2>
         </motion.div>
         
-        <div className="grid md:grid-cols-3 gap-8 text-left mb-20">
-           {t.problem.consequences.map((c, i) => (
-              <motion.div 
-                key={i} 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="p-10 bg-zinc-900 border border-white/5 rounded-[40px] hover:border-accent/30 transition-all group relative overflow-hidden shadow-2xl hover:shadow-accent/5 hover:-translate-y-2"
-              >
-                 <div className="absolute top-0 right-0 p-8 opacity-[0.02] group-hover:opacity-[0.05] transition-opacity">
-                    {getIcon(c.type)}
-                 </div>
-                 <div className="mb-8 w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner">
-                    {getIcon(c.type)}
-                 </div>
-                 <h4 className="text-xl font-display font-bold mb-4 uppercase tracking-tight text-white group-hover:text-accent transition-colors">{c.title}</h4>
-                 <p className="text-sm text-white/40 leading-relaxed font-light italic">{c.desc}</p>
-                 
-                 <div className="mt-8 h-[1px] w-full bg-gradient-to-r from-accent/20 to-transparent transition-all" />
-              </motion.div>
-           ))}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 text-left mb-20">
+            {t.problem.consequences.map((c, i) => (
+               <motion.div 
+                 key={i} 
+                 initial={{ opacity: 0, y: 30 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: i * 0.1 }}
+                 className="group bg-zinc-900 border border-white/10 rounded-[32px] lg:rounded-[40px] overflow-hidden hover:border-red-600 transition-all relative shadow-[0_0_40px_-15px_rgba(220,38,38,0.3)] hover:shadow-[0_0_60px_-10px_rgba(220,38,38,0.5)] hover:-translate-y-2 flex flex-col aspect-square"
+               >
+                  {/* Background Image with Gradient Mask */}
+                  <div className="absolute inset-0 overflow-hidden">
+                    <img 
+                      src={c.image} 
+                      alt={c.title} 
+                      className="w-full h-full object-cover grayscale brightness-[0.2] group-hover:grayscale-0 group-hover:brightness-50 group-hover:scale-110 transition-all duration-1000 pointer-events-none select-none" 
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    {/* Gradient Overlay: Darker at bottom for readability, clearing up towards top */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent pointer-events-none" />
+                  </div>
+
+                  {/* Hazard Stripes Pattern Over Image */}
+                  <div className="absolute top-0 left-0 w-full h-1.5 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#dc2626_10px,#dc2626_20px)] opacity-40 group-hover:opacity-100 transition-opacity z-20" />
+
+                  <div className="p-8 lg:p-10 flex-grow flex flex-col justify-end relative z-10">
+                    {/* Internal Scanline Glow */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-red-600/0 via-red-600/0 to-red-600/0 group-hover:via-red-600/[0.05] pointer-events-none transition-all duration-700" />
+                    
+                    <div className="absolute top-8 right-8 p-0 opacity-[0.05] group-hover:opacity-[0.2] transition-opacity group-hover:scale-125 duration-500 text-red-600 z-10">
+                       {getIcon(c.type)}
+                    </div>
+                    
+                    <div className="mb-6 w-10 h-10 lg:w-12 lg:h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-500 group-hover:text-white group-hover:scale-110 transition-all duration-300 shadow-inner relative overflow-hidden text-red-600 z-10">
+                       <div className="absolute inset-0 bg-red-600 opacity-0 group-hover:opacity-20 animate-pulse" />
+                       {getIcon(c.type)}
+                    </div>
+                    
+                    <div className="flex items-center gap-2 mb-3 relative z-10">
+                       <span className="w-1.5 h-1.5 rounded-full bg-red-600 group-hover:animate-ping" />
+                       <span className="text-[8px] font-mono font-black uppercase tracking-[0.3em] text-red-600/60 group-hover:text-red-600">
+                         {lang === 'en' ? 'Critical Impact' : 'Impacto Crítico'}
+                       </span>
+                    </div>
+                    
+                    <h4 className="text-lg lg:text-xl font-display font-bold mb-3 uppercase tracking-tight text-white group-hover:text-red-500 transition-colors relative z-10">
+                      {c.title}
+                    </h4>
+                    
+                    <p className="text-[11px] lg:text-[13px] text-white/50 leading-relaxed font-light italic group-hover:text-white/80 transition-colors relative z-10">
+                      {c.desc}
+                    </p>
+                    
+                    <div className="mt-6 pt-0 h-[1px] w-full bg-gradient-to-r from-red-600/20 to-transparent transition-all group-hover:from-red-600 group-hover:w-full" />
+                    
+                    {/* Warning Badge */}
+                    <div className="absolute bottom-4 right-6 opacity-0 group-hover:opacity-30 transition-all font-mono text-[9px] font-black text-red-600 tracking-tighter uppercase whitespace-nowrap">
+                       SYSTEM ERROR 0x{i+1}C
+                    </div>
+                  </div>
+               </motion.div>
+            ))}
         </div>
         
         <div className="flex flex-col items-center">
@@ -533,8 +588,23 @@ export const ProblemSection = ({ t }: SectionProps) => {
 };
 
 
-export const ServicesSection = ({ t }: SectionProps) => (
-  <section id="services" className="py-32 bg-bg-darker relative overflow-hidden">
+export const ServicesSection = ({ t, lang }: SectionProps) => {
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  const getIcon = (index: number) => {
+    switch (index) {
+      case 0: return <Shield size={24} />;
+      case 1: return <Cpu size={24} />;
+      case 2: return <Zap size={24} />;
+      case 3: return <Radio size={24} />;
+      case 4: return <Layers size={24} />;
+      case 5: return <CheckCircle size={24} />;
+      default: return <Settings size={24} />;
+    }
+  };
+
+  return (
+    <section id="services" className="py-32 bg-bg-darker relative overflow-hidden">
     <div className="absolute top-1/2 left-0 w-96 h-96 bg-accent opacity-[0.03] blur-[100px] -z-0" />
     <div className="max-w-7xl mx-auto px-6 relative z-10">
       <div className="grid lg:grid-cols-2 gap-20 items-end">
@@ -557,72 +627,148 @@ export const ServicesSection = ({ t }: SectionProps) => (
                ))}
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-4 lg:gap-6">
               {t.services.cards.slice(0, 2).map((card, i) => (
-                <div 
+                <motion.div 
                   key={i}
-                  className="bg-zinc-900 border border-white/5 p-8 rounded-[32px] hover:border-accent/40 transition-all flex flex-col justify-center items-center text-center group relative overflow-hidden min-h-[240px]"
+                  layout
+                  onClick={() => setExpandedIndex(expandedIndex === i ? null : i)}
+                  className={`group relative ${expandedIndex === i ? 'h-auto' : 'aspect-square'} rounded-[24px] lg:rounded-[32px] overflow-hidden cursor-pointer shadow-2xl transition-all duration-500 border border-white/5 bg-zinc-900`}
                 >
-                   {/* Blurred Background Image */}
+                   {/* Background Image */}
                    <div className="absolute inset-0 z-0">
                      <img 
                        src={card.image} 
                        alt="" 
-                       className="w-full h-full object-cover grayscale opacity-20 blur-[2px] transition-all duration-700 group-hover:scale-110 group-hover:opacity-40 group-hover:grayscale-0 group-hover:blur-0"
+                       className="w-full h-full object-cover grayscale opacity-40 transition-all duration-700 group-hover:scale-110 group-hover:opacity-60 group-hover:grayscale-0"
+                       loading="lazy"
+                       decoding="async"
                      />
                      <div className="absolute inset-0 bg-black/60 group-hover:bg-black/30 transition-colors" />
+                     {/* Accent overlay on expanded */}
+                     <div className={`absolute inset-0 bg-accent/20 transition-opacity duration-500 ${expandedIndex === i ? 'opacity-100' : 'opacity-0'}`} />
                    </div>
-
-                   <div className="relative z-10 flex flex-col items-center">
-                     <div className="mb-4 transition-transform group-hover:scale-110 text-accent">
-                        {i === 0 && <Shield size={32} />}
-                        {i === 1 && <Cpu size={32} />}
+ 
+                   <div className={`relative z-10 h-full p-5 lg:p-8 flex flex-col items-center text-center transition-all duration-500 justify-center`}>
+                     {/* Mobile Layout (Toggle) */}
+                     <div className="flex lg:hidden flex-col items-center justify-center w-full">
+                       {expandedIndex === i ? (
+                         <AnimatePresence mode="wait">
+                           <motion.div
+                             initial={{ opacity: 0, height: 0 }}
+                             animate={{ opacity: 1, height: 'auto' }}
+                             exit={{ opacity: 0, height: 0 }}
+                             transition={{ duration: 0.3 }}
+                             className="overflow-hidden"
+                           >
+                             <p className="text-[10px] text-white/70 leading-relaxed font-medium tracking-tight px-4 capitalize">
+                               {card.desc}
+                             </p>
+                           </motion.div>
+                         </AnimatePresence>
+                       ) : (
+                         <>
+                           <div className={`w-10 h-10 rounded-[12px] flex items-center justify-center mb-3 transition-all duration-500 shadow-inner flex-shrink-0 bg-accent/20 text-accent group-hover:bg-accent group-hover:text-black`}>
+                              {getIcon(i)}
+                           </div>
+                           <h4 className={`text-[8px] font-bold uppercase tracking-widest transition-colors duration-500 px-2 text-white group-hover:text-accent`}>
+                             {card.name}
+                           </h4>
+                           <div className={`mt-3 h-[1px] transition-all duration-500 flex-shrink-0 w-8 bg-accent/30 group-hover:w-full`} />
+                           <div className={`mt-3 px-3 py-1.5 rounded-full border border-white/10 text-[7px] font-mono font-bold uppercase tracking-widest transition-all text-white/40 group-hover:text-white group-hover:border-accent group-hover:bg-accent/10`}>
+                             {lang === 'en' ? 'See Details' : 'Ver Detalles'}
+                           </div>
+                         </>
+                       )}
                      </div>
-                     <h4 className="font-bold text-white uppercase tracking-widest text-[11px] mb-3 leading-tight">
-                       {card.name}
-                     </h4>
-                     <p className="text-[10px] text-white/50 italic leading-relaxed group-hover:text-white transition-colors">
-                       {card.desc}
-                     </p>
+
+                     {/* Desktop Layout (Full) */}
+                     <div className="hidden lg:flex flex-col items-center justify-center">
+                       <div className={`w-14 h-14 rounded-[20px] flex items-center justify-center mb-4 transition-all duration-500 shadow-inner flex-shrink-0 bg-accent/20 text-accent`}>
+                          {getIcon(i)}
+                       </div>
+                       <h4 className="text-[13px] font-bold uppercase tracking-widest text-white mb-4">
+                         {card.name}
+                       </h4>
+                       <p className="text-xs text-white/70 leading-relaxed font-medium tracking-tight px-4 capitalize">
+                         {card.desc}
+                       </p>
+                     </div>
                    </div>
-                </div>
+                </motion.div>
               ))}
             </div>
          </div>
 
-         <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-4 lg:gap-6">
             {t.services.cards.slice(2).map((card, i) => {
                const realIdx = i + 2;
                return (
-                 <div 
+                 <motion.div 
                    key={realIdx}
-                   className="bg-zinc-900 border border-white/5 p-8 rounded-[32px] hover:border-accent/40 transition-all flex flex-col justify-center items-center text-center group relative overflow-hidden min-h-[240px]"
+                   layout
+                   onClick={() => setExpandedIndex(expandedIndex === realIdx ? null : realIdx)}
+                   className={`group relative ${expandedIndex === realIdx ? 'h-auto' : 'aspect-square'} rounded-[24px] lg:rounded-[32px] overflow-hidden cursor-pointer shadow-2xl transition-all duration-500 border border-white/5 bg-zinc-900`}
                  >
-                    {/* Blurred Background Image */}
+                    {/* Background Image */}
                     <div className="absolute inset-0 z-0">
                       <img 
                         src={card.image} 
                         alt="" 
-                        className="w-full h-full object-cover grayscale opacity-20 blur-[2px] transition-all duration-700 group-hover:scale-110 group-hover:opacity-40 group-hover:grayscale-0 group-hover:blur-0"
+                        className="w-full h-full object-cover grayscale opacity-40 transition-all duration-700 group-hover:scale-110 group-hover:opacity-60 group-hover:grayscale-0"
                       />
                       <div className="absolute inset-0 bg-black/60 group-hover:bg-black/30 transition-colors" />
+                      {/* Accent overlay on expanded */}
+                      <div className={`absolute inset-0 bg-accent/20 transition-opacity duration-500 ${expandedIndex === realIdx ? 'opacity-100' : 'opacity-0'}`} />
                     </div>
-
-                    <div className="relative z-10 flex flex-col items-center">
-                      <div className="mb-4 transition-transform group-hover:scale-110 text-accent">
-                         {realIdx === 2 && <Zap size={32} />}
-                         {realIdx === 3 && <Radio size={32} />}
-                         {realIdx === 4 && <Layers size={32} />}
-                         {realIdx === 5 && <CheckCircle size={32} />}
+ 
+                    <div className={`relative z-10 h-full p-5 lg:p-8 flex flex-col items-center text-center transition-all duration-500 justify-center`}>
+                      {/* Mobile Layout (Toggle) */}
+                      <div className="flex lg:hidden flex-col items-center justify-center w-full">
+                        {expandedIndex === realIdx ? (
+                          <AnimatePresence mode="wait">
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="overflow-hidden"
+                            >
+                              <p className="text-[10px] text-white/70 leading-relaxed font-medium tracking-tight px-4 capitalize">
+                                {card.desc}
+                              </p>
+                            </motion.div>
+                          </AnimatePresence>
+                        ) : (
+                          <>
+                            <div className={`w-10 h-10 rounded-[12px] flex items-center justify-center mb-3 transition-all duration-500 shadow-inner flex-shrink-0 bg-accent/20 text-accent group-hover:bg-accent group-hover:text-black`}>
+                               {getIcon(realIdx)}
+                            </div>
+                            <h4 className={`text-[8px] font-bold uppercase tracking-widest transition-colors duration-500 px-2 text-white group-hover:text-accent`}>
+                              {card.name}
+                            </h4>
+                            <div className={`mt-3 h-[1px] transition-all duration-500 flex-shrink-0 w-8 bg-accent/30 group-hover:w-full`} />
+                            <div className={`mt-3 px-3 py-1.5 rounded-full border border-white/10 text-[7px] font-mono font-bold uppercase tracking-widest transition-all text-white/40 group-hover:text-white group-hover:border-accent group-hover:bg-accent/10`}>
+                              {lang === 'en' ? 'See Details' : 'Ver Detalles'}
+                            </div>
+                          </>
+                        )}
                       </div>
-                      <h4 className="font-bold text-white uppercase tracking-widest text-[11px] mb-3 leading-tight">
-                        {card.name}
-                      </h4>
-                      <p className="text-[10px] text-white/50 italic leading-relaxed group-hover:text-white transition-colors">
-                        {card.desc}
-                      </p>
+
+                      {/* Desktop Layout (Full) */}
+                      <div className="hidden lg:flex flex-col items-center justify-center">
+                        <div className={`w-14 h-14 rounded-[20px] flex items-center justify-center mb-4 transition-all duration-500 shadow-inner flex-shrink-0 bg-accent/20 text-accent`}>
+                           {getIcon(realIdx)}
+                        </div>
+                        <h4 className="text-[13px] font-bold uppercase tracking-widest text-white mb-4">
+                          {card.name}
+                        </h4>
+                        <p className="text-xs text-white/70 leading-relaxed font-medium tracking-tight px-4 capitalize">
+                          {card.desc}
+                        </p>
+                      </div>
                     </div>
-                 </div>
+                 </motion.div>
                );
             })}
          </div>
@@ -630,6 +776,7 @@ export const ServicesSection = ({ t }: SectionProps) => (
     </div>
   </section>
 );
+}
 
 
 export const PricingSection = ({ t }: SectionProps) => (
@@ -750,7 +897,7 @@ export const PricingSection = ({ t }: SectionProps) => (
 );
 
 
-export const ProcessSection = ({ t }: SectionProps) => (
+export const ProcessSection = ({ t, lang }: SectionProps) => (
   <section id="how-it-works" className="py-32 bg-bg-darker relative overflow-hidden">
     <div className="max-w-7xl mx-auto px-6 relative z-10">
       <div className="text-center mb-20">
@@ -758,7 +905,10 @@ export const ProcessSection = ({ t }: SectionProps) => (
         <h2 className="text-4xl md:text-6xl font-display font-bold text-white tracking-tight">{t.process.title}</h2>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+        {/* Connection Line */}
+        <div className="absolute top-12 left-0 w-full h-[1px] bg-white/5 -z-10 hidden md:block" />
+        
         {t.process.steps.map((step, i) => (
           <motion.div 
             key={i}
@@ -766,23 +916,42 @@ export const ProcessSection = ({ t }: SectionProps) => (
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.2 }}
-            className="flex flex-col items-center text-center group"
+            className="flex flex-col items-center text-center group relative"
           >
-            <div className="w-24 h-24 rounded-full bg-zinc-900 border border-white/5 flex items-center justify-center text-3xl font-display font-black text-accent mb-8 group-hover:bg-accent group-hover:text-black transition-all shadow-2xl relative">
+            <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-zinc-900 border border-white/5 flex items-center justify-center text-2xl lg:text-3xl font-display font-black text-accent mb-6 lg:mb-8 group-hover:bg-accent group-hover:text-black transition-all shadow-2xl relative z-10">
               {i + 1}
-              {i < t.process.steps.length - 1 && (
-                <div className="hidden md:block absolute top-1/2 left-full w-full h-[1px] bg-white/10 -translate-y-1/2 ml-6" />
-              )}
+              {/* Individual connection point pulse */}
+              <div className="absolute inset-0 rounded-full bg-accent/20 animate-ping opacity-0 group-hover:opacity-40 transition-opacity" />
             </div>
-            <h3 className="text-xl font-bold text-white uppercase tracking-tight mb-4 group-hover:text-accent transition-colors">
+            <h3 className="text-lg lg:text-xl font-bold text-white uppercase tracking-tight mb-3 lg:mb-4 group-hover:text-accent transition-colors">
               {step.title}
             </h3>
-            <p className="text-sm text-white/40 leading-relaxed font-light italic max-w-xs">
+            <p className="text-xs lg:text-sm text-white/40 leading-relaxed font-light italic max-w-xs">
               {step.desc}
             </p>
           </motion.div>
         ))}
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mt-24 flex flex-col items-center"
+      >
+        <p className="mb-8 text-white/30 uppercase tracking-[0.3em] text-[10px] font-bold text-center max-w-lg mx-auto leading-relaxed">
+          {lang === 'en' 
+            ? 'Stop wasting money on failed prototypes. Get a professional review today.' 
+            : 'Deja de perder dinero en prototipos fallidos. Obtén una revisión profesional hoy.'}
+        </p>
+        <button 
+          onClick={() => handleContactAction('whatsapp', OB_PHONE, t.whatsapp.generic)}
+          className="px-10 py-5 bg-accent hover:bg-white text-black font-black uppercase text-xs tracking-[0.2em] rounded-full transition-all shadow-[0_20px_50px_rgba(220,38,38,0.2)] hover:shadow-white/10 group flex items-center gap-4"
+        >
+          {t.common.getStarted}
+          <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
+        </button>
+      </motion.div>
     </div>
   </section>
 );
@@ -809,63 +978,67 @@ export const SampleWork = ({ t, lang }: SectionProps) => (
            </div>
          </div>
          
-         <div className="grid lg:grid-cols-3 gap-10">
-            {t.portfolio.technicalWork.items.map((item, i) => (
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">            {t.portfolio.technicalWork.items.map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-zinc-900 border border-white/5 rounded-[40px] overflow-hidden group hover:border-accent/30 transition-all flex flex-col shadow-2xl h-full"
+                className="group relative bg-zinc-950 border border-white/5 rounded-3xl overflow-hidden hover:border-accent/20 transition-all shadow-xl flex flex-col h-full"
               >
-                 <div className="aspect-video relative overflow-hidden">
+                 <div className="aspect-[4/3] relative overflow-hidden">
                     <img 
                       src={item.image} 
                       alt={item.title} 
-                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 grayscale brightness-75 group-hover:grayscale-0" 
-                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-110 group-hover:saturate-150 group-hover:scale-105 transition-all duration-700 pointer-events-none select-none" 
+                      loading="lazy"
+                      decoding="async"
+                      onContextMenu={(e) => e.preventDefault()}
+                      onDragStart={(e) => e.preventDefault()}
                     />
-                    <div className="absolute top-6 left-6">
-                       <span className="px-4 py-1.5 bg-accent text-black font-black uppercase text-[9px] tracking-[0.2em] rounded-full shadow-lg">{item.tag}</span>
+                    {/* Protection Overlay */}
+                    <div className="absolute inset-0 z-10" onContextMenu={(e) => e.preventDefault()} />
+                    
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent pointer-events-none" />
+                    
+                    <div className="absolute top-6 left-6 z-20">
+                       <span className="px-2.5 py-1 bg-black/60 border border-white/10 text-[8px] font-mono uppercase tracking-widest text-white/60 rounded-md backdrop-blur-sm">{item.tag}</span>
                     </div>
                  </div>
                  
-                 <div className="p-8 sm:p-10 flex-grow flex flex-col">
-                    <h3 className="text-xl font-display font-bold text-white uppercase tracking-tight mb-8 group-hover:text-accent transition-colors leading-tight min-h-[3rem]">
+                 <div className="p-6 sm:p-8 flex-grow flex flex-col">
+                    <h3 className="text-xl font-display font-bold text-white mb-4 sm:mb-6 group-hover:text-accent transition-colors tracking-tight">
                       {item.title}
                     </h3>
-
-                    <div className="space-y-6 flex-grow mb-10">
-                      <div className="relative pl-6 border-l border-white/10 group-hover:border-accent/30 transition-colors">
-                        <div className="absolute left-0 top-0 w-1 h-2 bg-accent opacity-50" />
-                        <p className="text-[9px] font-mono uppercase tracking-widest text-accent mb-1 font-bold">
+ 
+                    <div className="space-y-4 mb-4 sm:mb-8 flex-grow">
+                      <div className="opacity-60 group-hover:opacity-100 transition-opacity">
+                        <p className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent mb-1 font-bold">
                           {lang === 'en' ? 'Problem' : 'Problema'}
                         </p>
-                        <p className="text-[12px] text-white/50 leading-relaxed font-light italic">
+                        <p className="text-[11px] text-white/50 leading-relaxed italic">
                           {item.problem}
                         </p>
                       </div>
-
-                      <div className="bg-white/5 p-5 rounded-2xl border border-white/5 group-hover:bg-accent/5 group-hover:border-accent/10 transition-all">
-                        <p className="text-[9px] font-mono uppercase tracking-widest text-accent mb-1 font-black">
+ 
+                      <div className="hidden sm:block opacity-40 group-hover:opacity-100 transition-opacity delay-75">
+                        <p className="text-[8px] font-mono uppercase tracking-[0.2em] text-white/60 mb-1 font-bold">
                           {lang === 'en' ? 'Result' : 'Resultado'}
                         </p>
-                        <p className="text-[12px] text-white font-medium leading-relaxed italic">
+                        <p className="text-[11px] text-white/40 leading-relaxed italic">
                           {item.result}
                         </p>
                       </div>
                     </div>
-
-                    <div className="mt-auto pt-6 border-t border-white/5 flex justify-between items-center text-[10px] text-white/30 font-mono font-bold uppercase tracking-[0.2em]">
+ 
+                    <button 
+                      onClick={() => handleContactAction('whatsapp', OB_PHONE, `${t.whatsapp.portfolio} ${item.title}`)}
+                      className="w-full py-4 bg-white/5 border border-white/10 text-[10px] font-mono font-bold uppercase tracking-widest text-white/60 rounded-2xl hover:bg-accent hover:border-accent hover:text-black transition-all text-center flex items-center justify-center gap-2 group/btn"
+                    >
                       <span>{t.common.viewAnalysis}</span>
-                      <button 
-                        onClick={() => handleContactAction('whatsapp', OB_PHONE, `${t.whatsapp.portfolio} ${item.title}`)}
-                        className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-black transition-all"
-                      >
-                        <ArrowRight size={16} />
-                      </button>
-                    </div>
+                      <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
+                    </button>
                  </div>
               </motion.div>
             ))}
@@ -873,7 +1046,7 @@ export const SampleWork = ({ t, lang }: SectionProps) => (
        </div>
 
        {/* Subsection 2: Selected Hardware Projects */}
-       <div>
+       <div id="selected-projects">
          <div className="flex items-center gap-6 mb-16 px-4">
            <h3 className="text-2xl font-display font-bold text-white tracking-tight whitespace-nowrap">
              {t.portfolio.selectedProjects.title}
@@ -884,7 +1057,7 @@ export const SampleWork = ({ t, lang }: SectionProps) => (
            </div>
          </div>
 
-         <div className="grid md:grid-cols-3 gap-8">
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
            {t.portfolio.selectedProjects.items.map((project, i) => (
              <motion.div
                key={i}
@@ -898,8 +1071,7 @@ export const SampleWork = ({ t, lang }: SectionProps) => (
                  <img 
                    src={project.image} 
                    alt={project.title} 
-                   className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 pointer-events-none select-none" 
-                   referrerPolicy="no-referrer"
+                   className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-110 group-hover:saturate-150 group-hover:scale-105 transition-all duration-700 pointer-events-none select-none" 
                    onContextMenu={(e) => e.preventDefault()}
                    onDragStart={(e) => e.preventDefault()}
                  />
@@ -915,14 +1087,12 @@ export const SampleWork = ({ t, lang }: SectionProps) => (
                       </span>
                     ))}
                  </div>
-               </div>
-               
-               <div className="p-8 flex-grow flex flex-col">
-                  <h4 className="text-xl font-display font-bold text-white mb-6 group-hover:text-accent transition-colors tracking-tight">
+               </div>                <div className="p-6 sm:p-8 flex-grow flex flex-col">
+                  <h4 className="text-xl font-display font-bold text-white mb-4 sm:mb-6 group-hover:text-accent transition-colors tracking-tight">
                     {project.title}
                   </h4>
                   
-                  <div className="space-y-4 mb-8 flex-grow">
+                  <div className="space-y-4 mb-4 sm:mb-8 flex-grow">
                     <div className="opacity-60 group-hover:opacity-100 transition-opacity">
                        <p className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent mb-1 font-bold">Problem</p>
                        <p className="text-[11px] text-white/50 leading-relaxed italic">
@@ -930,7 +1100,7 @@ export const SampleWork = ({ t, lang }: SectionProps) => (
                        </p>
                     </div>
 
-                    <div className="opacity-40 group-hover:opacity-100 transition-opacity delay-75">
+                    <div className="hidden sm:block opacity-40 group-hover:opacity-100 transition-opacity delay-75">
                        <p className="text-[8px] font-mono uppercase tracking-[0.2em] text-white/60 mb-1 font-bold">Result</p>
                        <p className="text-[11px] text-white/40 leading-relaxed italic">
                          {project.result}
@@ -955,7 +1125,7 @@ export const SampleWork = ({ t, lang }: SectionProps) => (
 );
 
 
-export const ContactSection = ({ t }: SectionProps) => {
+export const ContactSection = ({ t, lang }: SectionProps) => {
   const [formData, setFormData] = useState({ 
     name: '', 
     email: '', 
@@ -963,6 +1133,7 @@ export const ContactSection = ({ t }: SectionProps) => {
     shortDescription: '',
     boardLayers: '',
     timeline: '',
+    hp_field: '' // Honey pot field
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [revealEmail, setRevealEmail] = useState(false);
@@ -971,6 +1142,20 @@ export const ContactSection = ({ t }: SectionProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Honey pot check
+    if (formData.hp_field) {
+      console.warn('Bot detected via honey pot.');
+      setStatus('success'); // Fake success for bots
+      return;
+    }
+
+    // Rate limiting / Load time check
+    const timeSinceLoad = Date.now() - pageLoadTime;
+    if (timeSinceLoad < 3000) {
+      setErrorMessage(lang === 'en' ? 'Scanning activity... please wait 3 seconds.' : 'Escaneando actividad... por favor espere 3 segundos.');
+      return;
+    }
     
     const accessKey = import.meta.env.VITE_WEB3FORMS_KEY;
     
@@ -1041,14 +1226,14 @@ export const ContactSection = ({ t }: SectionProps) => {
               <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-8 tracking-tight">{t.contact.title} <span className="text-accent italic">{t.contact.titleAccent}</span></h2>
               <p className="text-white/50 text-lg mb-12 italic leading-relaxed tracking-tight">{t.contact.subtitle}</p>
               
-               <div className="space-y-10">
+               <div className="space-y-6 lg:space-y-10">
                  <button 
                    onClick={() => handleContactAction('whatsapp', OB_PHONE, t.whatsapp.contactEmail)}
                    onMouseEnter={() => setRevealEmail(true)}
-                   className="flex items-center gap-8 group text-left w-full"
+                   className="flex items-center gap-4 lg:gap-8 group text-left w-full"
                  >
-                    <div className="w-16 h-16 rounded-3xl bg-zinc-900 flex flex-center items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-all">
-                      <Mail size={24} />
+                    <div className="w-10 h-10 lg:w-16 lg:h-16 rounded-xl lg:rounded-3xl bg-zinc-900 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-all flex-shrink-0">
+                      <Mail size={16} className="lg:size-6" />
                     </div>
                     <div>
                       <p className="text-[9px] font-mono uppercase tracking-widest text-white/30 mb-1 font-bold">{t.contact.emailLabel}</p>
@@ -1058,23 +1243,23 @@ export const ContactSection = ({ t }: SectionProps) => {
                  <button 
                    onClick={() => handleContactAction('tel', OB_PHONE)}
                    onMouseEnter={() => setRevealPhone(true)}
-                   className="flex items-center gap-8 group text-left w-full"
+                   className="flex items-center gap-4 lg:gap-8 group text-left w-full"
                  >
-                    <div className="w-16 h-16 rounded-3xl bg-zinc-900 flex flex-center items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-all">
-                       <Phone size={24} />
+                    <div className="w-10 h-10 lg:w-16 lg:h-16 rounded-xl lg:rounded-3xl bg-zinc-900 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-all flex-shrink-0">
+                       <Phone size={16} className="lg:size-6" />
                     </div>
                     <div>
-                      <p className="text-[9px] font-mono uppercase tracking-widest text-white/30 mb-1 font-bold">{t.contact.phoneLabel}</p>
-                      <p className="text-lg font-bold font-mono tracking-tight">{revealPhone ? secureAtob(OB_PHONE) : '+34 ••• •• •• ••'}</p>
+                      <p className="text-[8px] lg:text-[9px] font-mono uppercase tracking-widest text-white/30 mb-0.5 lg:mb-1 font-bold">{t.contact.phoneLabel}</p>
+                      <p className="text-sm lg:text-lg font-bold font-mono tracking-tight">{revealPhone ? secureAtob(OB_PHONE) : '+34 ••• •• •• ••'}</p>
                     </div>
                  </button>
-                 <div className="flex items-center gap-8 group">
-                    <div className="w-16 h-16 rounded-3xl bg-zinc-900 flex flex-center items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-all">
-                      <MapPin size={24} />
+                 <div className="flex items-center gap-4 lg:gap-8 group text-left">
+                    <div className="w-10 h-10 lg:w-16 lg:h-16 rounded-xl lg:rounded-3xl bg-zinc-900 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-all flex-shrink-0">
+                      <MapPin size={16} className="lg:size-6" />
                     </div>
                     <div>
-                      <p className="text-[9px] font-mono uppercase tracking-widest text-white/30 mb-1 font-bold">{t.contact.visitLabel}</p>
-                      <p className="text-lg font-bold italic tracking-tight">{t.contact.visitValue}</p>
+                      <p className="text-[8px] lg:text-[9px] font-mono uppercase tracking-widest text-white/30 mb-0.5 lg:mb-1 font-bold">{t.contact.visitLabel}</p>
+                      <p className="text-sm lg:text-lg font-bold italic tracking-tight">{t.contact.visitValue}</p>
                     </div>
                  </div>
               </div>
@@ -1082,6 +1267,17 @@ export const ContactSection = ({ t }: SectionProps) => {
 
             <div className="bg-zinc-900 p-8 sm:p-12 rounded-[50px] shadow-2xl border border-white/5">
                <form className="space-y-4" onSubmit={handleSubmit}>
+                  {/* Honey Pot (Antispam) */}
+                  <div className="hidden" aria-hidden="true">
+                    <input 
+                      type="text" 
+                      name="hp_field" 
+                      tabIndex={-1} 
+                      autoComplete="off" 
+                      onChange={(e) => setFormData({ ...formData, hp_field: e.target.value })}
+                    />
+                  </div>
+                  
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                        <input 
@@ -1211,61 +1407,60 @@ export const Footer = ({ t }: SectionProps) => {
                 <div className="w-10 h-10 rounded-full overflow-hidden border border-accent/30 bg-zinc-900">
                   <img 
                     src="https://avatars.githubusercontent.com/u/95711823?v=4" 
-                    alt="Fredys Matos" 
+                    alt="Fredys Matos Borges - Expert Engineer Profile Image" 
                     className="w-full h-full object-cover"
-                    referrerPolicy="no-referrer"
                   />
                 </div>
                 <span className="font-display text-2xl font-bold tracking-tighter">Fredys <span className="text-accent">Matos Borges</span></span>
              </div>
              <p className="text-[10px] font-mono text-white/40 uppercase tracking-widest leading-loose font-bold italic">{t.footer.desc}</p>
-             <div className="mt-8 flex flex-wrap gap-4">
+             <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
                 <a 
-                  href="https://www.linkedin.com/in/mbfredys" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
-                  title="LinkedIn"
-                >
-                   <Linkedin size={20} />
-                </a>
-                <a 
-                  href="https://www.instagram.com/mbfredys" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
-                  title="Instagram"
-                >
-                   <Instagram size={20} />
-                </a>
-                <a 
-                  href="https://www.threads.net/@mbfredys" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
-                  title="Threads"
-                >
-                   <MessageSquare size={20} />
-                </a>
-                <a 
-                  href="https://www.facebook.com/fredys.matosborges" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
-                  title="Facebook"
-                >
-                   <Facebook size={20} />
-                </a>
-                <a 
-                  href="https://x.com/MbFredys" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
-                  title="Twitter/X"
-                >
-                   <Twitter size={20} />
-                </a>
-             </div>
+                   href="https://www.linkedin.com/in/mbfredys" 
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="w-10 h-10 sm:w-12 sm:h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
+                   title="LinkedIn"
+                 >
+                    <Linkedin size={18} />
+                 </a>
+                 <a 
+                   href="https://www.instagram.com/mbfredys" 
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="w-10 h-10 sm:w-12 sm:h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
+                   title="Instagram"
+                 >
+                    <Instagram size={18} />
+                 </a>
+                 <a 
+                   href="https://www.threads.net/@mbfredys" 
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="w-10 h-10 sm:w-12 sm:h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
+                   title="Threads"
+                 >
+                    <MessageSquare size={18} />
+                 </a>
+                 <a 
+                   href="https://www.facebook.com/fredys.matosborges" 
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="w-10 h-10 sm:w-12 sm:h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
+                   title="Facebook"
+                 >
+                    <Facebook size={18} />
+                 </a>
+                 <a 
+                   href="https://x.com/MbFredys" 
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="w-10 h-10 sm:w-12 sm:h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
+                   title="Twitter/X"
+                 >
+                    <Twitter size={18} />
+                 </a>
+              </div>
           </div>
 
           <div>
@@ -1330,7 +1525,7 @@ export const Footer = ({ t }: SectionProps) => {
 };
 
 
-export const WhatYouGetSection = ({ t }: SectionProps) => {
+export const WhatYouGetSection = ({ t, lang }: SectionProps) => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   const getIcon = (icon: string) => {
@@ -1364,16 +1559,17 @@ export const WhatYouGetSection = ({ t }: SectionProps) => {
           </motion.div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
           {t.whatYouGet.items.map((item, i) => (
             <motion.div 
               key={i}
+              layout
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               onClick={() => setExpandedIndex(expandedIndex === i ? null : i)}
-              className="group relative min-h-[360px] h-auto rounded-[40px] overflow-hidden cursor-pointer shadow-2xl hover:-translate-y-2 transition-all duration-500"
+              className={`group relative ${expandedIndex === i ? 'h-auto' : 'aspect-square'} rounded-[24px] lg:rounded-[40px] overflow-hidden cursor-pointer shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-white/5 bg-zinc-900`}
             >
               {/* Background Image */}
               <div className="absolute inset-0 h-full w-full">
@@ -1381,62 +1577,61 @@ export const WhatYouGetSection = ({ t }: SectionProps) => {
                   src={item.image} 
                   alt={item.title} 
                   className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110"
-                  referrerPolicy="no-referrer"
+                  loading="lazy"
+                  decoding="async"
                 />
-                <div className="absolute inset-0 bg-black/70 group-hover:bg-black/40 transition-colors duration-500" />
+                <div className="absolute inset-0 bg-black/60 group-hover:bg-black/30 transition-colors duration-500" />
                 {/* Accent overlay on expanded */}
                 <div className={`absolute inset-0 bg-accent/20 transition-opacity duration-500 ${expandedIndex === i ? 'opacity-100' : 'opacity-0'}`} />
               </div>
 
-              <div className={`relative min-h-[360px] p-8 sm:p-10 flex flex-col items-center text-center transition-all duration-500 ${expandedIndex === i ? 'justify-start pt-16 h-auto' : 'justify-center'}`}>
-                <div className={`w-16 h-16 rounded-[20px] flex items-center justify-center mb-6 transition-all duration-500 shadow-inner flex-shrink-0 ${expandedIndex === i ? 'bg-white text-black' : 'bg-accent/20 text-accent group-hover:bg-accent group-hover:text-black'}`}>
-                  {getIcon(item.icon)}
-                </div>
-                
-                <h4 className={`text-lg font-bold uppercase tracking-widest transition-colors duration-500 ${expandedIndex === i ? 'text-white' : 'text-white group-hover:text-accent'}`}>
-                  {item.title}
-                </h4>
+              <div className={`relative h-full p-5 lg:p-10 flex flex-col items-center text-center transition-all duration-500 justify-center`}>
+                {/* Mobile Layout (Toggle) */}
+                <div className="flex lg:hidden flex-col items-center justify-center w-full">
+                  {expandedIndex === i ? (
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="w-full"
+                      >
+                        <p className="text-[10px] text-white/90 leading-relaxed italic font-medium px-2">
+                          {item.desc}
+                        </p>
+                      </motion.div>
+                    </AnimatePresence>
+                  ) : (
+                    <>
+                      <div className={`w-10 h-10 rounded-[12px] flex items-center justify-center mb-3 transition-all duration-500 shadow-inner flex-shrink-0 bg-accent/20 text-accent group-hover:bg-accent group-hover:text-black`}>
+                        {React.cloneElement(getIcon(item.icon) as React.ReactElement, { size: 24 })}
+                      </div>
+                      
+                      <h4 className={`text-[8px] font-bold uppercase tracking-widest transition-colors duration-500 px-2 text-white group-hover:text-accent`}>
+                        {item.title}
+                      </h4>
 
-                <AnimatePresence mode="wait">
-                  {expandedIndex === i && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="w-full"
-                    >
-                      <p className="mt-6 text-sm text-white/90 leading-relaxed italic font-medium px-4">
-                        {item.desc}
-                      </p>
-                    </motion.div>
+                      <div className={`mt-4 h-[1px] transition-all duration-500 flex-shrink-0 w-8 bg-accent/30 group-hover:w-full`} />
+                    </>
                   )}
-                </AnimatePresence>
-                
-                <div className={`mt-8 h-[1px] transition-all duration-500 flex-shrink-0 ${expandedIndex === i ? 'w-full bg-white/50' : 'w-12 bg-accent/30 group-hover:w-full'}`} />
-                
-                {/* Click indicator */}
-                <div className={`mt-8 text-[8px] font-mono font-bold uppercase tracking-widest transition-colors ${expandedIndex === i ? 'text-white pb-4' : 'text-white/40 group-hover:text-white'}`}>
-                  {expandedIndex === i ? 'Click to Close' : 'Click for Details'}
+                </div>
+
+                {/* Desktop Layout (Full) */}
+                <div className="hidden lg:flex flex-col items-center justify-center">
+                  <div className={`w-16 h-16 rounded-[20px] flex items-center justify-center mb-6 transition-all duration-500 shadow-inner flex-shrink-0 bg-accent/20 text-accent`}>
+                    {React.cloneElement(getIcon(item.icon) as React.ReactElement, { size: 24 })}
+                  </div>
+                  <h4 className="text-lg font-bold uppercase tracking-widest text-white mb-6">
+                    {item.title}
+                  </h4>
+                  <p className="text-[13px] text-white/90 leading-relaxed italic font-medium px-4">
+                    {item.desc}
+                  </p>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-20 flex justify-center"
-        >
-          <a 
-            href="#pricing"
-            className="px-10 py-5 bg-white text-black font-black uppercase text-xs tracking-[0.2em] rounded-full hover:bg-accent transition-all flex items-center gap-4 group shadow-xl hover:shadow-accent/20"
-          >
-            {t.common.getStarted}
-            <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
-          </a>
-        </motion.div>
       </div>
     </section>
   );
