@@ -437,7 +437,7 @@ export const translations: Record<Language, Translation> = {
           name: 'PCB Risk Review',
           subtitle: 'Avoid expensive PCB mistakes before fabrication.',
           description: 'I review your schematic and layout to detect critical electrical, routing and reliability issues before manufacturing.',
-          price: 'From 80€',
+          price: 'From 99€',
           unit: '/ task',
           items: [
             'Schematic & layout review',
