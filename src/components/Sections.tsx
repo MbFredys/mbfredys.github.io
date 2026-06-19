@@ -1,57 +1,43 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { 
   Cpu, 
   CircuitBoard,
-  AlertTriangle, 
   CheckCircle, 
   Zap, 
-  ZapOff,
-  Flame,
-  Trash2,
   Shield, 
   Search, 
   Settings, 
   FileText, 
-  User, 
-  CreditCard, 
-  Layout, 
-  Radio,
   Layers,
   Activity,
-  Waves,
+  Radio,
   Power,
   Factory,
   ArrowRight, 
   Mail, 
   Phone, 
   MapPin, 
-  Plus, 
-  Download,
   Linkedin,
-  Instagram,
-  Facebook,
-  Twitter,
+  Github,
   MessageSquare,
   Check,
   Menu,
-  X
+  X,
+  Download
 } from 'lucide-react';
-import { Language, Translation, OB_EMAIL, OB_PHONE, OB_PHONE_F, secureAtob } from '../constants';
+import { Language, Translation, OB_EMAIL, OB_PHONE, OB_PHONE_F, OB_WEB3FORMS_KEY, secureAtob } from '../constants';
 
-// Bot Protection State
+// Protect contact actions (anti-bot check)
 let pageLoadTime = Date.now();
 
 const handleContactAction = (type: 'whatsapp' | 'tel', obValue: string, message?: string) => {
-  // Anti-bot check: Reject if action is too fast after page load (usually bots)
   const timeSinceLoad = Date.now() - pageLoadTime;
   if (timeSinceLoad < 1000) {
     console.warn('Bot-like activity detected.');
     return;
   }
-
   const value = secureAtob(obValue);
   if (type === 'whatsapp') {
     window.open(`https://wa.me/${value}?text=${encodeURIComponent(message || '')}`, '_blank', 'noopener,noreferrer');
@@ -65,29 +51,34 @@ interface SectionProps {
   lang: Language;
 }
 
+/* ==========================================================================
+   1. NAVBAR COMPONENT
+   ========================================================================== */
 export const Navbar = ({ lang, setLang, t }: { lang: Language, setLang: (l: Language) => void, t: Translation }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { href: '#trust', label: lang === 'en' ? 'Trust' : 'Fiabilidad' },
-    { href: '#the-cost', label: lang === 'en' ? 'Cost of Errors' : 'Coste de Errores' },
-    { href: '#how-it-works', label: lang === 'en' ? 'How it Works' : 'Cómo Funciona' },
-    { href: '#samples', label: t.nav.portfolio },
-    { href: '#about', label: t.nav.about },
+    { href: '#hero', label: lang === 'en' ? 'Start' : 'Inicio' },
+    { href: '#experience', label: lang === 'en' ? 'Experience' : 'Experiencia' },
+    { href: '#projects', label: lang === 'en' ? 'Projects' : 'Proyectos' },
+    { href: '#stack', label: lang === 'en' ? 'Tech Stack' : 'Tecnologías' },
+    { href: '#about', label: lang === 'en' ? 'About' : 'Sobre mí' },
+    { href: '#contact', label: lang === 'en' ? 'Contact' : 'Contacto' },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/5">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full overflow-hidden border border-accent/30 bg-zinc-900 group">
             <img 
               src="https://avatars.githubusercontent.com/u/95711823?v=4" 
-              alt="Fredys Matos Borges - Automation & PCB Design Expert Logo" 
+              alt="Fredys Matos Borges - Logo" 
               className="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
+              referrerPolicy="no-referrer"
             />
           </div>
-          <div className="font-sans font-bold text-lg tracking-tight hidden sm:block">
+          <div className="font-sans font-bold text-base tracking-tight hidden sm:block">
             FREDYS <span className="text-accent uppercase">MATOS BORGES</span>
           </div>
         </div>
@@ -100,13 +91,6 @@ export const Navbar = ({ lang, setLang, t }: { lang: Language, setLang: (l: Lang
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="hidden xl:flex items-center gap-2 group/shield">
-              <Shield size={14} className="text-green-500 animate-pulse" />
-              <span className="text-[8px] font-mono font-bold uppercase tracking-widest text-white/30 group-hover/shield:text-green-500/60 transition-colors">
-                {lang === 'en' ? 'Secured Connection' : 'Conexión Segura'}
-              </span>
-            </div>
-            
             <button 
               onClick={() => setLang(lang === 'en' ? 'es' : 'en')}
               className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-bold hover:bg-white/5 transition-all focus:ring-2 focus:ring-accent"
@@ -114,11 +98,10 @@ export const Navbar = ({ lang, setLang, t }: { lang: Language, setLang: (l: Lang
               {lang === 'en' ? 'ESP' : 'ENG'}
             </button>
             <a 
-              href="#"
-              onClick={(e) => { e.preventDefault(); handleContactAction('whatsapp', OB_PHONE, t.whatsapp.generic); }}
-              className="hidden sm:inline-flex px-8 py-4 bg-accent text-black font-bold uppercase text-xs tracking-widest rounded-full hover:bg-white transition-all min-h-[44px] items-center"
+              href="#contact"
+              className="hidden sm:inline-flex px-8 py-3.5 bg-accent text-black font-bold uppercase text-xs tracking-widest rounded-full hover:bg-white transition-all min-h-[44px] items-center"
             >
-              {t.common.hireMe}
+              {t.common.contactMe}
             </a>
             
             {/* Mobile Menu Button */}
@@ -154,12 +137,13 @@ export const Navbar = ({ lang, setLang, t }: { lang: Language, setLang: (l: Lang
                 </a>
               ))}
               <div className="pt-10 border-t border-white/10 mt-4">
-                <button 
-                  onClick={() => { setIsOpen(false); handleContactAction('whatsapp', OB_PHONE, t.whatsapp.generic); }}
+                <a 
+                  href="#contact"
+                  onClick={() => setIsOpen(false)}
                   className="inline-flex w-full justify-center px-10 py-5 bg-accent text-black font-black uppercase text-xs tracking-widest rounded-full hover:bg-white transition-all min-h-[44px] items-center shadow-2xl shadow-accent/20"
                 >
-                  {t.common.hireMe}
-                </button>
+                  {t.common.contactMe}
+                </a>
               </div>
             </div>
           </motion.div>
@@ -169,418 +153,215 @@ export const Navbar = ({ lang, setLang, t }: { lang: Language, setLang: (l: Lang
   );
 };
 
-export const Hero = ({ t }: SectionProps) => (
-  <section className="relative min-h-screen pt-20 flex items-center overflow-hidden technical-grid bg-bg-darker">
-    {/* Background Decorative Circles */}
-    <div className="absolute top-1/4 -right-20 w-96 h-96 border border-accent/20 rounded-full -z-0 opacity-20 animate-pulse" />
-    <div className="absolute -bottom-20 -left-20 w-[500px] h-[500px] border border-accent/10 rounded-full -z-0 opacity-10" />
 
-    <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10 w-full">
-      <motion.div
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        className="text-center lg:text-left pt-10 lg:pt-0"
-      >
-        <div className="mb-6 flex items-center justify-center lg:justify-start gap-3">
-            <div className="h-[2px] w-8 lg:w-12 bg-accent" />
-            <span className="text-accent font-mono font-bold uppercase tracking-[0.3em] text-[8px] lg:text-[10px]">{t.hero.specialist}</span>
-        </div>
-        <h1 className="font-display text-4xl md:text-6xl lg:text-8xl font-bold leading-[0.9] text-white mb-6 tracking-[-0.04em]">
-          {t.hero.greeting} <br />
-          <span className="text-accent">{t.hero.role}</span>
-        </h1>
-        <p className="text-lg lg:text-xl text-white/50 max-w-lg mb-10 leading-relaxed font-light tracking-tight mx-auto lg:mx-0">
-          {t.hero.subtitle}
-        </p>
-
-        {/* Stats inspired by reference image */}
-        <div className="flex justify-center sm:justify-start gap-12 sm:gap-24 mb-12 border-t border-white/10 pt-10 px-4">
-          <div className="text-center sm:text-left">
-            <p className="text-4xl font-display font-bold text-accent mb-1">5+</p>
-            <p className="text-[9px] font-mono uppercase tracking-widest text-white/40">{t.hero.yearsExp}</p>
-          </div>
-          <div className="text-center sm:text-left">
-            <p className="text-4xl font-display font-bold text-accent mb-1">60+</p>
-            <p className="text-[9px] font-mono uppercase tracking-widest text-white/40">{t.hero.projectsComplete}</p>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
-          <button 
-            onClick={() => handleContactAction('whatsapp', OB_PHONE, t.whatsapp.hero)}
-            className="px-8 lg:px-10 py-3 lg:py-4 bg-accent text-black font-bold uppercase text-[9px] lg:text-[10px] tracking-[0.2em] rounded-full hover:bg-white transition-all min-h-[44px] flex items-center shadow-lg shadow-accent/20"
-          >
-            {t.hero.getReview}
-          </button>
-          <a 
-            href="#samples"
-            className="px-8 lg:px-10 py-3 lg:py-4 bg-transparent border border-white/20 text-white font-bold uppercase text-[9px] lg:text-[10px] tracking-[0.2em] rounded-full hover:bg-white hover:text-black transition-all min-h-[44px] flex items-center"
-          >
-            {t.hero.viewSamples}
-          </a>
-        </div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, delay: 0.2 }}
-        className="relative group"
-      >
-        <div className="relative aspect-[4/5] max-w-md mx-auto">
-          {/* Main profile circle inspired layout */}
-          <div className="absolute inset-0 border-4 border-accent rounded-full p-2 translate-x-4 -translate-y-4 -z-10 opacity-30" />
-          <div className="w-full h-full bg-zinc-900 rounded-2xl overflow-hidden shadow-[0_0_100px_rgba(220,38,38,0.1)]">
-             <img 
-               src="https://raw.githubusercontent.com/MbFredys/mbfredys.github.io/1a8d3dd045509afbf16f21a92448e0fcae34f55f/images/Imagen-trabajando-Fredys-2.webp"
-               alt="Fredys Matos Borges - Industrial Automation and PCB Design Specialist"
-               className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-700"
-             />
-          </div>
-          <div className="absolute -bottom-10 -right-10 w-40 h-40 border-8 border-accent rounded-full -z-10 opacity-20" />
-        </div>
-      </motion.div>
-    </div>
-  </section>
-);
-
-export const SkillsetTabs = ({ t }: SectionProps) => {
-  const [activeTab, setActiveTab] = useState('about');
-  const [expandedRole, setExpandedRole] = useState<number | null>(null);
-  const [expandedExp, setExpandedExp] = useState<number | null>(0);
-  
-  const tabs = [
-    { id: 'about', label: t.skillset.tabs.about },
-    { id: 'skillset', label: t.skillset.tabs.skillset },
-    { id: 'education', label: t.skillset.tabs.education },
-    { id: 'experience', label: t.skillset.tabs.experience }
-  ];
-
+/* ==========================================================================
+   2. HERO SECTION
+   ========================================================================== */
+export const HeroSection = ({ t, lang }: SectionProps) => {
   return (
-    <section id="about" className="py-24 bg-bg-darker">
-       <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-center mb-12 border-b border-white/5 overflow-x-auto no-scrollbar whitespace-nowrap">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-8 sm:px-12 py-6 text-[10px] font-mono uppercase tracking-[0.2em] font-bold transition-all relative flex-shrink-0 ${activeTab === tab.id ? 'text-accent' : 'text-white/40 hover:text-white'}`}
-              >
-                {tab.label}
-                {activeTab === tab.id && <motion.div layoutId="tab-active" className="absolute bottom-0 left-0 w-full h-[2px] bg-accent" />}
-              </button>
-            ))}
-          </div>
+    <section id="hero" className="relative min-h-screen pt-28 flex items-center overflow-hidden technical-grid bg-bg-darker">
+      <div className="absolute top-1/4 -right-20 w-96 h-96 border border-accent/20 rounded-full -z-0 opacity-20 animate-pulse" />
+      <div className="absolute -bottom-20 -left-20 w-[500px] h-[500px] border border-accent/10 rounded-full -z-0 opacity-10" />
 
-          <div className="min-h-[400px]">
-              {activeTab === 'about' && (
-                <div className="grid lg:grid-cols-2 gap-20 items-center">
-                  <div className="relative">
-                     <div className="relative w-full max-w-sm mx-auto aspect-square">
-                        <div className="absolute inset-0 border-2 border-accent border-dashed rounded-full animate-[spin_20s_linear_infinite]" />
-                        <div className="absolute inset-4 rounded-full overflow-hidden border-8 border-zinc-900 bg-zinc-900 group">
-                          <img 
-                            src="https://raw.githubusercontent.com/MbFredys/mbfredys.github.io/1a8d3dd045509afbf16f21a92448e0fcae34f55f/images/perfil-7.webp" 
-                            alt="Fredys Matos Borges - Lead PCB Design Specialist" 
-                            className="w-full h-full object-cover object-top grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500"
-                          />
-                        </div>
-                     </div>
-                  </div>
-                  
-                  <div>
-                    <div className="mb-4 text-accent font-mono font-bold uppercase tracking-[0.4em] text-[10px]">{t.about.badge}</div>
-                    <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-8 tracking-tight">
-                      {t.about.title} <span className="text-accent italic">{t.about.titleAccent}</span>
-                    </h2>
-                    <p className="text-white/60 text-lg leading-relaxed mb-8 font-light tracking-tight">
-                      {t.about.description}
-                    </p>
-                    
-                    <div className="grid grid-cols-2 gap-8 mb-10">
-                      <div>
-                        <p className="text-[9px] font-mono uppercase tracking-widest text-white/30 mb-2 font-bold">{t.about.specialization}</p>
-                        <p className="text-white font-medium tracking-tight">{t.about.specializationValue}</p>
-                      </div>
-                      <div>
-                        <p className="text-[9px] font-mono uppercase tracking-widest text-white/30 mb-2 font-bold">{t.about.keyTools}</p>
-                        <p className="text-white font-medium tracking-tight">{t.about.keyToolsValue}</p>
-                      </div>
-                      <div>
-                        <p className="text-[9px] font-mono uppercase tracking-widest text-white/30 mb-2 font-bold">{t.about.expertise}</p>
-                        <p className="text-white font-medium tracking-tight">{t.about.expertiseValue}</p>
-                      </div>
-                      <div>
-                        <p className="text-[9px] font-mono uppercase tracking-widest text-white/30 mb-2 font-bold">{t.about.focus}</p>
-                        <p className="text-white font-medium tracking-tight">{t.about.focusDesc}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-6">
-                       <button 
-                         onClick={() => handleContactAction('whatsapp', OB_PHONE, t.whatsapp.about)}
-                         className="px-10 py-4 bg-accent text-black font-bold uppercase text-[10px] tracking-widest rounded-full hover:bg-white transition-all shadow-lg shadow-accent/20 min-h-[44px] flex items-center"
-                       >
-                         {t.common.hireMe}
-                       </button>
-                       <img src="https://signature.freebiestore.xyz/wp-content/uploads/2021/04/Professional-Signature-Design-Free-Vector.png" alt="Signature" className="h-10 opacity-40 invert grayscale brightness-200 hidden sm:block" />
-                    </div>
-                  </div>
-                </div>
-              )}
-              {activeTab === 'skillset' && (
-                <div className="max-w-4xl mx-auto py-8">
-                  <div className="text-center mb-16">
-                    <h3 className="text-3xl font-display font-bold mb-6 tracking-tight">{t.skillset.focus}</h3>
-                    <p className="text-white/50 max-w-2xl mx-auto font-light italic tracking-tight text-lg">{t.skillset.focusDesc}</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                     {t.skillset.expertise.map((skill, i) => (
-                       <div 
-                         key={skill}
-                         className="flex items-center gap-4 bg-zinc-900/50 border border-white/5 p-6 rounded-2xl group hover:border-accent/40 hover:bg-zinc-900/80 transition-all duration-300 hover:-translate-y-1"
-                       >
-                          <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-all duration-300">
-                             {i === 0 && <Cpu size={18} strokeWidth={3} />}
-                             {i === 1 && <CircuitBoard size={18} strokeWidth={3} />}
-                             {i === 2 && <Zap size={18} strokeWidth={3} />}
-                             {i === 3 && <Layers size={18} strokeWidth={3} />}
-                             {i === 4 && <Activity size={18} strokeWidth={3} />}
-                             {i === 5 && <Power size={18} strokeWidth={3} />}
-                             {i === 6 && <Radio size={18} strokeWidth={3} />}
-                             {i === 7 && <Factory size={18} strokeWidth={3} />}
-                          </div>
-                          <span className="text-[12px] font-bold uppercase tracking-widest text-white/80 group-hover:text-white transition-colors">
-                            {skill}
-                          </span>
-                       </div>
-                     ))}
-                  </div>
-               </div>
-              )}
-             
-             {activeTab === 'education' && (
-                <div className="space-y-12 py-10">
-                  {t.skillset.educationList.map((edu, i) => (
-                    <motion.div 
-                      key={i}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
-                      className="relative pl-8 border-l border-white/10"
-                    >
-                      <div className="absolute -left-[5px] top-0 w-[9px] h-[9px] rounded-full bg-accent" />
-                      <div className="flex flex-wrap justify-between items-start gap-4 mb-4">
-                        <div>
-                          <h3 className="text-xl font-display font-bold text-white mb-1">{edu.title}</h3>
-                          <p className="text-accent text-xs font-mono font-bold uppercase tracking-widest">{edu.institution}</p>
-                        </div>
-                        <span className="px-4 py-1 bg-zinc-900 border border-white/5 rounded-full text-[9px] font-mono font-bold text-white/40 uppercase tracking-widest">
-                          {edu.period}
-                        </span>
-                      </div>
-                      <p className="text-sm text-white/50 leading-relaxed font-light italic">{edu.desc}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-
-              {activeTab === 'experience' && (
-                <div className="space-y-6 py-10">
-                  {t.skillset.experienceList.map((exp, i) => (
-                    <motion.div 
-                      key={i}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
-                      className={`relative pl-8 border-l transition-all duration-300 ${expandedExp === i ? 'border-accent pb-8' : 'border-white/10 pb-4'}`}
-                    >
-                      <div className={`absolute -left-[5px] top-0 w-[9px] h-[9px] rounded-full transition-all duration-300 ${expandedExp === i ? 'bg-accent scale-125' : 'bg-white/20'}`} />
-                      
-                      <div 
-                        className="cursor-pointer group"
-                        onClick={() => setExpandedExp(expandedExp === i ? null : i)}
-                      >
-                        <div className="flex flex-wrap justify-between items-start gap-4">
-                          <div>
-                            <h3 className={`text-xl font-display font-bold transition-colors ${expandedExp === i ? 'text-accent' : 'text-white group-hover:text-accent/70'}`}>
-                              {exp.title}
-                            </h3>
-                            <div className="flex items-center gap-3 mt-1">
-                               <p className="text-white/60 text-xs font-mono font-bold uppercase tracking-widest">{exp.company}</p>
-                               <span className="w-1 h-1 rounded-full bg-white/20" />
-                               <p className="text-white/30 text-[9px] font-mono uppercase tracking-widest">{exp.location}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <span className="px-4 py-1 bg-zinc-900 border border-white/5 rounded-full text-[9px] font-mono font-bold text-white/40 uppercase tracking-widest">
-                              {exp.period}
-                            </span>
-                            <motion.div
-                              animate={{ rotate: expandedExp === i ? 90 : 0 }}
-                              className="text-white/20"
-                            >
-                              <Plus size={14} className={expandedExp === i ? 'text-accent' : ''} />
-                            </motion.div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <AnimatePresence>
-                        {expandedExp === i && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            className="overflow-hidden"
-                          >
-                            <ul className="space-y-3 mt-8">
-                              {exp.details.map((detail, j) => (
-                                <motion.li 
-                                  key={j}
-                                  initial={{ x: -10, opacity: 0 }}
-                                  animate={{ x: 0, opacity: 1 }}
-                                  transition={{ delay: j * 0.05 }}
-                                  className="flex gap-3 text-sm text-white/50 font-light leading-relaxed"
-                                >
-                                  <ArrowRight size={14} className="mt-1 text-accent flex-shrink-0 opacity-40" />
-                                  <span>{detail}</span>
-                                </motion.li>
-                              ))}
-                            </ul>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-          </div>
-       </div>
-    </section>
-  );
-};
-
-
-export const ProblemSection = ({ t, lang }: SectionProps) => {
-  const getIcon = (type: string) => {
-    switch (type) {
-      case 'noise': return <ZapOff size={40} className="text-accent" />;
-      case 'power': return <Flame size={40} className="text-accent" />;
-      case 'mfg': return <Trash2 size={40} className="text-zinc-500" />;
-      default: return <AlertTriangle size={40} className="text-accent" />;
-    }
-  };
-
-  return (
-    <section id="the-cost" className="py-32 bg-bg-darker text-center relative overflow-hidden">
-      {/* Narrative visual: Faded circuit path that breaks */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none text-accent">
-        <svg width="100%" height="100%" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 100H200L250 150H500L550 100H1000" stroke="currentColor" strokeWidth="2" />
-          <path d="M0 300H150L200 350V500H400L450 450H1000" stroke="currentColor" strokeWidth="2" />
-          <path d="M0 700H300L350 750H600V900L700 1000" stroke="currentColor" strokeWidth="2" />
-        </svg>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-12 lg:gap-20 items-center relative z-10 w-full py-12">
         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           className="mb-16"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="lg:col-span-7 text-center lg:text-left"
         >
-          <div className="mb-6 flex justify-center items-center gap-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              <span className="text-accent font-mono font-bold uppercase tracking-[0.4em] text-[10px]">{t.problem.badge}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+          {/* Header Tag / Specialty */}
+          <div className="mb-6 flex items-center justify-center lg:justify-start gap-3">
+            <div className="h-[2px] w-8 lg:w-12 bg-accent" />
+            <span className="text-accent font-mono font-bold uppercase tracking-[0.3em] text-[10px] sm:text-xs">
+              Fredys Matos Borges
+            </span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6 tracking-tight leading-[1.1]">
-            {t.problem.title} <br /> 
-            <span className="italic text-accent underline decoration-accent/20 underline-offset-8 decoration-4">{t.problem.titleAccent}</span>
-          </h2>
-        </motion.div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 text-left mb-20">
-            {t.problem.consequences.map((c, i) => (
-               <motion.div 
-                 key={i} 
-                 initial={{ opacity: 0, y: 30 }}
-                 whileInView={{ opacity: 1, y: 0 }}
-                 viewport={{ once: true }}
-                 transition={{ delay: i * 0.1 }}
-                 className="group bg-zinc-900 border border-white/10 rounded-[32px] lg:rounded-[40px] overflow-hidden hover:border-red-600 transition-all relative shadow-[0_0_40px_-15px_rgba(220,38,38,0.3)] hover:shadow-[0_0_60px_-10px_rgba(220,38,38,0.5)] hover:-translate-y-2 flex flex-col aspect-square"
-               >
-                  {/* Background Image with Gradient Mask */}
-                  <div className="absolute inset-0 overflow-hidden">
-                    <img 
-                      src={c.image} 
-                      alt={c.title} 
-                      className="w-full h-full object-cover grayscale brightness-[0.2] group-hover:grayscale-0 group-hover:brightness-50 group-hover:scale-110 transition-all duration-1000 pointer-events-none select-none" 
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {/* Gradient Overlay: Darker at bottom for readability, clearing up towards top */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent pointer-events-none" />
-                  </div>
 
-                  {/* Hazard Stripes Pattern Over Image */}
-                  <div className="absolute top-0 left-0 w-full h-1.5 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#dc2626_10px,#dc2626_20px)] opacity-40 group-hover:opacity-100 transition-opacity z-20" />
+          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-6 tracking-tight flex flex-col gap-1 lg:gap-2">
+            <span className="text-white block">Hardware Engineer</span>
+            <span className="text-accent block">PCB Design</span>
+            <span className="text-accent block">Embedded Systems</span>
+          </h1>
 
-                  <div className="p-8 lg:p-10 flex-grow flex flex-col justify-end relative z-10">
-                    {/* Internal Scanline Glow */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-red-600/0 via-red-600/0 to-red-600/0 group-hover:via-red-600/[0.05] pointer-events-none transition-all duration-700" />
-                    
-                    <div className="absolute top-8 right-8 p-0 opacity-[0.05] group-hover:opacity-[0.2] transition-opacity group-hover:scale-125 duration-500 text-red-600 z-10">
-                       {getIcon(c.type)}
-                    </div>
-                    
-                    <div className="mb-6 w-10 h-10 lg:w-12 lg:h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-500 group-hover:text-white group-hover:scale-110 transition-all duration-300 shadow-inner relative overflow-hidden text-red-600 z-10">
-                       <div className="absolute inset-0 bg-red-600 opacity-0 group-hover:opacity-20 animate-pulse" />
-                       {getIcon(c.type)}
-                    </div>
-                    
-                    <div className="flex items-center gap-2 mb-3 relative z-10">
-                       <span className="w-1.5 h-1.5 rounded-full bg-red-600 group-hover:animate-ping" />
-                       <span className="text-[8px] font-mono font-black uppercase tracking-[0.3em] text-red-600/60 group-hover:text-red-600">
-                         {lang === 'en' ? 'Critical Impact' : 'Impacto Crítico'}
-                       </span>
-                    </div>
-                    
-                    <h4 className="text-lg lg:text-xl font-display font-bold mb-3 uppercase tracking-tight text-white group-hover:text-red-500 transition-colors relative z-10">
-                      {c.title}
-                    </h4>
-                    
-                    <p className="text-[11px] lg:text-[13px] text-white/50 leading-relaxed font-light italic group-hover:text-white/80 transition-colors relative z-10">
-                      {c.desc}
-                    </p>
-                    
-                    <div className="mt-6 pt-0 h-[1px] w-full bg-gradient-to-r from-red-600/20 to-transparent transition-all group-hover:from-red-600 group-hover:w-full" />
-                    
-                    {/* Warning Badge */}
-                    <div className="absolute bottom-4 right-6 opacity-0 group-hover:opacity-30 transition-all font-mono text-[9px] font-black text-red-600 tracking-tighter uppercase whitespace-nowrap">
-                       SYSTEM ERROR 0x{i+1}C
-                    </div>
-                  </div>
-               </motion.div>
-            ))}
-        </div>
-        
-        <div className="flex flex-col items-center">
-            <p className="mb-10 text-white/30 uppercase tracking-[0.3em] text-[10px] font-bold max-w-lg mx-auto leading-relaxed">
-              {t.problem.footer}
-            </p>
-            <button 
-              onClick={() => handleContactAction('whatsapp', OB_PHONE, t.whatsapp.problem)}
-              className="px-10 py-5 bg-accent hover:bg-white text-white hover:text-black font-black uppercase text-xs tracking-[0.2em] rounded-full transition-all shadow-[0_20px_50px_rgba(220,38,38,0.2)] hover:shadow-white/10 group flex items-center gap-4"
+          <p className="text-base sm:text-lg text-white/70 max-w-2xl mb-10 leading-relaxed font-light mx-auto lg:mx-0">
+            {lang === 'en' 
+              ? 'Robust and manufacturing-oriented hardware design, from electronic architecture to PCB layout and system validation.' 
+              : 'Diseño hardware robusto y orientado a fabricación, desde la arquitectura electrónica hasta el layout PCB y la validación del sistema.'
+            }
+          </p>
+
+          <div className="flex items-center justify-center lg:justify-start gap-3 text-white/50 font-mono text-xs uppercase tracking-widest mb-10">
+            <MapPin size={16} className="text-accent" />
+            <span>Ciudad Real, España</span>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+            <a 
+              href={lang === 'es' 
+                ? "https://github.com/MbFredys/mbfredys.github.io/raw/13e36987624530d45dfdaa064cd8904c8bc484c8/C.V.%20Fredys%20Matos%20Borges.pdf"
+                : "https://github.com/MbFredys/mbfredys.github.io/raw/13e36987624530d45dfdaa064cd8904c8bc484c8/C.V.%20Fredys%20Matos%20Borges%20EN.pdf"
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              download={lang === 'es' ? "C.V. Fredys Matos Borges.pdf" : "C.V. Fredys Matos Borges EN.pdf"}
+              className="px-8 lg:px-10 py-4 bg-accent text-black font-bold uppercase text-[10px] sm:text-xs tracking-widest rounded-full hover:bg-white hover:scale-105 transition-all min-h-[44px] flex items-center gap-2 shadow-lg shadow-accent/20"
             >
-              {t.problem.cta}
-              <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
-            </button>
+              <Download size={14} />
+              <span>{t.common.downloadCv}</span>
+            </a>
+            
+            <a 
+              href="#projects"
+              className="px-8 lg:px-10 py-4 bg-transparent border border-white/20 text-white font-bold uppercase text-[10px] sm:text-xs tracking-widest rounded-full hover:bg-white/5 hover:border-white transition-all min-h-[44px] flex items-center"
+            >
+              {lang === 'en' ? 'View Projects' : 'Ver Proyectos'}
+            </a>
+          </div>
+        </motion.div>
+
+        {/* Profile Artwork Framed */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="lg:col-span-5 relative group"
+        >
+          <div className="relative aspect-square max-w-sm mx-auto">
+            {/* Outer Accent Tech Ring */}
+            <div className="absolute -inset-4 border-2 border-accent border-dashed rounded-full animate-[spin_40s_linear_infinite] opacity-40 -z-10" />
+            <div className="absolute -inset-8 border border-white/10 rounded-full -z-20 opacity-20" />
+            
+            <div className="w-full h-full bg-zinc-900 rounded-full p-3 border border-white/10 overflow-hidden shadow-2xl relative">
+              <div className="w-full h-full rounded-full overflow-hidden bg-black">
+                <img 
+                  src="https://raw.githubusercontent.com/MbFredys/mbfredys.github.io/1ec5dc9f72795e62d08dc58c96f43c0d920e4dc4/images/perfil-redonda.webp"
+                  alt="Fredys Matos Borges"
+                  className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+            </div>
+            
+            {/* Technical Stamp */}
+            <div className="absolute -bottom-4 -left-4 bg-zinc-900/90 backdrop-blur-md border border-white/10 p-4 rounded-2xl flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center text-accent">
+                <CheckCircle size={16} />
+              </div>
+              <div className="text-[9px] font-mono uppercase tracking-widest text-left">
+                <p className="text-white font-bold">DFM Ready</p>
+                <p className="text-white/40">Zero Failure Goal</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+
+/* ==========================================================================
+   3. EXPERIENCIA DESTACADA (TIMELINE OF RESULTS)
+   ========================================================================== */
+const ExperienceItem = ({ exp, i, lang }: { exp: any, i: number, lang: Language, key?: any }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: i * 0.1, duration: 0.5 }}
+      className="relative pl-8 md:pl-10"
+    >
+      {/* Timeline dot */}
+      <div className={`absolute -left-[5px] top-7 w-[11px] h-[11px] rounded-full transition-colors duration-300 ${isExpanded ? 'bg-accent' : 'bg-white/40'} border-4 border-black ring-1 ring-accent`} />
+
+      <div className="bg-zinc-900/40 border border-white/5 hover:border-white/10 rounded-2xl p-6 transition-all duration-300">
+        <div 
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="flex flex-wrap justify-between items-start gap-4 cursor-pointer group"
+        >
+          <div className="flex-1 min-w-[200px]">
+            <h3 className="text-lg sm:text-xl font-display font-medium text-white group-hover:text-accent transition-colors">
+              {exp.title}
+            </h3>
+            <p className="text-accent text-[11px] font-mono font-bold uppercase tracking-widest mt-1">
+              {exp.company}
+            </p>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <div className="flex flex-col items-end text-right">
+              <span className="px-3 py-1 bg-zinc-950 border border-white/5 rounded-full text-[9px] font-mono text-white/60 tracking-wider">
+                {exp.period}
+              </span>
+              <span className="text-[9px] font-mono text-white/30 tracking-wider mt-1.5 uppercase">
+                {exp.location}
+              </span>
+            </div>
+            
+            {/* Toggle icon */}
+            <div className={`w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 group-hover:text-white group-hover:border-white/30 transition-all ${isExpanded ? 'rotate-180 text-accent border-accent/40 bg-accent/5' : ''}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
+          </div>
+        </div>
+
+        {/* Collapsible Content */}
+        <motion.div
+          initial={false}
+          animate={{ height: isExpanded ? 'auto' : 0, opacity: isExpanded ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+          className="overflow-hidden"
+        >
+          <div className="pt-6 mt-4 border-t border-white/5">
+            <h4 className="text-[9px] font-mono font-bold uppercase tracking-widest text-accent/60 mb-3">
+              {lang === 'en' ? 'ACHIEVEMENTS & IMPACT' : 'LOGROS E IMPACTO'}
+            </h4>
+            <ul className="space-y-3">
+              {exp.details.map((detail: string, dIndex: number) => (
+                <li key={dIndex} className="text-xs sm:text-sm text-white/60 flex items-start gap-3 leading-relaxed">
+                  <span className="text-accent/60 mt-1.5 font-bold text-xs">•</span>
+                  <span>{detail}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+};
+
+export const ExperienceSection = ({ t, lang }: SectionProps) => {
+  // We showcase elite experiences centered on achievements/impacts as requested by the user
+  const experiences = t.skillset.experienceList.slice(0, 3); // Get the 3 most relevant
+
+  return (
+    <section id="experience" className="py-24 bg-black border-y border-white/5 relative">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <div className="mb-4 text-accent font-mono font-bold uppercase tracking-[0.4em] text-[10px]">
+            {lang === 'en' ? 'Professional Track Record' : 'Trayectoria Profesional'}
+          </div>
+          <h2 className="text-4xl md:text-5xl font-display font-bold text-white tracking-tight">
+            {lang === 'en' ? 'Featured Experience' : 'Experiencia Destacada'}
+          </h2>
+          <p className="text-white/40 mt-4 max-w-xl mx-auto text-sm font-light leading-relaxed">
+            {lang === 'en' 
+              ? 'Results-oriented hardware development with deep attention to PCB reliability and industrial standards.' 
+              : 'Desarrollo de hardware orientado a resultados con profunda atención a la confiabilidad del pcb y estándares industriales.'
+            }
+          </p>
+        </div>
+
+        <div className="relative border-l border-white/10 ml-4 md:ml-6 space-y-8">
+          {experiences.map((exp, i) => (
+            <ExperienceItem key={i} exp={exp} i={i} lang={lang} />
+          ))}
         </div>
       </div>
     </section>
@@ -588,1051 +369,570 @@ export const ProblemSection = ({ t, lang }: SectionProps) => {
 };
 
 
-export const ServicesSection = ({ t, lang }: SectionProps) => {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-
-  const getIcon = (index: number) => {
-    switch (index) {
-      case 0: return <Shield size={24} />;
-      case 1: return <Cpu size={24} />;
-      case 2: return <Zap size={24} />;
-      case 3: return <Radio size={24} />;
-      case 4: return <Layers size={24} />;
-      case 5: return <CheckCircle size={24} />;
-      default: return <Settings size={24} />;
-    }
-  };
+/* ==========================================================================
+   4. PROYECTOS DESTACADOS
+   ========================================================================== */
+export const ProjectsSection = ({ t, lang }: SectionProps) => {
+  // Render the real first 3 projects from selectedProjects
+  const projects = t.portfolio.selectedProjects.items;
 
   return (
-    <section id="services" className="py-32 bg-bg-darker relative overflow-hidden">
-    <div className="absolute top-1/2 left-0 w-96 h-96 bg-accent opacity-[0.03] blur-[100px] -z-0" />
-    <div className="max-w-7xl mx-auto px-6 relative z-10">
-      <div className="grid lg:grid-cols-2 gap-20 items-end">
-         <div>
-            <div className="mb-4 text-accent font-mono font-bold uppercase tracking-[0.4em] text-[10px]">{t.services.badge}</div>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-8 tracking-tight">
-              {t.services.title} <span className="text-accent italic">{t.services.titleAccent}</span>
-            </h2>
-            <p className="text-white/60 text-lg mb-12 leading-relaxed">
-               {t.services.description}
-            </p>
-                         <div className="space-y-6 mb-12">
-               {t.services.list.map((serv, i) => (
-                 <div key={i} className="flex gap-4 items-center">
-                    <div className="w-1 h-1 rounded-full bg-accent" />
-                    <div>
-                       <p className="font-bold text-white uppercase font-mono tracking-[0.2em] text-[10px]">{serv.name}</p>
-                    </div>
-                 </div>
-               ))}
-            </div>
+    <section id="projects" className="py-24 bg-bg-darker relative">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <div className="mb-4 text-accent font-mono font-bold uppercase tracking-[0.4em] text-[10px]">
+            {lang === 'en' ? 'Proven Competence' : 'Competencia Demostrada'}
+          </div>
+          <h2 className="text-4xl md:text-5xl font-display font-bold text-white tracking-tight">
+            {lang === 'en' ? 'Featured Hardware Projects' : 'Proyectos Destacados'}
+          </h2>
+          <p className="text-white/40 mt-4 max-w-xl mx-auto text-sm font-light">
+            {lang === 'en'
+              ? 'Real-world electronic products developed from schematics and layout to automated production testing.'
+              : 'Productos electrónicos reales desarrollados desde esquemáticos y layout hasta pruebas de producción automatizadas.'
+            }
+          </p>
+        </div>
 
-            <div className="grid grid-cols-2 gap-4 lg:gap-6">
-              {t.services.cards.slice(0, 2).map((card, i) => (
-                <motion.div 
-                  key={i}
-                  layout
-                  onClick={() => setExpandedIndex(expandedIndex === i ? null : i)}
-                  className={`group relative ${expandedIndex === i ? 'h-auto' : 'aspect-square'} rounded-[24px] lg:rounded-[32px] overflow-hidden cursor-pointer shadow-2xl transition-all duration-500 border border-white/5 bg-zinc-900`}
-                >
-                   {/* Background Image */}
-                   <div className="absolute inset-0 z-0">
-                     <img 
-                       src={card.image} 
-                       alt="" 
-                       className="w-full h-full object-cover grayscale opacity-40 transition-all duration-700 group-hover:scale-110 group-hover:opacity-60 group-hover:grayscale-0"
-                       loading="lazy"
-                       decoding="async"
-                     />
-                     <div className="absolute inset-0 bg-black/60 group-hover:bg-black/30 transition-colors" />
-                     {/* Accent overlay on expanded */}
-                     <div className={`absolute inset-0 bg-accent/20 transition-opacity duration-500 ${expandedIndex === i ? 'opacity-100' : 'opacity-0'}`} />
-                   </div>
- 
-                   <div className={`relative z-10 h-full p-5 lg:p-8 flex flex-col items-center text-center transition-all duration-500 justify-center`}>
-                     {/* Mobile Layout (Toggle) */}
-                     <div className="flex lg:hidden flex-col items-center justify-center w-full">
-                       {expandedIndex === i ? (
-                         <AnimatePresence mode="wait">
-                           <motion.div
-                             initial={{ opacity: 0, height: 0 }}
-                             animate={{ opacity: 1, height: 'auto' }}
-                             exit={{ opacity: 0, height: 0 }}
-                             transition={{ duration: 0.3 }}
-                             className="overflow-hidden"
-                           >
-                             <p className="text-[10px] text-white/70 leading-relaxed font-medium tracking-tight px-4 capitalize">
-                               {card.desc}
-                             </p>
-                           </motion.div>
-                         </AnimatePresence>
-                       ) : (
-                         <>
-                           <div className={`w-10 h-10 rounded-[12px] flex items-center justify-center mb-3 transition-all duration-500 shadow-inner flex-shrink-0 bg-accent/20 text-accent group-hover:bg-accent group-hover:text-black`}>
-                              {getIcon(i)}
-                           </div>
-                           <h4 className={`text-[8px] font-bold uppercase tracking-widest transition-colors duration-500 px-2 text-white group-hover:text-accent`}>
-                             {card.name}
-                           </h4>
-                           <div className={`mt-3 h-[1px] transition-all duration-500 flex-shrink-0 w-8 bg-accent/30 group-hover:w-full`} />
-                           <div className={`mt-3 px-3 py-1.5 rounded-full border border-white/10 text-[7px] font-mono font-bold uppercase tracking-widest transition-all text-white/40 group-hover:text-white group-hover:border-accent group-hover:bg-accent/10`}>
-                             {lang === 'en' ? 'See Details' : 'Ver Detalles'}
-                           </div>
-                         </>
-                       )}
-                     </div>
-
-                     {/* Desktop Layout (Full) */}
-                     <div className="hidden lg:flex flex-col items-center justify-center">
-                       <div className={`w-14 h-14 rounded-[20px] flex items-center justify-center mb-4 transition-all duration-500 shadow-inner flex-shrink-0 bg-accent/20 text-accent`}>
-                          {getIcon(i)}
-                       </div>
-                       <h4 className="text-[13px] font-bold uppercase tracking-widest text-white mb-4">
-                         {card.name}
-                       </h4>
-                       <p className="text-xs text-white/70 leading-relaxed font-medium tracking-tight px-4 capitalize">
-                         {card.desc}
-                       </p>
-                     </div>
-                   </div>
-                </motion.div>
-              ))}
-            </div>
-         </div>
-
-          <div className="grid grid-cols-2 gap-4 lg:gap-6">
-            {t.services.cards.slice(2).map((card, i) => {
-               const realIdx = i + 2;
-               return (
-                 <motion.div 
-                   key={realIdx}
-                   layout
-                   onClick={() => setExpandedIndex(expandedIndex === realIdx ? null : realIdx)}
-                   className={`group relative ${expandedIndex === realIdx ? 'h-auto' : 'aspect-square'} rounded-[24px] lg:rounded-[32px] overflow-hidden cursor-pointer shadow-2xl transition-all duration-500 border border-white/5 bg-zinc-900`}
-                 >
-                    {/* Background Image */}
-                    <div className="absolute inset-0 z-0">
-                      <img 
-                        src={card.image} 
-                        alt="" 
-                        className="w-full h-full object-cover grayscale opacity-40 transition-all duration-700 group-hover:scale-110 group-hover:opacity-60 group-hover:grayscale-0"
-                      />
-                      <div className="absolute inset-0 bg-black/60 group-hover:bg-black/30 transition-colors" />
-                      {/* Accent overlay on expanded */}
-                      <div className={`absolute inset-0 bg-accent/20 transition-opacity duration-500 ${expandedIndex === realIdx ? 'opacity-100' : 'opacity-0'}`} />
-                    </div>
- 
-                    <div className={`relative z-10 h-full p-5 lg:p-8 flex flex-col items-center text-center transition-all duration-500 justify-center`}>
-                      {/* Mobile Layout (Toggle) */}
-                      <div className="flex lg:hidden flex-col items-center justify-center w-full">
-                        {expandedIndex === realIdx ? (
-                          <AnimatePresence mode="wait">
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="overflow-hidden"
-                            >
-                              <p className="text-[10px] text-white/70 leading-relaxed font-medium tracking-tight px-4 capitalize">
-                                {card.desc}
-                              </p>
-                            </motion.div>
-                          </AnimatePresence>
-                        ) : (
-                          <>
-                            <div className={`w-10 h-10 rounded-[12px] flex items-center justify-center mb-3 transition-all duration-500 shadow-inner flex-shrink-0 bg-accent/20 text-accent group-hover:bg-accent group-hover:text-black`}>
-                               {getIcon(realIdx)}
-                            </div>
-                            <h4 className={`text-[8px] font-bold uppercase tracking-widest transition-colors duration-500 px-2 text-white group-hover:text-accent`}>
-                              {card.name}
-                            </h4>
-                            <div className={`mt-3 h-[1px] transition-all duration-500 flex-shrink-0 w-8 bg-accent/30 group-hover:w-full`} />
-                            <div className={`mt-3 px-3 py-1.5 rounded-full border border-white/10 text-[7px] font-mono font-bold uppercase tracking-widest transition-all text-white/40 group-hover:text-white group-hover:border-accent group-hover:bg-accent/10`}>
-                              {lang === 'en' ? 'See Details' : 'Ver Detalles'}
-                            </div>
-                          </>
-                        )}
-                      </div>
-
-                      {/* Desktop Layout (Full) */}
-                      <div className="hidden lg:flex flex-col items-center justify-center">
-                        <div className={`w-14 h-14 rounded-[20px] flex items-center justify-center mb-4 transition-all duration-500 shadow-inner flex-shrink-0 bg-accent/20 text-accent`}>
-                           {getIcon(realIdx)}
-                        </div>
-                        <h4 className="text-[13px] font-bold uppercase tracking-widest text-white mb-4">
-                          {card.name}
-                        </h4>
-                        <p className="text-xs text-white/70 leading-relaxed font-medium tracking-tight px-4 capitalize">
-                          {card.desc}
-                        </p>
-                      </div>
-                    </div>
-                 </motion.div>
-               );
-            })}
-         </div>
-      </div>
-    </div>
-  </section>
-);
-}
-
-
-export const PricingSection = ({ t }: SectionProps) => (
-  <section id="pricing" className="py-32 bg-black relative overflow-hidden">
-    {/* Decorative technical elements */}
-    <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-accent/20 blur-[120px] rounded-full" />
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-accent/10 blur-[100px] rounded-full" />
-      <div className="h-full w-full technical-grid opacity-20" />
-    </div>
-
-    <div className="max-w-7xl mx-auto px-6 relative z-10">
-       <div className="text-center mb-24 max-w-2xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-4 text-accent font-mono font-bold uppercase tracking-[0.4em] text-[10px]"
-          >
-            {t.pricing.badge}
-          </motion.div>
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-display font-bold text-white italic tracking-tight"
-          >
-            {t.pricing.title}
-          </motion.h2>
-          <div className="mt-6 h-1 w-24 bg-accent mx-auto rounded-full" />
-       </div>
-
-       <div className="flex flex-wrap justify-center gap-8 items-stretch max-w-5xl mx-auto">
-          {t.pricing.plans.map((plan, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projects.map((project) => (
             <motion.div 
-              key={i}
+              key={project.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className={`flex flex-col p-10 sm:p-12 rounded-[40px] text-center group transition-all relative w-full md:w-[calc(50%-1rem)] lg:max-w-[440px] ${
-                plan.featured 
-                ? 'bg-zinc-900 border-2 border-accent scale-105 z-10 shadow-[0_0_50px_rgba(220,38,38,0.15)] ring-4 ring-accent/5' 
-                : 'bg-zinc-900/40 border border-white/10 backdrop-blur-sm hover:border-white/20'
-              }`}
+              transition={{ duration: 0.6 }}
+              className="bg-zinc-900/60 border border-white/5 rounded-3xl overflow-hidden flex flex-col hover:border-accent/40 shadow-xl group transition-all duration-300"
             >
-               {plan.featured && (
-                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-8 py-2.5 bg-accent text-black font-black uppercase text-[10px] tracking-[0.25em] rounded-full shadow-lg whitespace-nowrap">
-                   {t.pricing.featuredBadge}
-                 </div>
-               )}
-               
-               <div className="mb-8">
-                 <h3 className={`text-2xl font-display font-bold mb-2 tracking-tight ${plan.featured ? 'text-accent' : 'text-white'}`}>
-                   {plan.name}
-                 </h3>
-                 <p className="text-accent/60 text-[10px] font-mono font-bold uppercase tracking-widest mb-4">
-                   {plan.subtitle}
-                 </p>
-                 <div className="h-[2px] w-8 bg-white/10 mx-auto" />
-               </div>
+              {/* Product Image Frame */}
+              <div className="relative aspect-[16/10] overflow-hidden bg-black/40 border-b border-white/5">
+                <img 
+                  src={project.image} 
+                  alt={project.title} 
+                  className="w-full h-full object-cover grayscale group-hover:scale-105 group-hover:grayscale-0 transition-all duration-500"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute top-4 left-4 flex flex-wrap gap-1.5">
+                  {project.tags.map(tag => (
+                    <span key={tag} className="px-2.5 py-0.5 bg-black/80 backdrop-blur-md border border-white/10 text-[8px] font-mono uppercase tracking-widest text-accent rounded-full font-bold">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
 
-               <p className="text-sm text-white/50 mb-8 leading-relaxed font-light italic">
-                 {plan.description}
-               </p>
-               
-               <div className="flex-grow">
-                 <ul className="space-y-4 mb-10 text-[10px] font-medium uppercase tracking-[0.15em] text-left max-w-[280px] mx-auto">
-                   {plan.items.map((item, j) => (
-                     <li key={j} className="flex items-start gap-4 text-white/70 group-hover:text-white transition-colors">
-                       <div className={`mt-0.5 w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${plan.featured ? 'bg-accent/10 border border-accent/20' : 'bg-white/5 border border-white/10'}`}>
-                         <Check size={10} className={plan.featured ? "text-accent" : "text-white/40"} />
-                       </div>
-                       <span className="leading-tight">{item}</span>
-                     </li>
-                   ))}
-                 </ul>
-               </div>
-
-               <div className="mb-10">
-                 <p className="text-4xl font-display font-bold mb-1 tracking-tighter text-white">
-                   {plan.price}
-                 </p>
-                 <p className="text-[9px] font-mono opacity-40 font-bold uppercase tracking-widest">
-                   {plan.unit}
-                 </p>
-               </div>
-               
-               <button 
-                 onClick={() => handleContactAction('whatsapp', OB_PHONE, `${t.whatsapp.pricing} ${plan.name}`)}
-                 className={`w-full py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] transition-all relative overflow-hidden group/btn ${
-                   plan.featured 
-                   ? 'bg-accent text-black shadow-xl shadow-accent/20 hover:shadow-accent/40 active:scale-95' 
-                   : 'bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black hover:border-white active:scale-95'
-                 }`}
-               >
-                 <span className="relative z-10">{plan.cta}</span>
-                 {plan.featured && (
-                   <div className="absolute inset-0 bg-white translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
-                 )}
-               </button>
-            </motion.div>
-          ))}
-       </div>
-
-       <motion.p 
-         initial={{ opacity: 0 }}
-         whileInView={{ opacity: 1 }}
-         viewport={{ once: true }}
-         transition={{ delay: 0.5 }}
-         className="text-center mt-16 text-[9px] font-mono font-bold uppercase tracking-[0.4em] text-white/20"
-       >
-         {t.pricing.footer}
-       </motion.p>
-    </div>
-  </section>
-);
-
-
-export const ProcessSection = ({ t, lang }: SectionProps) => (
-  <section id="how-it-works" className="py-32 bg-bg-darker relative overflow-hidden">
-    <div className="max-w-7xl mx-auto px-6 relative z-10">
-      <div className="text-center mb-20">
-        <div className="mb-4 text-accent font-bold uppercase tracking-[0.4em] text-[10px]">{t.process.badge}</div>
-        <h2 className="text-4xl md:text-6xl font-display font-bold text-white tracking-tight">{t.process.title}</h2>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-        {/* Connection Line */}
-        <div className="absolute top-12 left-0 w-full h-[1px] bg-white/5 -z-10 hidden md:block" />
-        
-        {t.process.steps.map((step, i) => (
-          <motion.div 
-            key={i}
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.2 }}
-            className="flex flex-col items-center text-center group relative"
-          >
-            <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-zinc-900 border border-white/5 flex items-center justify-center text-2xl lg:text-3xl font-display font-black text-accent mb-6 lg:mb-8 group-hover:bg-accent group-hover:text-black transition-all shadow-2xl relative z-10">
-              {i + 1}
-              {/* Individual connection point pulse */}
-              <div className="absolute inset-0 rounded-full bg-accent/20 animate-ping opacity-0 group-hover:opacity-40 transition-opacity" />
-            </div>
-            <h3 className="text-lg lg:text-xl font-bold text-white uppercase tracking-tight mb-3 lg:mb-4 group-hover:text-accent transition-colors">
-              {step.title}
-            </h3>
-            <p className="text-xs lg:text-sm text-white/40 leading-relaxed font-light italic max-w-xs">
-              {step.desc}
-            </p>
-          </motion.div>
-        ))}
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mt-24 flex flex-col items-center"
-      >
-        <p className="mb-8 text-white/30 uppercase tracking-[0.3em] text-[10px] font-bold text-center max-w-lg mx-auto leading-relaxed">
-          {lang === 'en' 
-            ? 'Stop wasting money on failed prototypes. Get a professional review today.' 
-            : 'Deja de perder dinero en prototipos fallidos. Obtén una revisión profesional hoy.'}
-        </p>
-        <button 
-          onClick={() => handleContactAction('whatsapp', OB_PHONE, t.whatsapp.generic)}
-          className="px-10 py-5 bg-accent hover:bg-white text-black font-black uppercase text-xs tracking-[0.2em] rounded-full transition-all shadow-[0_20px_50px_rgba(220,38,38,0.2)] hover:shadow-white/10 group flex items-center gap-4"
-        >
-          {t.common.getStarted}
-          <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
-        </button>
-      </motion.div>
-    </div>
-  </section>
-);
-
-
-export const SampleWork = ({ t, lang }: SectionProps) => (
-  <section id="samples" className="py-32 bg-bg-darker">
-    <div className="max-w-7xl mx-auto px-6">
-       <div className="mb-24 text-center">
-          <div className="mb-4 text-accent font-bold uppercase tracking-[0.4em] text-[10px]">{t.portfolio.badge}</div>
-          <h2 className="text-4xl md:text-6xl font-display font-bold text-white tracking-tight">{t.portfolio.title}</h2>
-          <div className="mt-6 h-1 w-24 bg-accent mx-auto rounded-full opacity-30" />
-       </div>
-
-       {/* Subsection 1: Sample Technical Work */}
-       <div className="mb-32">
-         <div className="flex items-center gap-6 mb-16 px-4">
-           <h3 className="text-2xl font-display font-bold text-white tracking-tight whitespace-nowrap">
-             {t.portfolio.technicalWork.title}
-           </h3>
-           <div className="h-[1px] flex-grow bg-white/5" />
-           <div className="text-[10px] font-mono font-bold text-white/20 uppercase tracking-[0.4em] hidden sm:block">
-             Expert Criteria
-           </div>
-         </div>
-         
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">            {t.portfolio.technicalWork.items.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="group relative bg-zinc-950 border border-white/5 rounded-3xl overflow-hidden hover:border-accent/20 transition-all shadow-xl flex flex-col h-full"
-              >
-                 <div className="aspect-[4/3] relative overflow-hidden">
-                    <img 
-                      src={item.image} 
-                      alt={item.title} 
-                      className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-110 group-hover:saturate-150 group-hover:scale-105 transition-all duration-700 pointer-events-none select-none" 
-                      loading="lazy"
-                      decoding="async"
-                      onContextMenu={(e) => e.preventDefault()}
-                      onDragStart={(e) => e.preventDefault()}
-                    />
-                    {/* Protection Overlay */}
-                    <div className="absolute inset-0 z-10" onContextMenu={(e) => e.preventDefault()} />
-                    
-                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent pointer-events-none" />
-                    
-                    <div className="absolute top-6 left-6 z-20">
-                       <span className="px-2.5 py-1 bg-black/60 border border-white/10 text-[8px] font-mono uppercase tracking-widest text-white/60 rounded-md backdrop-blur-sm">{item.tag}</span>
-                    </div>
-                 </div>
-                 
-                 <div className="p-6 sm:p-8 flex-grow flex flex-col">
-                    <h3 className="text-xl font-display font-bold text-white mb-4 sm:mb-6 group-hover:text-accent transition-colors tracking-tight">
-                      {item.title}
-                    </h3>
- 
-                    <div className="space-y-4 mb-4 sm:mb-8 flex-grow">
-                      <div className="opacity-60 group-hover:opacity-100 transition-opacity">
-                        <p className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent mb-1 font-bold">
-                          {lang === 'en' ? 'Problem' : 'Problema'}
-                        </p>
-                        <p className="text-[11px] text-white/50 leading-relaxed italic">
-                          {item.problem}
-                        </p>
-                      </div>
- 
-                      <div className="hidden sm:block opacity-40 group-hover:opacity-100 transition-opacity delay-75">
-                        <p className="text-[8px] font-mono uppercase tracking-[0.2em] text-white/60 mb-1 font-bold">
-                          {lang === 'en' ? 'Result' : 'Resultado'}
-                        </p>
-                        <p className="text-[11px] text-white/40 leading-relaxed italic">
-                          {item.result}
-                        </p>
-                      </div>
-                    </div>
- 
-                    <button 
-                      onClick={() => handleContactAction('whatsapp', OB_PHONE, `${t.whatsapp.portfolio} ${item.title}`)}
-                      className="w-full py-4 bg-white/5 border border-white/10 text-[10px] font-mono font-bold uppercase tracking-widest text-white/60 rounded-2xl hover:bg-accent hover:border-accent hover:text-black transition-all text-center flex items-center justify-center gap-2 group/btn"
-                    >
-                      <span>{t.common.viewAnalysis}</span>
-                      <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
-                    </button>
-                 </div>
-              </motion.div>
-            ))}
-         </div>
-       </div>
-
-       {/* Subsection 2: Selected Hardware Projects */}
-       <div id="selected-projects">
-         <div className="flex items-center gap-6 mb-16 px-4">
-           <h3 className="text-2xl font-display font-bold text-white tracking-tight whitespace-nowrap">
-             {t.portfolio.selectedProjects.title}
-           </h3>
-           <div className="h-[1px] flex-grow bg-white/5" />
-           <div className="text-[10px] font-mono font-bold text-white/20 uppercase tracking-[0.4em] hidden sm:block">
-             Real-World Deployment
-           </div>
-         </div>
-
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-           {t.portfolio.selectedProjects.items.map((project, i) => (
-             <motion.div
-               key={i}
-               initial={{ opacity: 0, scale: 0.95 }}
-               whileInView={{ opacity: 1, scale: 1 }}
-               viewport={{ once: true }}
-               transition={{ delay: i * 0.1 }}
-               className="group relative bg-zinc-950 border border-white/5 rounded-3xl overflow-hidden hover:border-accent/20 transition-all shadow-xl flex flex-col"
-             >
-               <div className="aspect-[4/3] relative overflow-hidden">
-                 <img 
-                   src={project.image} 
-                   alt={project.title} 
-                   className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-110 group-hover:saturate-150 group-hover:scale-105 transition-all duration-700 pointer-events-none select-none" 
-                   onContextMenu={(e) => e.preventDefault()}
-                   onDragStart={(e) => e.preventDefault()}
-                 />
-                 {/* Protection Overlay */}
-                 <div className="absolute inset-0 z-10" onContextMenu={(e) => e.preventDefault()} />
-                 
-                 <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent pointer-events-none" />
-                 
-                 <div className="absolute top-6 left-6 flex flex-wrap gap-2 z-20">
-                    {project.tags.map(tag => (
-                      <span key={tag} className="px-2.5 py-1 bg-black/60 border border-white/10 text-[8px] font-mono uppercase tracking-widest text-white/60 rounded-md backdrop-blur-sm">
-                        {tag}
-                      </span>
-                    ))}
-                 </div>
-               </div>                <div className="p-6 sm:p-8 flex-grow flex flex-col">
-                  <h4 className="text-xl font-display font-bold text-white mb-4 sm:mb-6 group-hover:text-accent transition-colors tracking-tight">
+              {/* Descriptions & Results Frame */}
+              <div className="p-8 flex-grow flex flex-col justify-between">
+                <div>
+                  <h3 className="text-xl font-display font-bold text-white group-hover:text-accent transition-colors tracking-tight mb-4">
                     {project.title}
-                  </h4>
-                  
-                  <div className="space-y-4 mb-4 sm:mb-8 flex-grow">
-                    <div className="opacity-60 group-hover:opacity-100 transition-opacity">
-                       <p className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent mb-1 font-bold">Problem</p>
-                       <p className="text-[11px] text-white/50 leading-relaxed italic">
-                         {project.problem}
-                       </p>
+                  </h3>
+
+                  {/* Structured exactly asrequested by user: Objetivo, Contribución, Tecnologías */}
+                  <div className="space-y-4 mb-6">
+                    <div>
+                      <h4 className="text-[9px] font-mono font-bold uppercase tracking-widest text-accent">
+                        {lang === 'en' ? 'OBJECTIVE' : 'OBJETIVO'}
+                      </h4>
+                      <p className="text-xs text-white/70 leading-relaxed mt-1">
+                        {project.description}
+                      </p>
                     </div>
 
-                    <div className="hidden sm:block opacity-40 group-hover:opacity-100 transition-opacity delay-75">
-                       <p className="text-[8px] font-mono uppercase tracking-[0.2em] text-white/60 mb-1 font-bold">Result</p>
-                       <p className="text-[11px] text-white/40 leading-relaxed italic">
-                         {project.result}
-                       </p>
+                    <div>
+                      <h4 className="text-[9px] font-mono font-bold uppercase tracking-widest text-accent">
+                        {lang === 'en' ? 'MY CONTRIBUTION' : 'MI CONTRIBUCIÓN'}
+                      </h4>
+                      <p className="text-xs text-white/70 leading-relaxed mt-1">
+                        {project.result}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h4 className="text-[9px] font-mono font-bold uppercase tracking-widest text-accent">
+                        {lang === 'en' ? 'TECHNOLOGIES' : 'TECNOLOGÍAS'}
+                      </h4>
+                      <p className="text-[10px] font-mono text-white/50 bg-black/40 p-2.5 rounded-lg border border-white/5 inline-block mt-1 font-bold">
+                        {project.tags.join(' · ')}
+                      </p>
                     </div>
                   </div>
+                </div>
 
-                  <Link 
-                    to={`/projects/${project.id}`}
-                    className="w-full py-4 bg-white/5 border border-white/10 text-[10px] font-mono font-bold uppercase tracking-widest text-white/60 rounded-2xl hover:bg-accent hover:border-accent hover:text-black transition-all text-center flex items-center justify-center gap-2 group/btn"
+                <Link 
+                  to={`/projects/${project.id}`}
+                  className="w-full py-3.5 bg-white/5 border border-white/10 text-[9px] font-mono font-black uppercase tracking-widest text-white/75 rounded-xl hover:bg-accent hover:border-accent hover:text-black transition-all text-center flex items-center justify-center gap-1.5 group/btn"
+                >
+                  <span>{lang === 'en' ? 'VIEW FULL CASE CASE' : 'VER CASO COMPLETO'}</span>
+                  <ArrowRight size={12} className="group-hover/btn:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
+/* ==========================================================================
+   5. STACK TECNOLÓGICO (VISUAL BLOCKS - NO PERCENTAGES)
+   ========================================================================== */
+export const TechStackSection = ({ t, lang }: SectionProps) => {
+  // Classify under specific, professional groups requested by user
+  const categories = [
+    {
+      title: lang === 'en' ? 'PCB Design & CAD' : 'Diseño PCB y CAD',
+      icon: <CircuitBoard className="text-accent" size={22} />,
+      gradient: "from-accent/10 to-transparent",
+      borderColor: "group-hover:border-accent/40",
+      skills: ['Altium Designer', 'KiCad', 'High-Speed Layout', 'Multi-layer PCBs', 'DFM / DFA / DFT']
+    },
+    {
+      title: lang === 'en' ? 'Embedded Systems' : 'Sistemas Embebidos',
+      icon: <Cpu className="text-accent" size={22} />,
+      gradient: "from-accent/10 to-transparent",
+      borderColor: "group-hover:border-accent/40",
+      skills: ['ESP32', 'STM32', 'C/C++ Programming', 'ARM Cortex', 'Firmware Design']
+    },
+    {
+      title: lang === 'en' ? 'Protocols & Wireless' : 'Protocolos y Wireless',
+      icon: <Radio className="text-accent" size={22} />,
+      gradient: "from-accent/10 to-transparent",
+      borderColor: "group-hover:border-accent/40",
+      skills: ['SPI / I2C / UART', 'CAN Bus / RS-485', 'Wi-Fi & Bluetooth', 'RF Layout', 'USB / Ethernet']
+    },
+    {
+      title: lang === 'en' ? 'Validation & Lab' : 'Validación y Laboratorio',
+      icon: <Activity className="text-accent" size={22} />,
+      gradient: "from-accent/10 to-transparent",
+      borderColor: "group-hover:border-accent/40",
+      skills: ['EMI / EMC Shielding', 'Signal Integrity', 'Power Integrity', 'Lab Instrumentation', 'Pre-compliance FCC/CE']
+    }
+  ];
+
+  return (
+    <section id="stack" className="py-24 bg-black border-y border-white/5 relative overflow-hidden">
+      {/* Background ambient accents */}
+      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-80 h-80 bg-accent/5 rounded-full blur-[120px] -z-10" />
+      <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-teal-500/5 rounded-full blur-[120px] -z-10" />
+
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <div className="mb-4 text-accent font-mono font-bold uppercase tracking-[0.4em] text-[10px]">
+            {lang === 'en' ? 'Tools & Standards' : 'Herramientas y Estándares'}
+          </div>
+          <h2 className="text-4xl md:text-5xl font-display font-bold text-white tracking-tight">
+            {lang === 'en' ? 'Technical Stack' : 'Stack Tecnológico'}
+          </h2>
+          <p className="text-white/40 mt-4 max-w-xl mx-auto text-sm font-light">
+            {lang === 'en'
+              ? 'Proven high-demand keywords and core hard competencies requested by industry recruiters. No arbitrary percentage bars.'
+              : 'Tecnologías y palabras clave de alta demanda solicitadas por reclutadores industriales. Sin barras de porcentaje arbitrarias.'
+            }
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {categories.map((cat, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1, duration: 0.5 }}
+              className={`relative overflow-hidden bg-zinc-950/80 border border-white/10 rounded-2xl p-6 hover:-translate-y-1.5 transition-all duration-300 group shadow-lg ${cat.borderColor}`}
+            >
+              {/* Glossy top edge highlight */}
+              <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+              
+              {/* Radial subtle ambient hover glow */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${cat.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl -z-10`} />
+
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2.5 bg-white/5 rounded-xl border border-white/10 group-hover:border-white/20 transition-all">
+                  {cat.icon}
+                </div>
+                <h3 className="text-xs font-mono font-black uppercase tracking-widest text-white/95">
+                  {cat.title}
+                </h3>
+              </div>
+
+              <div className="flex flex-col gap-2.5">
+                {cat.skills.map((skill) => (
+                  <div 
+                    key={skill}
+                    className="px-3 py-3 bg-zinc-900/40 border border-white/5 rounded-xl text-[10px] sm:text-xs font-mono tracking-wider text-white/80 flex items-center justify-between group-hover:bg-zinc-900/80 group-hover:border-white/10 transition-all duration-300"
                   >
-                    <span>{lang === 'en' ? 'See Full Case Study' : 'Ver Caso de Estudio'}</span>
-                    <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
-                  </Link>
-               </div>
-             </motion.div>
-           ))}
-         </div>
-       </div>
-    </div>
-  </section>
-);
+                    <span className="font-medium text-white/90">{skill}</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent/60 group-hover:bg-accent animate-pulse" />
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 
+/* ==========================================================================
+   6. SOBRE MÍ
+   ========================================================================== */
+export const AboutSection = ({ t, lang }: SectionProps) => {
+  return (
+    <section id="about" className="py-24 bg-bg-darker relative">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="bg-zinc-900/40 border border-white/5 rounded-3xl p-8 sm:p-12 relative overflow-hidden flex flex-col md:flex-row gap-10 items-center">
+          <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full blur-3xl" />
+          
+          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-accent/30 bg-zinc-900 flex-shrink-0">
+            <img 
+              src="https://avatars.githubusercontent.com/u/95711823?v=4" 
+              alt="Fredys Matos Borges Profile" 
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+
+          <div>
+            <div className="mb-3 text-accent font-mono font-semibold uppercase tracking-[0.4em] text-[8px] sm:text-[9px]">
+              {lang === 'en' ? 'COMPETITIVE EDGE' : 'VENTAJA COMPETITIVA'}
+            </div>
+            
+            <h2 className="text-3xl font-display font-medium text-white mb-4 tracking-tight">
+              {lang === 'en' ? 'About Me' : 'Sobre mí'}
+            </h2>
+
+            <p className="text-sm sm:text-base text-white/70 leading-relaxed font-light tracking-wide">
+              {lang === 'en' 
+                ? 'Electrical automation engineer specializing in hardware design and embedded systems, with extensive experience developing electronic products from requirements to manufacturing. My main focus is on creating robust designs, optimized for manufacturability (DFM) and geared towards real product performance.'
+                : 'Ingeniero especializado en diseño de hardware y sistemas embebidos, con experiencia en el desarrollo de productos electrónicos desde la definición de requisitos hasta la fabricación. Mi enfoque principal está en crear diseños robustos, optimizados para manufactura y orientados al rendimiento real del producto.'
+              }
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
+/* ==========================================================================
+   7. CONTACTO (SLEEK AND SIMPLE FORM WITH CONSENT)
+   ========================================================================== */
 export const ContactSection = ({ t, lang }: SectionProps) => {
   const [formData, setFormData] = useState({ 
     name: '', 
     email: '', 
-    projectType: '',
     shortDescription: '',
-    boardLayers: '',
-    timeline: '',
-    hp_field: '' // Honey pot field
+    consent: false,
+    hp_field: '' // anti-bot field
   });
   const [errorMessage, setErrorMessage] = useState('');
-  const [revealEmail, setRevealEmail] = useState(false);
-  const [revealPhone, setRevealPhone] = useState(false);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Honey pot check
+    // Spam honeypot
     if (formData.hp_field) {
       console.warn('Bot detected via honey pot.');
-      setStatus('success'); // Fake success for bots
+      setStatus('success');
       return;
     }
 
-    // Rate limiting / Load time check
-    const timeSinceLoad = Date.now() - pageLoadTime;
-    if (timeSinceLoad < 3000) {
-      setErrorMessage(lang === 'en' ? 'Scanning activity... please wait 3 seconds.' : 'Escaneando actividad... por favor espere 3 segundos.');
+    if (!formData.name || !formData.email || !formData.shortDescription) {
+      setErrorMessage(lang === 'en' ? 'Please fill in all fields' : 'Por favor complete todos los campos');
       return;
     }
-    
-    const accessKey = import.meta.env.VITE_WEB3FORMS_KEY;
-    
-    if (!accessKey || accessKey === 'your_access_key_here') {
-      console.warn('Web3Forms Access Key missing. Falling back to WhatsApp.');
-      const text = `Hola Fredys, mi nombre es ${formData.name}, mi email es ${formData.email}. \nProyecto: ${formData.projectType}\nCapas: ${formData.boardLayers}\nTimeline: ${formData.timeline}\nDescripción: ${formData.shortDescription}`;
-      handleContactAction('whatsapp', OB_PHONE, text);
+
+    if (!formData.consent) {
+      setErrorMessage(lang === 'en' ? 'Please accept the data consent' : 'Por favor acepte el consentimiento de datos');
       return;
     }
 
     setStatus('loading');
+    setErrorMessage('');
 
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
+      const clientFormData = new FormData();
+      clientFormData.append("access_key", secureAtob(OB_WEB3FORMS_KEY));
+      clientFormData.append("name", formData.name);
+      clientFormData.append("email", formData.email);
+      clientFormData.append("message", formData.shortDescription);
+      clientFormData.append("subject", `Nuevo contacto desde Portafolio: ${formData.name}`);
+      clientFormData.append("from_name", 'Premium Portfolio Hub');
+
+      const clientResponse = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          "Accept": "application/json"
         },
-        body: JSON.stringify({
-          access_key: accessKey,
-          name: formData.name,
-          email: formData.email,
-          projectType: formData.projectType,
-          boardLayers: formData.boardLayers,
-          timeline: formData.timeline,
-          message: formData.shortDescription,
-          subject: `Nuevo pedido de PCB Review: ${formData.name}`,
-          from_name: 'PCB Review Portfolio'
-        })
+        body: clientFormData
       });
 
-      const result = await response.json();
-      if (result.success) {
+      const clientResult = await clientResponse.json();
+      if (clientResult && clientResult.success) {
         setStatus('success');
-        setFormData({ name: '', email: '', projectType: '', boardLayers: '', timeline: '', shortDescription: '' });
+        setFormData({ name: '', email: '', shortDescription: '', consent: false, hp_field: '' });
         setTimeout(() => setStatus('idle'), 5000);
       } else {
-        console.error('Web3Forms Error:', result);
-        if (result.message && result.message.includes('Pro feature')) {
-          setErrorMessage('File uploads require a Pro plan. Please send files via WhatsApp.');
-        } else {
-          setErrorMessage(result.message || 'Error sending message');
-        }
+        console.error('Submission Error:', clientResult);
+        setErrorMessage(clientResult.message || (lang === 'en' ? 'Error sending message. Try backup below:' : 'Error al enviar mensaje. Prueba la alternativa de respaldo abajo:'));
         setStatus('error');
-        setTimeout(() => {
-          setStatus('idle');
-          setErrorMessage('');
-        }, 6000);
       }
-    } catch (error) {
-      console.error('Submission Error:', error);
-      setErrorMessage('Network error. Try WhatsApp instead.');
+    } catch (clientError) {
+      console.error('Submission Catch Error:', clientError);
+      setErrorMessage(lang === 'en' ? 'Submission error. Try emailing directly or via WhatsApp below:' : 'Error al enviar. Prueba las alternativas de contacto directo abajo:');
       setStatus('error');
-      setTimeout(() => {
-        setStatus('idle');
-        setErrorMessage('');
-      }, 5000);
     }
   };
 
   return (
-    <section id="contact" className="py-32 bg-black">
+    <section id="contact" className="py-24 bg-black relative">
       <div className="max-w-7xl mx-auto px-6">
-         <div className="grid lg:grid-cols-2 gap-20">
-            <div>
-              <div className="mb-4 text-accent font-mono font-bold uppercase tracking-[0.4em] text-[10px]">{t.contact.badge}</div>
-              <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-8 tracking-tight">{t.contact.title} <span className="text-accent italic">{t.contact.titleAccent}</span></h2>
-              <p className="text-white/50 text-lg mb-12 italic leading-relaxed tracking-tight">{t.contact.subtitle}</p>
-              
-               <div className="space-y-6 lg:space-y-10">
-                 <button 
-                   onClick={() => handleContactAction('whatsapp', OB_PHONE, t.whatsapp.contactEmail)}
-                   onMouseEnter={() => setRevealEmail(true)}
-                   className="flex items-center gap-4 lg:gap-8 group text-left w-full"
-                 >
-                    <div className="w-10 h-10 lg:w-16 lg:h-16 rounded-xl lg:rounded-3xl bg-zinc-900 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-all flex-shrink-0">
-                      <Mail size={16} className="lg:size-6" />
-                    </div>
-                    <div>
-                      <p className="text-[9px] font-mono uppercase tracking-widest text-white/30 mb-1 font-bold">{t.contact.emailLabel}</p>
-                      <p className="text-lg font-bold font-mono tracking-tight">{revealEmail ? secureAtob(OB_EMAIL) : '••••••••@••••.com'}</p>
-                    </div>
-                 </button>
-                 <button 
-                   onClick={() => handleContactAction('tel', OB_PHONE)}
-                   onMouseEnter={() => setRevealPhone(true)}
-                   className="flex items-center gap-4 lg:gap-8 group text-left w-full"
-                 >
-                    <div className="w-10 h-10 lg:w-16 lg:h-16 rounded-xl lg:rounded-3xl bg-zinc-900 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-all flex-shrink-0">
-                       <Phone size={16} className="lg:size-6" />
-                    </div>
-                    <div>
-                      <p className="text-[8px] lg:text-[9px] font-mono uppercase tracking-widest text-white/30 mb-0.5 lg:mb-1 font-bold">{t.contact.phoneLabel}</p>
-                      <p className="text-sm lg:text-lg font-bold font-mono tracking-tight">{revealPhone ? secureAtob(OB_PHONE) : '+34 ••• •• •• ••'}</p>
-                    </div>
-                 </button>
-                 <div className="flex items-center gap-4 lg:gap-8 group text-left">
-                    <div className="w-10 h-10 lg:w-16 lg:h-16 rounded-xl lg:rounded-3xl bg-zinc-900 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-all flex-shrink-0">
-                      <MapPin size={16} className="lg:size-6" />
-                    </div>
-                    <div>
-                      <p className="text-[8px] lg:text-[9px] font-mono uppercase tracking-widest text-white/30 mb-0.5 lg:mb-1 font-bold">{t.contact.visitLabel}</p>
-                      <p className="text-sm lg:text-lg font-bold italic tracking-tight">{t.contact.visitValue}</p>
-                    </div>
-                 </div>
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <div className="mb-4 text-accent font-mono font-bold uppercase tracking-[0.4em] text-[10px]">
+              {t.contact.badge}
+            </div>
+            <h2 className="text-4xl md:text-5xl font-display font-medium text-white mb-6 tracking-tight">
+              {lang === 'en' ? "Get In Touch " : "Ponte en Contacto "} {"{"} <br className="hidden sm:inline" />
+              <span className="text-accent italic">Hablemos</span> {"}"}
+            </h2>
+            <p className="text-white/50 text-base mb-10 leading-relaxed font-light">
+              {lang === 'en'
+                ? "Let's turn your concept into robust hardware. Select your communication preference or send a message right here."
+                : "Convirtamos tu concepto en hardware robusto. Selecciona tu vía preferida o envía un mensaje aquí mismo."
+              }
+            </p>
+
+            {/* Direct Contact Channels */}
+            <div className="space-y-4">
+              <a 
+                href={`mailto:${secureAtob(OB_EMAIL)}`}
+                className="flex items-center gap-4 bg-zinc-900/50 p-4 rounded-xl border border-white/5 hover:border-accent hover:bg-zinc-900/80 transition-all font-mono"
+              >
+                <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
+                  <Mail size={16} />
+                </div>
+                <div>
+                  <p className="text-[8px] uppercase tracking-widest text-white/30">{t.contact.emailLabel}</p>
+                  <p className="text-xs sm:text-sm font-semibold text-white/90">{secureAtob(OB_EMAIL)}</p>
+                </div>
+              </a>
+
+              <button 
+                onClick={() => handleContactAction('whatsapp', OB_PHONE, t.whatsapp.generic)}
+                className="w-full flex items-center gap-4 bg-zinc-900/50 p-4 rounded-xl border border-white/5 hover:border-accent hover:bg-zinc-900/80 transition-all font-mono text-left"
+              >
+                <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
+                  <MessageSquare size={16} />
+                </div>
+                <div>
+                  <p className="text-[8px] uppercase tracking-widest text-white/30">WhatsApp</p>
+                  <p className="text-xs sm:text-sm font-semibold text-white/90">{secureAtob(OB_PHONE_F)}</p>
+                </div>
+              </button>
+
+              <div className="grid grid-cols-2 gap-4">
+                <a 
+                  href="https://www.linkedin.com/in/mbfredys"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 bg-zinc-900/50 p-4 rounded-xl border border-white/5 hover:border-accent hover:bg-zinc-900/80 transition-all font-mono"
+                >
+                  <Linkedin size={16} className="text-accent" />
+                  <span className="text-[10px] uppercase font-bold text-white/80">LinkedIn</span>
+                </a>
+
+                <a 
+                  href="https://github.com/MbFredys"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 bg-zinc-900/50 p-4 rounded-xl border border-white/5 hover:border-accent hover:bg-zinc-900/80 transition-all font-mono"
+                >
+                  <Github size={16} className="text-accent" />
+                  <span className="text-[10px] uppercase font-bold text-white/80">GitHub</span>
+                </a>
+
+                <a 
+                  href="https://www.hackster.io/mbfredys"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 bg-zinc-900/50 p-4 rounded-xl border border-white/5 hover:border-accent hover:bg-zinc-900/80 transition-all font-mono"
+                >
+                  <Cpu size={16} className="text-accent" />
+                  <span className="text-[10px] uppercase font-bold text-white/80">Hackster.io</span>
+                </a>
+
+                <a 
+                  href="https://www.pcbway.com/project/member/?bmbno=E261EC6F-F1A1-43"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 bg-zinc-900/50 p-4 rounded-xl border border-white/5 hover:border-accent hover:bg-zinc-900/80 transition-all font-mono"
+                >
+                  <CircuitBoard size={16} className="text-accent" />
+                  <span className="text-[10px] uppercase font-bold text-white/80">PCBWay</span>
+                </a>
               </div>
             </div>
+          </div>
 
-            <div className="bg-zinc-900 p-8 sm:p-12 rounded-[50px] shadow-2xl border border-white/5">
-               <form className="space-y-4" onSubmit={handleSubmit}>
-                  {/* Honey Pot (Antispam) */}
-                  <div className="hidden" aria-hidden="true">
-                    <input 
-                      type="text" 
-                      name="hp_field" 
-                      tabIndex={-1} 
-                      autoComplete="off" 
-                      onChange={(e) => setFormData({ ...formData, hp_field: e.target.value })}
-                    />
-                  </div>
-                  
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                       <input 
-                         name="name"
-                         type="text" 
-                         required
-                         placeholder={t.contact.form.name} 
-                         value={formData.name}
-                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                         className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm focus:border-accent outline-none transition-all font-bold placeholder:opacity-20" 
-                       />
-                    </div>
-                    <div>
-                       <input 
-                         name="email"
-                         type="email" 
-                         required
-                         placeholder={t.contact.form.email} 
-                         value={formData.email}
-                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                         className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm focus:border-accent outline-none transition-all font-bold placeholder:opacity-20" 
-                       />
-                    </div>
-                  </div>
-                  
-                  <div>
-                     <input 
-                       name="projectType"
-                       type="text" 
-                       required
-                       placeholder={t.contact.form.projectType} 
-                       value={formData.projectType}
-                       onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
-                       className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm focus:border-accent outline-none transition-all font-bold placeholder:opacity-20" 
-                     />
-                  </div>
+          {/* Short Form frame with Consent checkbox right above CTA Button */}
+          <div className="bg-zinc-900/70 p-8 sm:p-10 rounded-3xl border border-white/5 shadow-2xl relative">
+            <h3 className="text-lg font-display font-medium text-white mb-6">
+              {lang === 'en' ? 'Send a Quick Message' : 'Envía un Mensaje Rápido'}
+            </h3>
+            
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              <div className="hidden" aria-hidden="true">
+                <input 
+                  type="text" 
+                  name="hp_field" 
+                  tabIndex={-1} 
+                  autoComplete="off" 
+                  onChange={(e) => setFormData({ ...formData, hp_field: e.target.value })}
+                />
+              </div>
 
-                  <div>
-                     <textarea 
-                       name="shortDescription"
-                       rows={3} 
-                       required
-                       placeholder={t.contact.form.shortDescription} 
-                       value={formData.shortDescription}
-                       onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
-                       className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm focus:border-accent outline-none transition-all font-bold placeholder:opacity-20"
-                     ></textarea>
-                  </div>
+              <div>
+                <input 
+                  type="text" 
+                  required
+                  placeholder={lang === 'en' ? 'Your Name' : 'Tu Nombre'} 
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-xs sm:text-sm focus:border-accent outline-none transition-all placeholder:text-white/20 font-mono" 
+                />
+              </div>
 
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                       <select 
-                         name="boardLayers"
-                         required
-                         value={formData.boardLayers}
-                         onChange={(e) => setFormData({ ...formData, boardLayers: e.target.value })}
-                         className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm focus:border-accent outline-none transition-all font-bold cursor-pointer"
-                       >
-                         <option value="" disabled className="bg-zinc-900 text-white/20">{t.contact.form.boardLayers.label}</option>
-                         {t.contact.form.boardLayers.options.map(opt => (
-                           <option key={opt} value={opt} className="bg-zinc-900 text-white">{opt}</option>
-                         ))}
-                       </select>
-                    </div>
-                    <div>
-                       <select 
-                         name="timeline"
-                         required
-                         value={formData.timeline}
-                         onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-                         className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm focus:border-accent outline-none transition-all font-bold cursor-pointer"
-                       >
-                         <option value="" disabled className="bg-zinc-900 text-white/20">{t.contact.form.timeline.label}</option>
-                         {t.contact.form.timeline.options.map(opt => (
-                           <option key={opt} value={opt} className="bg-zinc-900 text-white">{opt}</option>
-                         ))}
-                       </select>
-                    </div>
-                  </div>
-                  
-                  <div className="pt-2">
-                    <button 
-                      type="submit" 
-                      disabled={status === 'loading'}
-                      className={`w-full py-5 font-black uppercase text-xs tracking-[0.2em] rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 ${
-                        status === 'loading' ? 'bg-zinc-800 text-white/50 cursor-wait' :
-                        status === 'success' ? 'bg-green-500 text-white' :
-                        status === 'error' ? 'bg-red-500 text-white' :
-                        'bg-accent text-black hover:bg-white shadow-accent/20'
-                      }`}
-                    >
-                      {status === 'loading' ? (
-                        <>Enviando...</>
-                      ) : status === 'success' ? (
-                        <>¡Enviado con éxito!</>
-                      ) : status === 'error' ? (
-                        <>Error al enviar</>
-                      ) : (
-                        t.contact.form.submit
-                      )}
-                    </button>
-                    {errorMessage && (
-                      <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest text-center animate-pulse pt-4 leading-relaxed max-w-[280px] mx-auto">
-                        {errorMessage}
-                      </p>
+              <div>
+                <input 
+                  type="email" 
+                  required
+                  placeholder={lang === 'en' ? 'Your Email' : 'Tu Correo Correo'} 
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-xs sm:text-sm focus:border-accent outline-none transition-all placeholder:text-white/20 font-mono" 
+                />
+              </div>
+
+              <div>
+                <textarea 
+                  rows={4} 
+                  required
+                  placeholder={lang === 'en' ? 'Briefly describe your project or inquiry...' : 'Describe brevemente tu proyecto o consulta...'} 
+                  value={formData.shortDescription}
+                  onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
+                  className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-xs sm:text-sm focus:border-accent outline-none transition-all placeholder:text-white/20 font-mono"
+                ></textarea>
+              </div>
+
+              {/* Consent check critical positioning: Right above Submit Button */}
+              <div className="flex items-start gap-3 px-1 py-1">
+                <input 
+                  type="checkbox" 
+                  id="consent-check" 
+                  required
+                  checked={formData.consent}
+                  onChange={(e) => setFormData({ ...formData, consent: e.target.checked })}
+                  className="mt-0.5 w-4 h-4 rounded border-white/10 bg-black/40 text-accent focus:ring-accent accent-accent cursor-pointer"
+                />
+                <label htmlFor="consent-check" className="text-[9px] font-mono font-bold uppercase tracking-widest text-white/40 cursor-pointer hover:text-white transition-all leading-tight">
+                  {t.contact.form.consent}
+                </label>
+              </div>
+
+              <div className="pt-2">
+                <button 
+                  type="submit" 
+                  disabled={status === 'loading'}
+                  className={`w-full py-4 font-bold uppercase text-[10px] sm:text-xs tracking-widest rounded-xl transition-all shadow-xl flex items-center justify-center gap-3 ${
+                    status === 'loading' ? 'bg-zinc-800 text-white/50 cursor-wait' :
+                    status === 'success' ? 'bg-green-600 text-white' :
+                    status === 'error' ? 'bg-red-600 text-white' :
+                    'bg-accent text-black hover:bg-white shadow-accent/20'
+                  }`}
+                >
+                  {status === 'loading' ? (
+                    <>{lang === 'en' ? 'Sending...' : 'Enviando...'}</>
+                  ) : status === 'success' ? (
+                    <>{lang === 'en' ? 'Sent successfully!' : '¡Enviado con éxito!'}</>
+                  ) : status === 'error' ? (
+                    <>{lang === 'en' ? 'Error sending' : 'Error al enviar'}</>
+                  ) : (
+                    lang === 'en' ? 'Hablemos' : 'Hablemos'
+                  )}
+                </button>
+                {errorMessage && (
+                  <div className="mt-4 p-4 rounded-xl bg-red-950/20 border border-red-900/40">
+                    <p className="text-[10px] text-red-400 font-bold uppercase tracking-widest text-center leading-relaxed">
+                      {errorMessage}
+                    </p>
+                    {status === 'error' && (
+                      <div className="mt-4 flex flex-col gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const pValue = secureAtob(OB_PHONE);
+                            const msg = `Hola Fredys, soy ${formData.name}. Correo: ${formData.email}. Mensaje: ${formData.shortDescription}`;
+                            window.open(`https://wa.me/${pValue}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+                          }}
+                          className="w-full py-3 bg-zinc-950 hover:bg-zinc-900 text-accent border border-accent/20 rounded-lg text-[9px] font-mono font-black uppercase tracking-widest flex items-center justify-center gap-2"
+                        >
+                          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                          <span>{lang === 'en' ? 'Send via WhatsApp' : 'Enviar por WhatsApp'}</span>
+                        </button>
+                        <a
+                          href={`mailto:${secureAtob(OB_EMAIL)}?subject=${encodeURIComponent(`Contacto Portafolio: ${formData.name}`)}&body=${encodeURIComponent(`Nombre: ${formData.name}\nEmail: ${formData.email}\n\nMensaje:\n${formData.shortDescription}`)}`}
+                          className="w-full py-3 bg-zinc-950 hover:bg-zinc-900 text-white/80 border border-white/5 rounded-lg text-[10px] font-mono font-black uppercase tracking-widest flex items-center justify-center gap-2 text-center"
+                        >
+                          <span>{lang === 'en' ? 'Send via Email Direct' : 'Enviar por Email Directo'}</span>
+                        </a>
+                      </div>
                     )}
                   </div>
-               </form>
-            </div>
-         </div>
+                )}
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </section>
   );
 };
 
 
-export const Footer = ({ t }: SectionProps) => {
-  const [revealEmail, setRevealEmail] = useState(false);
-  const [revealPhone, setRevealPhone] = useState(false);
-
+/* ==========================================================================
+   8. FOOTER
+   ========================================================================== */
+export const Footer = ({ t, lang }: SectionProps) => {
   return (
-  <footer className="py-20 bg-bg-darker border-t border-white/5">
-    <div className="max-w-7xl mx-auto px-6">
-       <div className="grid md:grid-cols-4 gap-12 mb-20">
-          <div className="md:col-span-1">
-             <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-full overflow-hidden border border-accent/30 bg-zinc-900">
-                  <img 
-                    src="https://avatars.githubusercontent.com/u/95711823?v=4" 
-                    alt="Fredys Matos Borges - Expert Engineer Profile Image" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <span className="font-display text-2xl font-bold tracking-tighter">Fredys <span className="text-accent">Matos Borges</span></span>
-             </div>
-             <p className="text-[10px] font-mono text-white/40 uppercase tracking-widest leading-loose font-bold italic">{t.footer.desc}</p>
-             <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
-                <a 
-                   href="https://www.linkedin.com/in/mbfredys" 
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   className="w-10 h-10 sm:w-12 sm:h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
-                   title="LinkedIn"
-                 >
-                    <Linkedin size={18} />
-                 </a>
-                 <a 
-                   href="https://www.instagram.com/mbfredys" 
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   className="w-10 h-10 sm:w-12 sm:h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
-                   title="Instagram"
-                 >
-                    <Instagram size={18} />
-                 </a>
-                 <a 
-                   href="https://www.threads.net/@mbfredys" 
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   className="w-10 h-10 sm:w-12 sm:h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
-                   title="Threads"
-                 >
-                    <MessageSquare size={18} />
-                 </a>
-                 <a 
-                   href="https://www.facebook.com/fredys.matosborges" 
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   className="w-10 h-10 sm:w-12 sm:h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
-                   title="Facebook"
-                 >
-                    <Facebook size={18} />
-                 </a>
-                 <a 
-                   href="https://x.com/MbFredys" 
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   className="w-10 h-10 sm:w-12 sm:h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all"
-                   title="Twitter/X"
-                 >
-                    <Twitter size={18} />
-                 </a>
-              </div>
+    <footer className="py-12 bg-bg-darker border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full overflow-hidden border border-accent/20 bg-zinc-900">
+            <img 
+              src="https://avatars.githubusercontent.com/u/95711823?v=4" 
+              alt="Fredys Profile" 
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
           </div>
-
-          <div>
-             <h4 className="text-[9px] font-mono uppercase tracking-[0.3em] font-black mb-8 text-accent">{t.footer.navTitle}</h4>
-             <ul className="space-y-4 text-[10px] font-mono font-bold uppercase tracking-widest text-white/40">
-                <li><a href="#" className="hover:text-accent transition-all">{t.nav.home}</a></li>
-                <li><a href="#services" className="hover:text-accent transition-all">{t.nav.services}</a></li>
-                <li><a href="#samples" className="hover:text-accent transition-all">{t.nav.portfolio}</a></li>
-                <li><a href="#about" className="hover:text-accent transition-all">{t.nav.about}</a></li>
-             </ul>
-          </div>
-          
-          <div>
-            <h4 className="text-[9px] font-mono uppercase tracking-[0.3em] font-black mb-8 text-accent">{t.footer.contactTitle}</h4>
-            <ul className="space-y-4 text-[10px] font-mono font-bold uppercase tracking-widest text-white/40">
-               <li>
-                 <button 
-                   onClick={() => handleContactAction('whatsapp', OB_PHONE, "Hola Fredys, te contacto por una consulta técnica.")}
-                   onMouseEnter={() => setRevealEmail(true)}
-                   className="hover:text-accent transition-colors text-left"
-                 >
-                   {revealEmail ? secureAtob(OB_EMAIL) : '••••••••@••••.com'}
-                 </button>
-               </li>
-               <li>
-                 <a 
-                   href="https://www.linkedin.com/in/mbfredys" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   className="hover:text-accent transition-colors"
-                 >
-                   LinkedIn: Fredys Matos Borges
-                 </a>
-               </li>
-               <li>
-                 <button 
-                   onClick={() => handleContactAction('whatsapp', OB_PHONE, t.whatsapp.footerMeeting)}
-                   onMouseEnter={() => setRevealPhone(true)}
-                   className="hover:text-accent transition-colors text-left transition-all"
-                 >
-                   WhatsApp: {revealPhone ? secureAtob(OB_PHONE_F) : '+34 ••• •• •• ••'}
-                 </button>
-               </li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="text-[10px] uppercase tracking-[0.3em] font-black mb-8 text-accent">{t.footer.addressTitle}</h4>
-            <ul className="space-y-4 text-xs font-bold uppercase tracking-widest text-white/40">
-               <li className="leading-loose italic">{t.contact.visitValue}</li>
-            </ul>
-          </div>
-       </div>
-
-       <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-mono text-white/20 uppercase tracking-widest font-bold">
-          <p>© 2026 Fredys Matos Borges. {t.common.allRightsReserved}</p>
-          <p>{t.common.engineeringReality}</p>
-       </div>
-    </div>
-  </footer>
-  );
-};
-
-
-export const WhatYouGetSection = ({ t, lang }: SectionProps) => {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-
-  const getIcon = (icon: string) => {
-    switch (icon) {
-      case 'search': return <Search size={24} />;
-      case 'zap': return <Zap size={24} />;
-      case 'shield': return <Shield size={24} />;
-      case 'settings': return <Settings size={24} />;
-      case 'file-text': return <FileText size={24} />;
-      case 'check-circle': return <CheckCircle size={24} />;
-      default: return <Check size={24} />;
-    }
-  };
-
-  return (
-    <section id="trust" className="py-32 bg-black relative overflow-hidden border-y border-white/5">
-      {/* Decorative background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
-        <div className="mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="mb-4 text-accent font-bold uppercase tracking-[0.4em] text-[10px]">{t.whatYouGet.badge}</div>
-            <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6 tracking-tight">
-              {t.whatYouGet.title}
-            </h2>
-          </motion.div>
+          <span className="font-display text-sm font-semibold tracking-tight text-white/80">
+            Fredys <span className="text-accent">Matos Borges</span>
+          </span>
         </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
-          {t.whatYouGet.items.map((item, i) => (
-            <motion.div 
-              key={i}
-              layout
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              onClick={() => setExpandedIndex(expandedIndex === i ? null : i)}
-              className={`group relative ${expandedIndex === i ? 'h-auto' : 'aspect-square'} rounded-[24px] lg:rounded-[40px] overflow-hidden cursor-pointer shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-white/5 bg-zinc-900`}
-            >
-              {/* Background Image */}
-              <div className="absolute inset-0 h-full w-full">
-                <img 
-                  src={item.image} 
-                  alt={item.title} 
-                  className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="absolute inset-0 bg-black/60 group-hover:bg-black/30 transition-colors duration-500" />
-                {/* Accent overlay on expanded */}
-                <div className={`absolute inset-0 bg-accent/20 transition-opacity duration-500 ${expandedIndex === i ? 'opacity-100' : 'opacity-0'}`} />
-              </div>
-
-              <div className={`relative h-full p-5 lg:p-10 flex flex-col items-center text-center transition-all duration-500 justify-center`}>
-                {/* Mobile Layout (Toggle) */}
-                <div className="flex lg:hidden flex-col items-center justify-center w-full">
-                  {expandedIndex === i ? (
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="w-full"
-                      >
-                        <p className="text-[10px] text-white/90 leading-relaxed italic font-medium px-2">
-                          {item.desc}
-                        </p>
-                      </motion.div>
-                    </AnimatePresence>
-                  ) : (
-                    <>
-                      <div className={`w-10 h-10 rounded-[12px] flex items-center justify-center mb-3 transition-all duration-500 shadow-inner flex-shrink-0 bg-accent/20 text-accent group-hover:bg-accent group-hover:text-black`}>
-                        {React.cloneElement(getIcon(item.icon) as React.ReactElement, { size: 24 })}
-                      </div>
-                      
-                      <h4 className={`text-[8px] font-bold uppercase tracking-widest transition-colors duration-500 px-2 text-white group-hover:text-accent`}>
-                        {item.title}
-                      </h4>
-
-                      <div className={`mt-4 h-[1px] transition-all duration-500 flex-shrink-0 w-8 bg-accent/30 group-hover:w-full`} />
-                    </>
-                  )}
-                </div>
-
-                {/* Desktop Layout (Full) */}
-                <div className="hidden lg:flex flex-col items-center justify-center">
-                  <div className={`w-16 h-16 rounded-[20px] flex items-center justify-center mb-6 transition-all duration-500 shadow-inner flex-shrink-0 bg-accent/20 text-accent`}>
-                    {React.cloneElement(getIcon(item.icon) as React.ReactElement, { size: 24 })}
-                  </div>
-                  <h4 className="text-lg font-bold uppercase tracking-widest text-white mb-6">
-                    {item.title}
-                  </h4>
-                  <p className="text-[13px] text-white/90 leading-relaxed italic font-medium px-4">
-                    {item.desc}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        
+        <p className="text-[9px] font-mono text-white/40 uppercase tracking-widest font-semibold text-center sm:text-right">
+          &copy; {new Date().getFullYear()} Fredys Matos Borges. {t.common.allRightsReserved}
+        </p>
       </div>
-    </section>
+    </footer>
   );
 };

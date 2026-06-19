@@ -1,8 +1,9 @@
 import { useParams, Link } from 'react-router-dom';
 import React, { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { translations, Language, OB_PHONE, secureAtob } from '../constants';
 import { motion } from 'motion/react';
-import { ArrowLeft, MessageSquare, ShieldCheck, Zap, Cog, ArrowRight } from 'lucide-react';
+import { ArrowLeft, MessageSquare, ShieldCheck, Zap, Cog, Github } from 'lucide-react';
 
 interface ProjectDetailProps {
   lang: Language;
@@ -12,21 +13,21 @@ export default function ProjectDetail({ lang }: ProjectDetailProps) {
   const { id } = useParams<{ id: string }>();
   const t = translations[lang];
   
-  const project = t.portfolio.selectedProjects.items.find(p => p.id === id);
+  // Find in selected projects first, then in technical work
+  const projectRaw = t.portfolio.selectedProjects.items.find(p => p.id === id) || 
+                     t.portfolio.technicalWork.items.find(p => p.id === id);
+  const project = projectRaw as any;
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (project) {
-      document.title = `${project.title} | Fredys Matos Borges Portfolio`;
-    }
-    return () => {
-      document.title = 'Fredys Matos Borges | PCB Design Specialist & Automation Engineer';
-    };
-  }, [id, project]);
+  }, [id]);
 
   if (!project) {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6">
+        <Helmet>
+          <title>Project Not Found | Fredys Matos Borges</title>
+        </Helmet>
         <h2 className="text-3xl font-display font-bold text-white mb-6">Project not found</h2>
         <Link to="/" className="text-accent underline font-mono text-sm uppercase tracking-widest">Return Home</Link>
       </div>
@@ -49,8 +50,29 @@ export default function ProjectDetail({ lang }: ProjectDetailProps) {
     return false;
   };
 
+  const seoTitle = `${project.title} | Fredys Matos Borges`;
+  const seoDesc = (project as any).description || project.problem;
+
   return (
     <div className="min-h-screen bg-black text-white selection:bg-accent selection:text-black">
+      <Helmet>
+        <title>{seoTitle}</title>
+        <meta name="description" content={seoDesc} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={seoTitle} />
+        <meta property="og:description" content={seoDesc} />
+        <meta property="og:image" content={project.image} />
+        <meta property="og:url" content={window.location.href} />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={seoTitle} />
+        <meta name="twitter:description" content={seoDesc} />
+        <meta name="twitter:image" content={project.image} />
+      </Helmet>
+
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -74,11 +96,15 @@ export default function ProjectDetail({ lang }: ProjectDetailProps) {
            >
               <div>
                 <div className="flex gap-2 mb-6">
-                   {project.tags.map(tag => (
+                   {project.tags ? project.tags.map(tag => (
                      <span key={tag} className="px-3 py-1 bg-accent/10 border border-accent/20 text-[9px] font-mono uppercase tracking-widest text-accent rounded-full">
                        {tag}
                      </span>
-                   ))}
+                   )) : project.tag && (
+                     <span className="px-3 py-1 bg-accent/10 border border-accent/20 text-[9px] font-mono uppercase tracking-widest text-accent rounded-full">
+                       {project.tag}
+                     </span>
+                   )}
                 </div>
                 <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-8 tracking-tight">
                   {project.title}
@@ -258,17 +284,33 @@ export default function ProjectDetail({ lang }: ProjectDetailProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 px-6">
+      <section className="py-32 px-6 relative overflow-hidden">
+        {/* Glow behind CTA */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-accent/10 rounded-full blur-[120px] -z-10" />
+
         <div className="max-w-3xl mx-auto text-center">
-           <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-12 tracking-tight">
-             {lang === 'en' ? 'Have a similar project?' : '¿Tienes un proyecto similar?'}
+           <h2 className="text-3xl md:text-5xl font-display font-medium text-white mb-8 tracking-tight">
+             {lang === 'en' ? 'Do you want to see the full project??' : '¿Quieres ver el proyecto completo??'}
            </h2>
-           <button 
-             onClick={() => handleContactAction('whatsapp', OB_PHONE, `${lang === 'en' ? 'Hi Fredys, I saw the' : 'Hola Fredys, vi el'} ${project.title} project and I have something similar.`)}
-             className="px-12 py-6 bg-white text-black font-black uppercase text-[14px] tracking-widest rounded-3xl hover:bg-accent hover:text-black transition-all shadow-2xl"
+           <p className="text-white/40 text-sm md:text-base font-light mb-12 max-w-xl mx-auto leading-relaxed">
+             {lang === 'en' 
+               ? 'Explore the schematics, layout design decisions, and source files directly on the GitHub repository.' 
+               : 'Explora los esquemáticos, decisiones de diseño de layout y archivos fuente de forma abierta directamente en el repositorio de GitHub.'}
+           </p>
+           <a 
+             href={
+               id === 'mini-environmental-sensor' ? 'https://github.com/MbFredys/PCB-Mini-Environmental-Sensor' :
+               id === 'energy-monitoring-pcb' ? 'https://github.com/MbFredys/PCB-3-Phase-Energy-Monitor' :
+               id === 'universal-modular-hub' ? 'https://github.com/MbFredys/PCB-Modular-Multi-Protocol-Hub' :
+               'https://github.com/MbFredys'
+             }
+             target="_blank"
+             rel="noopener noreferrer"
+             className="inline-flex items-center gap-3 px-10 py-5 bg-white text-black font-mono font-black uppercase text-xs tracking-wider rounded-2xl hover:bg-accent hover:text-black hover:scale-105 transition-all shadow-xl shadow-white/5 group"
            >
-             {lang === 'en' ? 'Get a Custom Quote' : 'Obtener Presupuesto'}
-           </button>
+             <Github size={18} className="text-black group-hover:scale-110 transition-transform" />
+             <span>{lang === 'en' ? 'Go to Repository on GitHub' : 'Ir a Repositorio en GitHub'}</span>
+           </a>
         </div>
       </section>
 

@@ -4,6 +4,7 @@ export type Language = 'en' | 'es';
 export const OB_EMAIL = 'bWIuZnJlZGR5c0BnbWFpbC5jb20=';
 export const OB_PHONE = 'MzQ3NDIwOTA5OTE=';
 export const OB_PHONE_F = 'KzM0IDc0MiAwOSAwOSA5MQ==';
+export const OB_WEB3FORMS_KEY = 'MDg2YjEzMjMtZjY5Ny00YjJlLThkNDYtZGUxNWU5ZTY0N2Zh';
 
 export const secureAtob = (str: string) => {
   if (typeof window === 'undefined') return '';
@@ -118,6 +119,7 @@ export interface Translation {
     technicalWork: {
       title: string;
       items: { 
+        id: string;
         tag: string; 
         title: string;
         problem: string;
@@ -169,6 +171,7 @@ export interface Translation {
         label: string;
         options: string[];
       };
+      consent: string;
       submit: string;
     };
   };
@@ -437,7 +440,7 @@ export const translations: Record<Language, Translation> = {
           name: 'PCB Risk Review',
           subtitle: 'Avoid expensive PCB mistakes before fabrication.',
           description: 'I review your schematic and layout to detect critical electrical, routing and reliability issues before manufacturing.',
-          price: 'From 99€',
+          price: 'From 80€',
           unit: '/ task',
           items: [
             'Schematic & layout review',
@@ -469,6 +472,7 @@ export const translations: Record<Language, Translation> = {
         title: 'Sample Technical Work',
         items: [
           { 
+            id: 'voltage-drop-analysis',
             tag: 'Power Integrity', 
             title: 'Voltage Drop Analysis',
             problem: 'Thermal instability in a 5V/10A regulator circuit due to poor copper density.',
@@ -476,6 +480,7 @@ export const translations: Record<Language, Translation> = {
             image: 'https://images.unsplash.com/photo-1591405351990-4726e331f141?auto=format&fit=crop&q=80&w=600'
           },
           { 
+            id: 'ddr3-impedance-match',
             tag: 'Signal Integrity', 
             title: 'DDR3 Impedance Match',
             problem: 'Intermittent bit errors during high-speed memory access at 800MHz.',
@@ -483,6 +488,7 @@ export const translations: Record<Language, Translation> = {
             image: 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80&w=600'
           },
           { 
+            id: 'radiated-noise-fix',
             tag: 'EMI/EMC', 
             title: 'Radiated Noise Fix',
             problem: 'Failed FCC Class B emissions testing due to switching power supply harmonics.',
@@ -496,7 +502,7 @@ export const translations: Record<Language, Translation> = {
         items: [
           {
             id: 'mini-environmental-sensor',
-            title: 'PCB-Mini-Environmental-Sensor',
+            title: 'PCB Mini Environmental Sensor',
             description: 'Compact monitoring system tracking atmospheric parameters, air quality and CO2 with cloud connectivity.',
             problem: 'Need for high-precision, battery-powered sensing with ultra-low sleep current for agricultural and industrial IoT.',
             result: 'ESP32-C3 based node with TPS62203 power management and 5uA deep sleep. Integrated USB-C charging and BME280/SGP40 sensors.',
@@ -522,7 +528,7 @@ export const translations: Record<Language, Translation> = {
           },
           {
             id: 'energy-monitoring-pcb',
-            title: 'Energy-Monitoring-PCB',
+            title: 'Energy Monitoring PCB',
             description: 'High-accuracy, isolated three-phase energy monitoring system with PoE connectivity for industrial BMS integration.',
             problem: 'Commercial meters are expensive, closed, and lack modern PoE connectivity for seamless BMS integration.',
             result: 'A professional 3P4W module using ATM90E32AS and ESP32-S3, providing high-resolution electrical analytics with full isolation.',
@@ -597,6 +603,7 @@ export const translations: Record<Language, Translation> = {
           label: 'Timeline / Urgency',
           options: ['ASAP / Critical', '1-2 Weeks', '1 Month', 'Flexible / Just Quote']
         },
+        consent: 'I agree that this information will be used to contact me',
         submit: 'Send Request',
       },
     },
@@ -899,6 +906,7 @@ export const translations: Record<Language, Translation> = {
         title: 'Ejemplos de Trabajo Técnico',
         items: [
           { 
+            id: 'voltage-drop-analysis',
             tag: 'Integridad de Potencia', 
             title: 'Análisis de Caída de Tensión',
             problem: 'Inestabilidad térmica en un circuito regulador de 5V/10A debido a baja densidad de cobre.',
@@ -906,6 +914,7 @@ export const translations: Record<Language, Translation> = {
             image: 'https://images.unsplash.com/photo-1591405351990-4726e331f141?auto=format&fit=crop&q=80&w=600'
           },
           { 
+            id: 'ddr3-impedance-match',
             tag: 'Integridad de Señal', 
             title: 'Ajuste de Impedancia DDR3',
             problem: 'Errores de bits intermitentes durante el acceso a memoria de alta velocidad a 800MHz.',
@@ -913,6 +922,7 @@ export const translations: Record<Language, Translation> = {
             image: 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80&w=600'
           },
           { 
+            id: 'radiated-noise-fix',
             tag: 'EMI/EMC', 
             title: 'Corrección de Ruido Radiado',
             problem: 'Fallo en pruebas de emisiones FCC Clase B debido a armónicos de fuente conmutada.',
@@ -926,7 +936,7 @@ export const translations: Record<Language, Translation> = {
         items: [
           {
             id: 'mini-environmental-sensor',
-            title: 'PCB-Mini-Environmental-Sensor',
+            title: 'PCB Mini Sensor Ambiental',
             description: 'Sistema compacto de monitoreo atmosférico, calidad de aire y CO2 con conectividad en la nube.',
             problem: 'Necesidad de detección de alta precisión alimentada por batería con consumo ultra bajo para IoT agrícola e industrial.',
             result: 'Nodo basado en ESP32-C3 con gestión de energía TPS62203 y sueño profundo de 5uA. Carga USB-C integrada y sensores BME280/SGP40.',
@@ -952,7 +962,7 @@ export const translations: Record<Language, Translation> = {
           },
           {
             id: 'energy-monitoring-pcb',
-            title: 'PCB-Monitoreo-Energía',
+            title: 'PCB de Monitoreo de Energía',
             description: 'Sistema de monitoreo de energía trifásico aislado y de alta precisión con conectividad PoE para integración industrial.',
             problem: 'Los medidores comerciales son caros, cerrados y carecen de conectividad PoE moderna para una integración perfecta.',
             result: 'Un módulo profesional 3P4W que utiliza ATM90E32AS y ESP32-S3, proporcionando analíticas eléctricas de alta resolución.',
@@ -1027,6 +1037,7 @@ export const translations: Record<Language, Translation> = {
           label: 'Plazo / Urgencia',
           options: ['Lo antes posible / Crítico', '1-2 Semanas', '1 Mes', 'Flexible / Solo presupuesto']
         },
+        consent: 'Acepto que esta información sea utilizada para contactarme',
         submit: 'Enviar Solicitud',
       },
     },

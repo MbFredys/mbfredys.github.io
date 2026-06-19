@@ -5,16 +5,13 @@ import { translations, Language } from './constants';
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
 import { 
   Navbar, 
-  Hero, 
-  ProblemSection, 
-  ServicesSection, 
-  WhatYouGetSection, 
-  PricingSection, 
-  SampleWork, 
-  ProcessSection,
+  HeroSection, 
+  ExperienceSection, 
+  ProjectsSection, 
+  TechStackSection, 
+  AboutSection, 
   ContactSection,
-  Footer,
-  SkillsetTabs
+  Footer
 } from './components/Sections';
 
 function ScrollToHash() {
@@ -35,7 +32,7 @@ function ScrollToHash() {
 }
 
 export default function App() {
-  const [lang, setLang] = useState<Language>('en');
+  const [lang, setLang] = useState<Language>('es'); // Default is Spanish as requested
   const t = translations[lang];
 
   useEffect(() => {
@@ -51,14 +48,11 @@ export default function App() {
         <Routes>
           <Route path="/" element={
             <main>
-              <Hero t={t} lang={lang} />
-              <WhatYouGetSection t={t} lang={lang} />
-              <ProblemSection t={t} lang={lang} />
-              <ServicesSection t={t} lang={lang} />
-              <ProcessSection t={t} lang={lang} />
-              <SampleWork t={t} lang={lang} />
-              <PricingSection t={t} lang={lang} />
-              <SkillsetTabs t={t} lang={lang} />
+              <HeroSection t={t} lang={lang} />
+              <ExperienceSection t={t} lang={lang} />
+              <ProjectsSection t={t} lang={lang} />
+              <TechStackSection t={t} lang={lang} />
+              <AboutSection t={t} lang={lang} />
               <ContactSection t={t} lang={lang} />
             </main>
           } />
