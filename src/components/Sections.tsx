@@ -238,7 +238,7 @@ export const HeroSection = ({ t, lang }: SectionProps) => {
                 <img 
                   src="https://raw.githubusercontent.com/MbFredys/mbfredys.github.io/1ec5dc9f72795e62d08dc58c96f43c0d920e4dc4/images/perfil-redonda.webp"
                   alt="Fredys Matos Borges"
-                  className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105"
+                  className="w-full h-full object-cover object-center grayscale group-hover:grayscale-0 hover:grayscale-0 transition-all duration-500 hover:scale-105 group-hover:scale-105"
                   referrerPolicy="no-referrer"
                 />
               </div>
@@ -277,12 +277,12 @@ const ExperienceItem = ({ exp, i, lang }: { exp: any, i: number, lang: Language,
       className="relative pl-8 md:pl-10"
     >
       {/* Timeline dot */}
-      <div className={`absolute -left-[5px] top-7 w-[11px] h-[11px] rounded-full transition-colors duration-300 ${isExpanded ? 'bg-accent' : 'bg-white/40'} border-4 border-black ring-1 ring-accent`} />
+      <div className={`absolute -left-[5px] ${isExpanded ? 'top-7' : 'top-[22px]'} w-[11px] h-[11px] rounded-full transition-all duration-300 ${isExpanded ? 'bg-accent' : 'bg-white/40'} border-4 border-black ring-1 ring-accent`} />
 
-      <div className="bg-zinc-900/40 border border-white/5 hover:border-white/10 rounded-2xl p-6 transition-all duration-300">
+      <div className={`bg-zinc-900/40 border border-white/5 hover:border-white/10 rounded-2xl transition-all duration-300 ${isExpanded ? 'pt-6 pb-6 px-5 sm:px-6' : 'py-3.5 px-5 sm:px-6'}`}>
         <div 
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex flex-wrap justify-between items-start gap-4 cursor-pointer group"
+          className="flex flex-wrap justify-between items-center gap-4 cursor-pointer group"
         >
           <div className="flex-1 min-w-[200px]">
             <h3 className="text-lg sm:text-xl font-display font-medium text-white group-hover:text-accent transition-colors">
@@ -337,8 +337,8 @@ const ExperienceItem = ({ exp, i, lang }: { exp: any, i: number, lang: Language,
 };
 
 export const ExperienceSection = ({ t, lang }: SectionProps) => {
-  // We showcase elite experiences centered on achievements/impacts as requested by the user
-  const experiences = t.skillset.experienceList.slice(0, 3); // Get the 3 most relevant
+  // We showcase all professional experiences as requested by the user
+  const experiences = t.skillset.experienceList;
 
   return (
     <section id="experience" className="py-24 bg-black border-y border-white/5 relative">

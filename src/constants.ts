@@ -300,7 +300,7 @@ export const translations: Record<Language, Translation> = {
           location: 'Remote, Barcelona, Spain',
           details: [
             'Development of a compact wearable system oriented to tracking and monitoring applications.',
-            'Multilayer PCB layout in KiCad and GNSS module integration.',
+            'Multilayer PCB layout in Altium Designer and GNSS module integration.',
             'Implementation of environmental and motion sensors (IMU and temperature).',
             'Power architecture design for battery operation and energy consumption optimization.',
             'Integration of wireless communications (Wi-Fi, Bluetooth and Sub-GHz radio).'
@@ -309,7 +309,7 @@ export const translations: Record<Language, Translation> = {
         {
           title: 'Automation / Hardware Engineer',
           company: 'Soluciones Electro-Automáticas SEA SRL',
-          period: '2023-2026',
+          period: '2022-2025',
           location: 'Hybrid, Havana, Cuba',
           details: [
             'Hardware and PCB design for residential automation systems.',
@@ -319,10 +319,10 @@ export const translations: Record<Language, Translation> = {
           ]
         },
         {
-          title: 'Project Engineer - Domotics',
-          company: 'TISA Security SRL',
-          period: '2022-2025',
-          location: 'Remote, Havana, Cuba',
+          title: 'Project Engineer',
+          company: 'Almacenes Universales S.A.',
+          period: '2019-2022',
+          location: 'Hybrid, Havana, Cuba',
           details: [
             'Technical design of more than 50 electronic security and home automation projects.',
             'Preparation of diagrams, technical plans and selection of electronic components.',
@@ -333,8 +333,8 @@ export const translations: Record<Language, Translation> = {
         {
           title: 'Robotics & Mechatronics Researcher',
           company: 'Technological University of Havana',
-          period: '2019-2022',
-          location: 'Hybrid, Havana, Cuba',
+          period: '2019-2021',
+          location: 'Remote, Havana, Cuba',
           details: [
             'Proposal of a mobile robot prototype for automation of logistics processes in warehouses.',
             'Analysis of existing commercial solutions, identifying efficiency improvements of up to 35%.',
@@ -734,7 +734,7 @@ export const translations: Record<Language, Translation> = {
           location: 'Remoto, Barcelona, España',
           details: [
             'Desarrollo de un sistema compacto tipo wearable orientado a aplicaciones de rastreo y monitoreo.',
-            'Layout de PCB multicapa en KiCad e integración de módulo GNSS.',
+            'Layout de PCB multicapa en Altium Designer e integración de módulo GNSS.',
             'Implementación de sensores ambientales y de movimiento (IMU y temperatura).',
             'Diseño de arquitectura de alimentación para batería y optimización de consumo.',
             'Integración de comunicaciones inalámbricas (Wi-Fi, Bluetooth y radio Sub-GHz).'
@@ -743,7 +743,7 @@ export const translations: Record<Language, Translation> = {
         {
           title: 'Automation / Hardware Engineer',
           company: 'Soluciones Electro-Automáticas SEA SRL',
-          period: '2023-2026',
+          period: '2022-2025',
           location: 'Híbrido, La Habana, Cuba',
           details: [
             'Diseño de hardware y PCB para sistemas de automatización residencial.',
@@ -753,10 +753,10 @@ export const translations: Record<Language, Translation> = {
           ]
         },
         {
-          title: 'Ingeniero de Proyectos - Domótica',
-          company: 'TISA Security SRL',
-          period: '2022-2025',
-          location: 'Remoto, La Habana, Cuba',
+          title: 'Ingeniero de Proyectos',
+          company: 'Almacenes Universales S.A.',
+          period: '2019-2022',
+          location: 'Híbrido, La Habana, Cuba',
           details: [
             'Diseño técnico de más de 50 proyectos de seguridad electrónica y domótica.',
             'Elaboración de esquemas, planos técnicos y selección de componentes electrónicos.',
@@ -767,8 +767,8 @@ export const translations: Record<Language, Translation> = {
         {
           title: 'Investigador - Robótica y Mecatrónica',
           company: 'Universidad Tecnológica de La Habana',
-          period: '2019-2022',
-          location: 'Híbrido, La Habana, Cuba',
+          period: '2019-2021',
+          location: 'Remoto, La Habana, Cuba',
           details: [
             'Propuesta de un prototipo de robot móvil para automatización de procesos logísticos.',
             'Análisis de soluciones comerciales existentes, identificando mejoras de eficiencia de hasta un 35%.',
