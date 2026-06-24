@@ -287,10 +287,10 @@ export const translations: Record<Language, Translation> = {
           period: '2025-2026',
           location: 'Remote, Havana, Cuba',
           details: [
-            'Design and development of schematics and PCB layouts for embedded control systems.',
-            'Integration of microcontrollers, sensors, power management circuits and communication modules (Wi-Fi, Bluetooth, Zigbee).',
-            'Participation in full hardware development cycles, from concept and schematic design to prototype creation and DFM reviews.',
-            'Creation and maintenance of design documentation (BOM, assembly plans, test protocols).'
+            'Led schematic capture and high-density PCB layout for complex embedded control systems with microcontrollers, advanced sensors, and Power Management ICs (PMICs).',
+            'Integrated and optimized RF wireless modules (Wi-Fi, Bluetooth, Zigbee), ensuring robust signal integrity (SI) in mixed-signal (analog-digital) routing.',
+            'Owned the entire hardware lifecycle (conceptual design, rapid prototyping, validation) under strict DFM (Design for Manufacturing) and DFA (Design for Assembly) guidelines.',
+            'Standardized critical engineering documentation, including structured Bills of Materials (BOMs), assembly drawings, and comprehensive hardware validation protocols.'
           ]
         },
         {
@@ -299,11 +299,11 @@ export const translations: Record<Language, Translation> = {
           period: '2025',
           location: 'Remote, Barcelona, Spain',
           details: [
-            'Development of a compact wearable system oriented to tracking and monitoring applications.',
-            'Multilayer PCB layout in Altium Designer and GNSS module integration.',
-            'Implementation of environmental and motion sensors (IMU and temperature).',
-            'Power architecture design for battery operation and energy consumption optimization.',
-            'Integration of wireless communications (Wi-Fi, Bluetooth and Sub-GHz radio).'
+            'Co-designed and developed an ultra-compact, high-density (HDI) wearable system optimized for real-time satellite tracking (GNSS) and telemetry.',
+            'Executed the complete hardware development workflow—from schematic entry to multi-layer PCB layout in Altium Designer under tight mechanical and spatial envelopes.',
+            'Embedded precision environmental sensors, Inertial Measurement Units (IMUs), and optimized Power Delivery Networks (PDN) to maximize battery runtime.',
+            'Conducted controlled impedance RF routing (coplanar waveguide models) for Sub-GHz wireless links and Bluetooth Low Energy (BLE) transceivers.',
+            'Designed for testing (DFT) and debugging interfaces, accelerating early firmware development, testing, and hardware validation.'
           ]
         },
         {
@@ -312,10 +312,9 @@ export const translations: Record<Language, Translation> = {
           period: '2022-2025',
           location: 'Hybrid, Havana, Cuba',
           details: [
-            'Hardware and PCB design for residential automation systems.',
-            'Optimization of PCB design reducing manufacturing costs by 15%.',
-            'Improvement of system reliability through the application of DFM best practices.',
-            'Participation in the entire cycle: design, prototype, documentation, and technical support.'
+            'Co-designed high-reliability electronic hardware for home automation and residential/industrial IoT systems.',
+            'Achievement: Redesigned and optimized PCB layouts, reducing mass manufacturing costs by 15% while maintaining strict electrical performance.',
+            'Implemented industrial design best practices for electromagnetic compatibility (EMC/EMI mitigation) and DFM, boosting field reliability and device lifespan.'
           ]
         },
         {
@@ -324,10 +323,8 @@ export const translations: Record<Language, Translation> = {
           period: '2019-2022',
           location: 'Hybrid, Havana, Cuba',
           details: [
-            'Technical design of more than 50 electronic security and home automation projects.',
-            'Preparation of diagrams, technical plans and selection of electronic components.',
-            'Optimization of designs that reduced installation times by 20%.',
-            'Definition of component selection processes that improved system compatibility by 25%.'
+            'Managed the engineering and technical development of 50+ medium-to-large electronic security and building automation infrastructure projects.',
+            'Achievement: Overhauled structural system designs and executed strategic component lifecycle selection, accelerating deployment times by 20% and improving system compatibility by 25%.'
           ]
         },
         {
@@ -336,9 +333,8 @@ export const translations: Record<Language, Translation> = {
           period: '2019-2021',
           location: 'Remote, Havana, Cuba',
           details: [
-            'Proposal of a mobile robot prototype for automation of logistics processes in warehouses.',
-            'Analysis of existing commercial solutions, identifying efficiency improvements of up to 35%.',
-            'Applied research technical documentation for future developments.'
+            'Conducted R&D on custom hardware design and mechatronic rapid prototyping for Automated Guided Vehicles (AGVs) and autonomous mobile logistics robots.',
+            'Analyzed, simulated, and modeled commercial controller architectures to propose electrical and thermal optimizations, achieving up to 35% improvements in hardware efficiency.'
           ]
         }
       ]
@@ -716,40 +712,39 @@ export const translations: Record<Language, Translation> = {
       ],
       experienceList: [
         {
-          title: 'PCB/Hardware Engineer',
+          title: 'Ingeniero de PCB/Hardware',
           company: 'InGnia Technology',
           period: '2025-2026',
           location: 'Remoto, La Habana, Cuba',
           details: [
-            'Diseño y desarrollo de esquemáticos y layouts de PCB para sistemas embebidos de control.',
-            'Integración de microcontroladores, sensores, circuitos de gestión de potencia y módulos de comunicación (Wi-Fi, Bluetooth, Zigbee).',
-            'Participación en ciclos completos de desarrollo de hardware, desde el concepto hasta prototipos y revisiones de DFM.',
-            'Creación y mantenimiento de documentación de diseño (BOM, planos de ensamblaje, protocolos de prueba).'
+            'Liderazgo en Schematic Capture y PCB Layout de alta densidad para sistemas embebidos de control complejos utilizando microcontroladores, sensores avanzados y circuitos integrados de gestión de potencia (PMIC).',
+            'Integración exitosa de módulos de comunicación inalámbrica de RF (Wi-Fi, Bluetooth, Zigbee), optimizando el ruteado de señales mixtas bajo exigencias de integridad de señal.',
+            'Participación activa en el ciclo de vida completo de hardware, desde la conceptualización técnica y co-diseño hasta el prototipado rápido y revisiones estrictas de DFM y DFA.',
+            'Creación y gestión de documentación técnica crítica de ingeniería: Listas de Materiales (BOM) estructuradas, planos detallados de ensamblaje y protocolos de validación.'
           ]
         },
         {
-          title: 'Hardware Engineer',
+          title: 'Ingeniero de Hardware',
           company: 'Circe Smart Navigation Solutions',
           period: '2025',
           location: 'Remoto, Barcelona, España',
           details: [
-            'Desarrollo de un sistema compacto tipo wearable orientado a aplicaciones de rastreo y monitoreo.',
-            'Layout de PCB multicapa en Altium Designer e integración de módulo GNSS.',
-            'Implementación de sensores ambientales y de movimiento (IMU y temperatura).',
-            'Diseño de arquitectura de alimentación para batería y optimización de consumo.',
-            'Integración de comunicaciones inalámbricas (Wi-Fi, Bluetooth y radio Sub-GHz).'
+            'Diseño y desarrollo de un sistema wearable ultra-compacto y de alta densidad de componentes (HDI) enfocado a la monitorización y tracking satelital (GNSS) en tiempo real.',
+            'Ejecución completa del esquema electrónico y layout de PCB multicapa compleja en Altium Designer bajo restricciones estrictas de espacio mecánico.',
+            'Implementación de sensores de precisión, arquitecturas IMU (giroscopio/acelerómetro) y optimización de redes de distribución de potencia (PDN) para maximizar la eficiencia energética de la batería.',
+            'Ruteado de RF de alta frecuencia con control y adaptación de impedancias para señales de radio Sub-GHz y Bluetooth Low Energy (BLE).',
+            'Diseño orientado a pruebas (DFT) para depuración ágil de hardware, programación de firmware y validación de sistemas.'
           ]
         },
         {
-          title: 'Automation / Hardware Engineer',
+          title: 'Ingeniero de Automatización / Hardware',
           company: 'Soluciones Electro-Automáticas SEA SRL',
           period: '2022-2025',
           location: 'Híbrido, La Habana, Cuba',
           details: [
-            'Diseño de hardware y PCB para sistemas de automatización residencial.',
-            'Optimización del diseño PCB reduciendo costes de fabricación en un 15%.',
-            'Mejora de la confiabilidad del sistema mediante la aplicación de buenas prácticas de DFM.',
-            'Participación en todo el ciclo: diseño, prototipo, documentación y soporte técnico.'
+            'Co-diseño de hardware electrónico y PCBs de alta confiabilidad orientados a sistemas IoT de automatización residencial y domótica avanzada.',
+            'Logro: Optimización estratégica de layouts de placas que redujo los costes directos de fabricación industrial en un 15% sin comprometer el rendimiento ni la integridad eléctrica.',
+            'Aplicación de buenas prácticas de diseño para compatibilidad electromagnética (EMC/EMI shielding) y análisis DFM, incrementando notablemente la fiabilidad del producto final en entornos reales.'
           ]
         },
         {
@@ -758,10 +753,8 @@ export const translations: Record<Language, Translation> = {
           period: '2019-2022',
           location: 'Híbrido, La Habana, Cuba',
           details: [
-            'Diseño técnico de más de 50 proyectos de seguridad electrónica y domótica.',
-            'Elaboración de esquemas, planos técnicos y selección de componentes electrónicos.',
-            'Optimización de diseños que redujo los tiempos de instalación en un 20%.',
-            'Definición de procesos de selección de componentes que mejoraron la compatibilidad en un 25%.'
+            'Desarrollo técnico e ingeniería de más de 50 proyectos de infraestructura de seguridad electrónica y automatización edilicia.',
+            'Logro: Rediseño técnico-estructural y selección crítica de componentes que redujo los tiempos de instalación en un 20% y optimizó la compatibilidad de sistemas integrados en un 25%.'
           ]
         },
         {
@@ -770,9 +763,8 @@ export const translations: Record<Language, Translation> = {
           period: '2019-2021',
           location: 'Remoto, La Habana, Cuba',
           details: [
-            'Propuesta de un prototipo de robot móvil para automatización de procesos logísticos.',
-            'Análisis de soluciones comerciales existentes, identificando mejoras de eficiencia de hasta un 35%.',
-            'Documentación técnica de investigación aplicada para desarrollos futuros.'
+            'I+D enfocado en el desarrollo de prototipos electrónicos y mecatrónicos (prototipado rápido) para vehículos autónomos (AGV/Robots móviles) destinados a la logística automatizada.',
+            'Análisis, modelado y simulación de arquitecturas comerciales de control que permitieron proponer mejoras de eficiencia de hardware de hasta el 35%.'
           ]
         }
       ]
