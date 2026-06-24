@@ -411,6 +411,7 @@ export const ProjectsSection = ({ t, lang }: SectionProps) => {
                   alt={project.title} 
                   className="w-full h-full object-cover grayscale group-hover:scale-105 group-hover:grayscale-0 transition-all duration-500"
                   referrerPolicy="no-referrer"
+                  loading="lazy"
                 />
                 <div className="absolute top-4 left-4 flex flex-wrap gap-1.5">
                   {project.tags.map(tag => (
@@ -595,6 +596,7 @@ export const AboutSection = ({ t, lang }: SectionProps) => {
               alt="Fredys Matos Borges Profile" 
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
+              loading="lazy"
             />
           </div>
 
@@ -922,6 +924,7 @@ export const Footer = ({ t, lang }: SectionProps) => {
               alt="Fredys Profile" 
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
+              loading="lazy"
             />
           </div>
           <span className="font-display text-sm font-semibold tracking-tight text-white/80">
