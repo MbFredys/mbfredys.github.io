@@ -76,7 +76,7 @@ export default function ProjectDetail({ lang }: ProjectDetailProps) {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link to="/#selected-projects" className="flex items-center gap-2 group text-[10px] font-mono font-bold uppercase tracking-widest text-white/50 hover:text-white transition-colors">
+          <Link to="/#projects" className="flex items-center gap-2 group text-[10px] font-mono font-bold uppercase tracking-widest text-white/50 hover:text-white transition-colors">
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
             {lang === 'en' ? 'Back to Portfolio' : 'Volver al Portafolio'}
           </Link>

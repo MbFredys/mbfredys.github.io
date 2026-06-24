@@ -463,7 +463,7 @@ export const ProjectsSection = ({ t, lang }: SectionProps) => {
                   to={`/projects/${project.id}`}
                   className="w-full py-3.5 bg-white/5 border border-white/10 text-[9px] font-mono font-black uppercase tracking-widest text-white/75 rounded-xl hover:bg-accent hover:border-accent hover:text-black transition-all text-center flex items-center justify-center gap-1.5 group/btn"
                 >
-                  <span>{lang === 'en' ? 'VIEW FULL CASE CASE' : 'VER CASO COMPLETO'}</span>
+                  <span>{lang === 'en' ? 'VIEW FULL CASE' : 'VER CASO COMPLETO'}</span>
                   <ArrowRight size={12} className="group-hover/btn:translate-x-1 transition-transform" />
                 </Link>
               </div>
